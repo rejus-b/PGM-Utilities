@@ -1,0 +1,6 @@
+I will first test for the edge case where no command line arguements are supplied to functions such as pgmEcho.c and to see that the error checking function within this module sucesfully catches the error with a "return (1)" which is the error code specified for invalid arguement counts.
+I will also have it test for invalid cases where the correct amount of arguements are returned but not of the expected data type, e..g. expecting a string but the program recives an integer.
+
+
+All functions that will have operate with arithemtic data will be tested with boundry data such as when a ">1" is expected but the input value is 0, and test with errenous data such as -1. 
+Another test should be that of testing that the correct amount of memory is malloc'd when required otherwise the program will get a segementation fault that shows I didn't assign enough memory.
