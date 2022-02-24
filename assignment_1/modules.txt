@@ -1,0 +1,92 @@
+TASK 1 -- pgmEcho.c
+
+	Main - This module takes the command line arguements, as an input file, output file. It will also be responsible for closing any open files after they are used.
+
+	Open file - This module opens a file to be read 
+	
+	Read file - This module will read the inputs of the input file, it will also check for comments and exclude these from any operations in the rest of the code.
+	
+	Write to file - This module will write the data from the main input file to the main output file.
+
+	Error checking module - This will check that the input can be used succesfully and that the output has been used succesfully.
+
+
+
+TASK 2 -- pgmComp.c
+
+	Main - This module takes the command line arguements as input files. It will also be responsible for closing any open files after they are used.
+	
+	Read file - This module will read the data of the input file, it will also check for comments and exclude these from any operations in the rest of the code.
+
+	Logical equivilance - Tests whether two inputs are logically equivilant and returns a boolean statement 
+
+	Error checking module - This will check that the input can be used succesfully.
+
+
+
+TASK 3 --  pgma2b
+
+	Main - This module takes a single arguement, an input file. It will also be responsible for closing any open files after they are used.
+	
+	Open file - This module opens a file to be read 
+
+	Read file - This module will read the inputs of the input file, it will also check for comments and exclude these from any operations in the rest of the code.
+	
+	Converter - This module will convert input data from ASCII to Binary.
+
+	Error checking module - This will check that the input can be used succesfully.
+
+
+
+TASK 3 --  pgmb2a
+
+	Main - This module takes a single arguement, an input file. It will also be responsible for closing any open files after they are used.
+	
+	Open file - This module opens a file to be read 
+
+	Read file - This module will read the inputs of the input file, it will also check for comments and exclude these from any operations in the rest of the code.
+	
+	Converter - This module will convert input data from Binary to ASCII.
+	
+	Error checking module - This will check that the input can be used succesfully.
+	
+	
+
+TASK 4 -- pgmReduce.c
+
+	Main - This module will take an input file, output file and n integer input as arguements. It will also be responsible for closing any open files after they are used.
+
+	Open file - This module opens a file to be read
+	
+	Read file - This module will read the inputs of the input file, it will also check for comments and exclude these from any operations in the rest of the code.
+	
+	Integer factor reduction - This module will take the data from the input file and return an output file that only contains pixels that return 0 after a MODULE (Integer N) operation.
+	
+	Write to file - This module will write to the output file taken as an input from main.
+	
+	Error checking module - This will check that the input can be used succesfully and that the output has been used succesfully.
+
+
+
+Task 5 -- pgmTitle
+
+	Main - This module takes an input file, an integer factor n and an output file template.
+	
+	Image Divider - This module will split the input file and convert it to an nxn, which each subfile of the nxn having its own file export.
+	
+	Error checking module - This will check that the input can be used succesfully and that the output has been used succesfully.
+
+
+Task 6 -- pgmAssemble
+
+	Main - This module takes an output file, width and height of the output file. It will also take the row at which a subimage is made(3i+1), the column(3i+2) and the subimage to insert(3i+3).
+	
+	Image Assembler - Takes the input data and concatenates this data to a single output file.
+	
+	Error checking module - This will check that the input can be used succesfully and that the output has been used succesfully.
+
+
+
+No. of distinct modules : 10 (Excluding repeating functions with different inputs)
+
+
