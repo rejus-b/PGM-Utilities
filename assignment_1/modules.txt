@@ -1,4 +1,4 @@
-TASK 1 -- pgmEcho.c / pgmEcho.h
+MODULE 1 -- pgmEcho.c / pgmEcho.h
 
 	Main - This module takes the command line arguements, as an input file, output file. It will close any open files.
 
@@ -12,7 +12,7 @@ TASK 1 -- pgmEcho.c / pgmEcho.h
 
 
 
-TASK 2 -- pgmComp.c / pgmComp.h
+MODULE 2 -- pgmComp.c / pgmComp.h
 
 	Main - This module takes the command line arguements as input files. It will close any open files.
 	
@@ -24,7 +24,7 @@ TASK 2 -- pgmComp.c / pgmComp.h
 
 
 
-TASK 3 --  pgma2b.c / pgma2b.h
+MODULE 3 --  pgma2b.c / pgma2b.h
 
 	Main - This module takes the command line arguements as input files. It will close any open files.
 	
@@ -38,7 +38,7 @@ TASK 3 --  pgma2b.c / pgma2b.h
 
 
 
-TASK 3 --  pgmb2a.c / pgmb2a.h
+MODULE 3 --  pgmb2a.c / pgmb2a.h
 
 	Main - This module takes the command line arguements as input files. It will close any open files.
 	
@@ -52,7 +52,7 @@ TASK 3 --  pgmb2a.c / pgmb2a.h
 	
 	
 
-TASK 4 -- pgmReduce.c / pgmReduce.h
+MODULE 4 -- pgmReduce.c / pgmReduce.h
 
 	Main - This module takes the command line arguements as input files. It will close any open files.
 
@@ -68,7 +68,7 @@ TASK 4 -- pgmReduce.c / pgmReduce.h
 
 
 
-Task 5 -- pgmTitle.c / pgmTitle.h
+MODULE 5 -- pgmTitle.c / pgmTitle.h
 
 	Main - This module takes an input file, an integer factor n and an output file template.
 	
@@ -77,7 +77,7 @@ Task 5 -- pgmTitle.c / pgmTitle.h
 	Error checking module - This will check that the input can be used succesfully and that the output has been used succesfully.
 
 
-Task 6 -- pgmAssemble.c / pgmAssemble.h
+MODULE 6 -- pgmAssemble.c / pgmAssemble.h
 
 	Main - This module takes an output file, width and height of the output file. It will also take the row at which a subimage is made(3i+1), the column(3i+2) and the subimage to insert(3i+3).
 	
@@ -87,6 +87,6 @@ Task 6 -- pgmAssemble.c / pgmAssemble.h
 
 
 
-No. of distinct modules : 10 (Excluding repeating functions with different inputs)
+No. of distinct functions: 10 (Excluding repeating functions with different inputs)
 
 
