@@ -1,10 +1,10 @@
-TASK 1 -- pgmEcho.c
+TASK 1 -- pgmEcho.c / pgmEcho.h
 
-	Main - This module takes the command line arguements, as an input file, output file. It will also be responsible for closing any open files after they are used.
+	Main - This module takes the command line arguements, as an input file, output file. It will close any open files.
 
 	Open file - This module opens a file to be read.
 	
-	Read file - This module will read the inputs of the input file, it will also check for comments and exclude these from any operations in the rest of the code.
+	Read file - This module will read the inputs of the input file.
 	
 	Write to file - This module will write the data from the main input file to the main output file.
 
@@ -12,11 +12,11 @@ TASK 1 -- pgmEcho.c
 
 
 
-TASK 2 -- pgmComp.c
+TASK 2 -- pgmComp.c / pgmComp.h
 
-	Main - This module takes the command line arguements as input files. It will also be responsible for closing any open files after they are used.
+	Main - This module takes the command line arguements as input files. It will close any open files.
 	
-	Read file - This module will read the data of the input file, it will also check for comments and exclude these from any operations in the rest of the code.
+	Read file - This module will read the inputs of the input file.
 
 	Logical equivilance - Tests whether two inputs are logically equivilant and returns a boolean statement.
 
@@ -24,13 +24,13 @@ TASK 2 -- pgmComp.c
 
 
 
-TASK 3 --  pgma2b.c
+TASK 3 --  pgma2b.c / pgma2b.h
 
-	Main - This module takes a single arguement, an input file. It will also be responsible for closing any open files after they are used.
+	Main - This module takes the command line arguements as input files. It will close any open files.
 	
 	Open file - This module opens a file to be read.
 
-	Read file - This module will read the inputs of the input file, it will also check for comments and exclude these from any operations in the rest of the code.
+	Read file - This module will read the inputs of the input file.
 	
 	Converter - This module will convert input data from ASCII to Binary.
 
@@ -38,13 +38,13 @@ TASK 3 --  pgma2b.c
 
 
 
-TASK 3 --  pgmb2a.c
+TASK 3 --  pgmb2a.c / pgmb2a.h
 
-	Main - This module takes a single arguement, an input file. It will also be responsible for closing any open files after they are used.
+	Main - This module takes the command line arguements as input files. It will close any open files.
 	
 	Open file - This module opens a file to be read.
 
-	Read file - This module will read the inputs of the input file, it will also check for comments and exclude these from any operations in the rest of the code.
+	Read file - This module will read the inputs of the input file.
 	
 	Converter - This module will convert input data from Binary to ASCII.
 	
@@ -52,23 +52,23 @@ TASK 3 --  pgmb2a.c
 	
 	
 
-TASK 4 -- pgmReduce.c
+TASK 4 -- pgmReduce.c / pgmReduce.h
 
-	Main - This module will take an input file, output file and n integer input as arguements. It will also be responsible for closing any open files after they are used.
+	Main - This module takes the command line arguements as input files. It will close any open files.
 
 	Open file - This module opens a file to be read.
 	
-	Read file - This module will read the inputs of the input file, it will also check for comments and exclude these from any operations in the rest of the code.
+	Read file - This module will read the inputs of the file.
 	
-	Integer factor reduction - This module will take the data from the input file and return an output file that only contains pixels that return 0 after a MODULE (Integer N) operation.
+	Integer factor reduction - This module will take the data from the input file and return a reduced output file.
 	
 	Write to file - This module will write to the output file taken as an input from main.
 	
-	Error checking module - This will check that the input can be used succesfully and that the output has been used succesfully.
+	Error checking module - This will check that the input/output are sucessful.
 
 
 
-Task 5 -- pgmTitle.c
+Task 5 -- pgmTitle.c / pgmTitle.h
 
 	Main - This module takes an input file, an integer factor n and an output file template.
 	
@@ -77,7 +77,7 @@ Task 5 -- pgmTitle.c
 	Error checking module - This will check that the input can be used succesfully and that the output has been used succesfully.
 
 
-Task 6 -- pgmAssemble.c
+Task 6 -- pgmAssemble.c / pgmAssemble.h
 
 	Main - This module takes an output file, width and height of the output file. It will also take the row at which a subimage is made(3i+1), the column(3i+2) and the subimage to insert(3i+3).
 	
