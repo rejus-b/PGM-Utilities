@@ -2,9 +2,7 @@ MODULE 1 -- pgmEcho.c / pgmEcho.h
 
 	Main - This module takes the command line arguements, as an input file, output file. It will close any open files.
 
-	Open file - This module opens a file to be read.
-	
-	Read file - This module will read the inputs of the input file.
+	OpenRead file - This module opens a file to be read. This module will read the inputs of the input file.
 	
 	Write to file - This module will write the data from the main input file to the main output file.
 

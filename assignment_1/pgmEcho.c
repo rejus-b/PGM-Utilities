@@ -6,12 +6,6 @@
 /***********************************/
 
 /***********************************/
-/* A first iteration to take a pgm */
-/* file in binary and convert to   */
-/* ASCII or vice versa             */
-/***********************************/
-
-/***********************************/
 /* Main Routine                    */
 /***********************************/
 
@@ -21,16 +15,11 @@
 /* library for memory routines     */
 #include <stdlib.h>
 
-#define EXIT_NO_ERRORS 0
-#define EXIT_WRONG_ARG_COUNT 1
-#define EXIT_BAD_INPUT_FILE 2
-#define EXIT_BAD_OUTPUT_FILE 3
+/* header for pgmEcho				*/
+#include "pgmEcho.h"
 
-#define MAGIC_NUMBER_RAW_PGM 0x3550
-#define MAGIC_NUMBER_ASCII_PGM 0x3250
-#define MIN_IMAGE_DIMENSION 1
-#define MAX_IMAGE_DIMENSION 65536
-#define MAX_COMMENT_LINE_LENGTH 128
+/* header for pgm structures		*/
+#include "pgmStruct.h"
 
 /***********************************/
 /* main routine                    */
@@ -42,8 +31,42 @@
 /* returns 0 on success            */
 /* non-zero error code on fail     */
 /***********************************/
+
+int pgmStructInit(pgm *pgmStruct) 
+	{
+	/* pgmStructInit() */
+
+	/* variables for storing the image   */
+
+	/* the magic number		         	 */
+	/* stored as two bytes to avoid	     */
+	/* problems with endianness	         */
+	/* Raw:    0x5035 or P5		         */
+	/* ASCII:  0x5032 or P2		         */
+	pgm->magic_number[2] = {'0','0'};
+	pgm->*magic_Number = (unsigned short *) magic_number;
+	
+	/* we will store ONE comment	         */
+	pgm->*commentLine = NULL;
+
+	/* the logical width & height	         */
+	/* note: cannot be negative	         */
+	pgm->width = 0, height = 0;
+
+	/* maximum gray value (assumed)	         */
+	/* make it an integer for ease	         */
+	pgm->maxGray = 255;
+
+	/* pointer to raw image data	         */
+	pgm->*imageData = NULL;
+	
+} /* pgmStructInit() */
+
+
+
 int main(int argc, char **argv)
-	{ /* main() */
+	{ 
+	/* main() */
 	/* check for correct number of arguments */
 	if (argc != 3)	
 		{ /* wrong arg count */
@@ -53,33 +76,14 @@ int main(int argc, char **argv)
 		return EXIT_WRONG_ARG_COUNT;
 		} /* wrong arg count */
 	
-	/* variables for storing the image       */
-    	/* this is NOT good modularisation       */
-    	/* and you will eventually replace it    */
-    	/* for now, leave it here                */
 
-	/* the magic number		         */
-	/* stored as two bytes to avoid	         */
-	/* problems with endianness	         */
-	/* Raw:    0x5035 or P5		         */
-	/* ASCII:  0x5032 or P2		         */
-	unsigned char magic_number[2] = {'0','0'};
-	unsigned short *magic_Number = (unsigned short *) magic_number;
-	
-	/* we will store ONE comment	         */
-	char *commentLine = NULL;
 
-	/* the logical width & height	         */
-	/* note: cannot be negative	         */
-	unsigned int width = 0, height = 0;
 
-	/* maximum gray value (assumed)	         */
-	/* make it an integer for ease	         */
-	unsigned int maxGray = 255;
+	/* MALLOC FOR A STRUCTURE THEN PASS IT INTO pgmStructInit() */ 
 
-	/* pointer to raw image data	         */
-	unsigned char *imageData = NULL;
-	
+
+
+
 	/* now start reading in the data         */
 	/* try to open the file for text I/O     */
 	/* in ASCII mode b/c the header is text  */
