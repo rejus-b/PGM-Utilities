@@ -32,7 +32,7 @@
 /* non-zero error code on fail     */
 /***********************************/
 
-int pgmStructInit(pgm *pgmStruct) 
+int pgmStructInit(pgmStruct *pgm) 
 	{
 	/* pgmStructInit() */
 
@@ -44,7 +44,7 @@ int pgmStructInit(pgm *pgmStruct)
 	/* Raw:    0x5035 or P5		         */
 	/* ASCII:  0x5032 or P2		         */
 	pgm->magic_number[2] = {'0','0'};
-	pgm->*magic_Number = (unsigned short *) magic_number;
+	pgm->*magic_Number = (unsigned short *) pgm->magic_number;
 	
 	/* we will store ONE comment	         */
 	pgm->*commentLine = NULL;
@@ -71,7 +71,7 @@ int main(int argc, char **argv)
 	if (argc != 3)	
 		{ /* wrong arg count */
 		/* print an error message        */
-		printf("Usage: %s input_file output_file\n", argv[0]);
+		printf("ERROR: Bad Arguement Count");
 		/* and return an error code      */
 		return EXIT_WRONG_ARG_COUNT;
 		} /* wrong arg count */
@@ -80,8 +80,9 @@ int main(int argc, char **argv)
 
 
 	/* MALLOC FOR A STRUCTURE THEN PASS IT INTO pgmStructInit() */ 
-
-
+	pgm *pgm = NULL;
+	pgm = (*pgm) malloc (sizeof(pgm));
+	pgmStructInit(pgm);
 
 
 	/* now start reading in the data         */
