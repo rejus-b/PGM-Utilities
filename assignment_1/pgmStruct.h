@@ -1,8 +1,8 @@
-#ifndef pgmStruct
-#define pgmStruct
+#ifndef PGMSTRUCT
+#define PGMSTRUCT
 
 /* structure for storing the image       */
-struct pgmStruct {
+typedef struct pgmStruct {
 
 /* the magic number		         */
 /* stored as two bytes to avoid	         */
@@ -26,6 +26,6 @@ unsigned int maxGray;
 /* pointer to raw image data	         */
 unsigned char *imageData;
 
-};
+} pgm;
 
 #endif

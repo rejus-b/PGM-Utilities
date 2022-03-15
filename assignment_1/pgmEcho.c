@@ -21,6 +21,11 @@
 /* header for pgm structures		*/
 #include "pgmStruct.h"
 
+/* header for reading the error code */
+#include "errors.h"
+
+
+
 /***********************************/
 /* main routine                    */
 /*                                 */
@@ -32,37 +37,10 @@
 /* non-zero error code on fail     */
 /***********************************/
 
-int pgmStructInit(pgmStruct *pgm) 
-	{
-	/* pgmStructInit() */
+// int magicNumberReader(int magNum)
+// {
 
-	/* variables for storing the image   */
-
-	/* the magic number		         	 */
-	/* stored as two bytes to avoid	     */
-	/* problems with endianness	         */
-	/* Raw:    0x5035 or P5		         */
-	/* ASCII:  0x5032 or P2		         */
-	pgm->magic_number[2] = {'0','0'};
-	pgm->*magic_Number = (unsigned short *) pgm->magic_number;
-	
-	/* we will store ONE comment	         */
-	pgm->*commentLine = NULL;
-
-	/* the logical width & height	         */
-	/* note: cannot be negative	         */
-	pgm->width = 0, height = 0;
-
-	/* maximum gray value (assumed)	         */
-	/* make it an integer for ease	         */
-	pgm->maxGray = 255;
-
-	/* pointer to raw image data	         */
-	pgm->*imageData = NULL;
-	
-} /* pgmStructInit() */
-
-
+// }
 
 int main(int argc, char **argv)
 	{ 
@@ -71,7 +49,7 @@ int main(int argc, char **argv)
 	if (argc != 3)	
 		{ /* wrong arg count */
 		/* print an error message        */
-		printf("ERROR: Bad Arguement Count");
+		printf("ERROR: Bad Argument Count\n");
 		/* and return an error code      */
 		return EXIT_WRONG_ARG_COUNT;
 		} /* wrong arg count */
@@ -79,10 +57,10 @@ int main(int argc, char **argv)
 
 
 
-	/* MALLOC FOR A STRUCTURE THEN PASS IT INTO pgmStructInit() */ 
-	pgm *pgm = NULL;
-	pgm = (*pgm) malloc (sizeof(pgm));
-	pgmStructInit(pgm);
+	/* MALLOC for a structure then pass it into pgmStructInit() */ 
+	pgm *pgmStruct;
+	pgmStruct = ((pgm*) malloc (sizeof(pgm)));
+	pgmStructInit(pgmStruct);
 
 
 	/* now start reading in the data         */
@@ -92,12 +70,16 @@ int main(int argc, char **argv)
 
 	/* if it fails, return error code        */
 	if (inputFile == NULL)
+	{
+		printf("ERROR: Bad File Name %s\n", argv[1]);
 		return EXIT_BAD_INPUT_FILE;
+	}
 
 	/* read in the magic number              */
-	magic_number[0] = getc(inputFile);
-	magic_number[1] = getc(inputFile);
-
+	pgmStruct->magic_number[0] = getc(inputFile);
+	pgmStruct->magic_number[1] = getc(inputFile);
+	pgmStruct->magic_Number = (unsigned short *) pgmStruct->magic_number;
+	
 	/* sanity check on the magic number      */
 	if (*magic_Number != MAGIC_NUMBER_ASCII_PGM)
 		{ /* failed magic number check   */
@@ -122,7 +104,7 @@ int main(int argc, char **argv)
 		commentLine = (char *) malloc(MAX_COMMENT_LINE_LENGTH);
 		/* fgets() reads a line          */
 		/* capture return value          */
-		char *commentString = fgets(commentLine, MAX_COMMENT_LINE_LENGTH, inputFile);
+		char *commentString = fgets(, MAX_COMMENT_LINE_LENGTH, inputFile);
 		/* NULL means failure            */
 		if (commentString == NULL)
 			{ /* NULL comment read   */
@@ -284,3 +266,42 @@ int main(int argc, char **argv)
 	/* at this point, we are done and can exit with a success code */
 	return EXIT_NO_ERRORS;
 	} /* main() */
+
+
+
+
+
+
+/* A function for initialising all the values of each pgm image */
+int pgmStructInit(pgm *pgmStruct) 
+	{
+	/* pgmStructInit() */
+
+	/* variables for storing the image   */
+
+	/* the magic number		         	 */
+	/* stored as two bytes to avoid	     */
+	/* problems with endianness	         */
+	/* Raw:    0x5035 or P5		         */
+	/* ASCII:  0x5032 or P2		         */
+	pgmStruct->magic_number[0] = '0';
+	pgmStruct->magic_number[1] = '0';
+	pgmStruct->magic_Number = NULL;
+	
+	/* we will store ONE comment	         */
+	pgmStruct->commentLine = NULL;
+
+	/* the logical width & height	         */
+	/* note: cannot be negative	         */
+	pgmStruct->width = 0, pgmStruct->height = 0;
+
+	/* maximum gray value (assumed)	         */
+	/* make it an integer for ease	         */
+	pgmStruct->maxGray = 255;
+
+	/* pointer to raw image data	         */
+	pgmStruct->imageData = NULL;
+	
+	/* If there were no errors assigning the variables in the structure then --return 0-- to signify no errors */
+	return(0);
+} /* pgmStructInit() */
