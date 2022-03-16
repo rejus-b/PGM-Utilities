@@ -1,0 +1,10 @@
+#ifndef ERRORS
+#define ERRORS
+
+#define EXIT_NO_ERRORS 0
+#define EXIT_WRONG_ARG_COUNT 1
+#define EXIT_BAD_INPUT_FILE 2
+#define EXIT_BAD_OUTPUT_FILE 3
+#define EXIT_BAD_COMMENT_LINE 4
+
+#endif

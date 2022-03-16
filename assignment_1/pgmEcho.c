@@ -2,7 +2,7 @@
 /* COMP 1921M Programming Project  */
 /* 2021-22 Spring Semester         */
 /*                                 */
-/* Hamish Carr                     */
+/* Hamish Carr & Rejus Bulevicius  */
 /***********************************/
 
 /***********************************/
@@ -23,6 +23,9 @@
 
 /* header for reading the error code */
 #include "errors.h"
+
+/* header for opeanReadFile			 */
+#include "openReadFIle.h"
 
 
 
@@ -57,23 +60,14 @@ int main(int argc, char **argv)
 
 
 
-	/* MALLOC for a structure then pass it into pgmStructInit() */ 
+	/* malloc for a structure then pass it into pgmStructInit() */ 
 	pgm *pgmStruct;
 	pgmStruct = ((pgm*) malloc (sizeof(pgm)));
 	pgmStructInit(pgmStruct);
 
+	/* invoke the function to open the file and prepare it to be read */
+	openFile(argv[1]);
 
-	/* now start reading in the data         */
-	/* try to open the file for text I/O     */
-	/* in ASCII mode b/c the header is text  */
-	FILE *inputFile = fopen(argv[1], "r");
-
-	/* if it fails, return error code        */
-	if (inputFile == NULL)
-	{
-		printf("ERROR: Bad File Name %s\n", argv[1]);
-		return EXIT_BAD_INPUT_FILE;
-	}
 
 	/* read in the magic number              */
 	pgmStruct->magic_number[0] = getc(inputFile);

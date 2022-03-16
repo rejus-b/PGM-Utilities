@@ -1,10 +1,7 @@
-#ifndef pgmEcho
-#define pgmEcho
+#ifndef PGMECHO
+#define PGMECHO
 
-#define EXIT_NO_ERRORS 0
-#define EXIT_WRONG_ARG_COUNT 1
-#define EXIT_BAD_INPUT_FILE 2
-#define EXIT_BAD_OUTPUT_FILE 3
+#include "pgmStruct.h"
 
 #define MAGIC_NUMBER_RAW_PGM 0x3550
 #define MAGIC_NUMBER_ASCII_PGM 0x3250
@@ -12,4 +9,9 @@
 #define MAX_IMAGE_DIMENSION 65536
 #define MAX_COMMENT_LINE_LENGTH 128
 
+int main(int argc, char **argv);
+
+int pgmStructInit(pgm *pgmStruct);
+
 #endif
+
