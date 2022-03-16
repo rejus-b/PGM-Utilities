@@ -29,11 +29,57 @@ int writeFile(char *fileName, pgm *pgmStruct)
 		free(pgmStruct->imageData);
 
 		/* print an error message        */
-		printf("Error: Failed to write pgm image to file %s\n", fileName);	
+		printf("ERROR: Output Failed %s\n", fileName);	
 
 		/* return an error code          */
 		return EXIT_OUTPUT_FAILED;
 		} /* NULL output file */
 
-    // return EXIT_NO_ERRORS;
+
+	/* write magic number, size & gray value */
+	size_t nBytesWritten = fprintf(outputFile, "P2\n%d %d\n%d\n", pgmStruct->width, pgmStruct->height, pgmStruct->maxGray);
+
+	/* allocate the data pointer             */
+	long nImageBytes = pgmStruct->width * pgmStruct->height * sizeof(unsigned char);
+	pgmStruct->imageData = (unsigned char *) malloc(nImageBytes);
+
+	/* check that dimensions wrote correctly */
+	if (nBytesWritten < 0)
+		{ /* dimensional write failed    */
+		/* free memory                   */
+		free(pgmStruct->commentLine);
+		free(pgmStruct->imageData);
+
+		/* print an error message        */
+		printf("ERROR: Bad Dimensions %s\n", fileName);	
+
+		/* return an error code          */
+		return EXIT_BAD_DIMENSIONS;
+		} /* dimensional write failed    */
+
+        /* pointer for efficient write code      */
+    for (unsigned char *nextGrayValue = pgmStruct->imageData; nextGrayValue < pgmStruct->imageData + nImageBytes; nextGrayValue++)
+    { /* per gray value */
+        /* get next char's column        */
+        int nextCol = (nextGrayValue - pgmStruct->imageData + 1) % pgmStruct->width;
+
+        /* write the entry & whitespace  */
+        nBytesWritten = fprintf(outputFile, "%d%c", *nextGrayValue, (nextCol ? ' ' : '\n') );
+
+        /* sanity check on write         */
+        if (nBytesWritten < 0)
+            { /* data write failed   */
+            /* free memory           */
+            free(pgmStruct->commentLine);
+            free(pgmStruct->imageData);
+
+            /* print error message   */
+            printf("ERROR: Output Failed %s\n", fileName);	
+
+            /* return an error code  */
+            return EXIT_OUTPUT_FAILED;
+            } /* data write failed   */
+    } /* per gray value */
+
+     return EXIT_NO_ERRORS;
 }

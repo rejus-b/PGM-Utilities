@@ -131,7 +131,7 @@ int readFile(char *fileName, pgm *pgmStruct)
 		fclose(inputFile);
 
 		/* print an error message */
-		printf("ERROR: Image Malloc Failed %s\n", fileName);	
+		printf("ERROR: Image Malloc Failed \n");	
 		
 		/* return error code             */
 		return EXIT_IMAGE_MALLOC_FAILED;
@@ -157,7 +157,7 @@ int readFile(char *fileName, pgm *pgmStruct)
 			fclose(inputFile);
 
 			/* print error message   */
-			printf("ERROR: Bad Gray Value %s\n", fileName);	
+			printf("ERROR: Bad Gray Value \n");	
 		
 			/* and return            */
 			return EXIT_MISCELLANEOUS;

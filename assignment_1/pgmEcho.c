@@ -63,63 +63,47 @@ int main(int argc, char **argv)
 	pgmStructInit(pgmStruct);
 
 	/* invoke the function to open the file and read from it */
-	readFile(argv[1], pgmStruct);
-
-
-	
-
-
-
-	
-	
-
-	
-
-	
-
-
-	
-	/* write magic number, size & gray value */
-	size_t nBytesWritten = fprintf(outputFile, "P2\n%d %d\n%d\n", width, height, maxGray);
-
-	/* check that dimensions wrote correctly */
-	if (nBytesWritten < 0)
-		{ /* dimensional write failed    */
-		/* free memory                   */
-		free(commentLine);
-		free(imageData);
-
-		/* print an error message        */
-		printf("Error: Failed to write pgm image to file %s\n", argv[2]);	
-
-		/* return an error code          */
-		return EXIT_BAD_OUTPUT_FILE;
-		} /* dimensional write failed    */
-
-        /* pointer for efficient write code      */
-        for (unsigned char *nextGrayValue = imageData; nextGrayValue < imageData + nImageBytes; nextGrayValue++)
-                { /* per gray value */
-		/* get next char's column        */
-		int nextCol = (nextGrayValue - imageData + 1) % width;
-
-		/* write the entry & whitespace  */
-		nBytesWritten = fprintf(outputFile, "%d%c", *nextGrayValue, (nextCol ? ' ' : '\n') );
-
-		/* sanity check on write         */
-		if (nBytesWritten < 0)
-			{ /* data write failed   */
-			/* free memory           */
-			free(commentLine);
-			free(imageData);
-
-			/* print error message   */
-			printf("Error: Failed to write pgm image to file %s\n", argv[2]);	
-
-			/* return an error code  */
-			return EXIT_BAD_OUTPUT_FILE;
-			} /* data write failed   */
-		} /* per gray value */
+	if ((readFile(argv[1], pgmStruct) == 0 ) && (writeFile(argv[2], pgmStruct) == 0))
+	{
+		printf("ECHOED \n");
+		return EXIT_NO_ERRORS;
+	}
 
 	/* at this point, we are done and can exit with a success code */
 	return EXIT_NO_ERRORS;
 	} /* main() */
+
+
+/* A function for initialising all the values of each pgm image */
+int pgmStructInit(pgm *pgmStruct) 
+	{
+	/* pgmStructInit() */
+
+	/* variables for storing the image   */
+
+	/* the magic number		         	 */
+	/* stored as two bytes to avoid	     */
+	/* problems with endianness	         */
+	/* Raw:    0x5035 or P5		         */
+	/* ASCII:  0x5032 or P2		         */
+	pgmStruct->magic_number[0] = '0';
+	pgmStruct->magic_number[1] = '0';
+	pgmStruct->magic_Number = NULL;
+	
+	/* we will store ONE comment	         */
+	pgmStruct->commentLine = NULL;
+
+	/* the logical width & height	         */
+	/* note: cannot be negative	         */
+	pgmStruct->width = 0, pgmStruct->height = 0;
+
+	/* maximum gray value (assumed)	         */
+	/* make it an integer for ease	         */
+	pgmStruct->maxGray = 255;
+
+	/* pointer to raw image data	         */
+	pgmStruct->imageData = NULL;
+	
+	/* If there were no errors assigning the variables in the structure then --return 0-- to signify no errors */
+	return(0);
+} /* pgmStructInit() */
