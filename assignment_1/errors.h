@@ -14,8 +14,4 @@
 #define EXIT_BAD_LAYOUT 10
 #define EXIT_MISCELLANEOUS 100
 
-
-
-#define EXIT_BAD_OUTPUT_FILE 3
-
 #endif

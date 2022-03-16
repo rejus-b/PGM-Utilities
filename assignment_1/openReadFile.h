@@ -8,7 +8,7 @@
 #define MAX_COMMENT_LINE_LENGTH 128
 
 int readFile(char *fileName, pgm *pgmStruct);
-int magicNumCheck(unsigned short *magic_Number, FILE *inputFile, char *fileName)
+int magicNumCheck(unsigned short *magic_Number, FILE *inputFile, char *fileName);
 
 
 #endif
