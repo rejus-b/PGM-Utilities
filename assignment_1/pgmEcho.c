@@ -25,7 +25,7 @@
 #include "errors.h"
 
 /* header for opeanReadFile			 */
-#include "openReadFIle.h"
+#include "openReadFile.h"
 
 
 
@@ -69,26 +69,9 @@ int main(int argc, char **argv)
 	openFile(argv[1]);
 
 
-	/* read in the magic number              */
-	pgmStruct->magic_number[0] = getc(inputFile);
-	pgmStruct->magic_number[1] = getc(inputFile);
-	pgmStruct->magic_Number = (unsigned short *) pgmStruct->magic_number;
 	
-	/* sanity check on the magic number      */
-	if (*magic_Number != MAGIC_NUMBER_ASCII_PGM)
-		{ /* failed magic number check   */
-		/* be tidy: close the file       */
-		fclose(inputFile);
 
-		/* print an error message */
-		printf("Error: Failed to read pgm image from file %s\n", argv[1]);	
-		
-		/* and return                    */
-		return EXIT_BAD_INPUT_FILE;
-		} /* failed magic number check   */
 
-	/* scan whitespace if present            */
-	int scanCount = fscanf(inputFile, " ");
 
 	/* check for a comment line              */
 	char nextChar = fgetc(inputFile);
@@ -98,7 +81,7 @@ int main(int argc, char **argv)
 		commentLine = (char *) malloc(MAX_COMMENT_LINE_LENGTH);
 		/* fgets() reads a line          */
 		/* capture return value          */
-		char *commentString = fgets(, MAX_COMMENT_LINE_LENGTH, inputFile);
+		char *commentString = fgets(commentLine, MAX_COMMENT_LINE_LENGTH, inputFile);
 		/* NULL means failure            */
 		if (commentString == NULL)
 			{ /* NULL comment read   */
