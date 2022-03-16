@@ -10,8 +10,29 @@
 /* header for reading the error code */
 #include "errors.h"
 
-int openFile(char *fileName)
-{
+/* header for openReadFile macros */
+#include "openReadFile.h"
+
+int magicNumCheck(unsigned short *magic_Number, FILE *inputFile, char *fileName)
+{ /* magicNumCheck()	*/
+	/* sanity check on the magic number      */
+	if (*magic_Number != MAGIC_NUMBER_ASCII_PGM)
+		{ /* failed magic number check   */
+		/* be tidy: close the file       */
+		fclose(inputFile);
+
+		/* print an error message */
+		printf("Error: Failed to read pgm image from file %s\n", fileName);	
+		
+		/* and return                    */
+		return EXIT_BAD_INPUT_FILE;
+	} /* failed magic number check   */
+
+	return EXIT_NO_ERRORS;
+} /* magicNumCheck()	*/
+
+int readFile(char *fileName, pgm *pgmStruct)
+{ /* openReadFile()		*/
 
 	/* now start reading in the data         */
 	/* try to open the file for text I/O     */
@@ -30,26 +51,69 @@ int openFile(char *fileName)
 	pgmStruct->magic_number[1] = getc(inputFile);
 	pgmStruct->magic_Number = (unsigned short *) pgmStruct->magic_number;
 	
-
-	// Difficulty implementing the below code as you cannot simply pgmStruct->*magic_Number
-	// Maybe it would work since magic_Number is just a pointer to magic_number array
-
-
-	// /* sanity check on the magic number      */
-	// if (*magic_Number != MAGIC_NUMBER_ASCII_PGM)
-	// 	{ /* failed magic number check   */
-	// 	/* be tidy: close the file       */
-	// 	fclose(inputFile);
-
-	// 	/* print an error message */
-	// 	printf("Error: Failed to read pgm image from file %s\n", argv[1]);	
-		
-	// 	/* and return                    */
-	// 	return EXIT_BAD_INPUT_FILE;
-	// 	} /* failed magic number check   */
-
+	magicNumCheck(pgmStruct->magic_Number, inputFile, fileName);
 	/* scan whitespace if present            */
 	int scanCount = fscanf(inputFile, " ");
 
+	/* check for a comment line              */
+	char nextChar = fgetc(inputFile);
+	if (nextChar == '#')
+		{ /* comment line                */
+		/* allocate buffer               */
+		pgmStruct->commentLine = (char *) malloc(MAX_COMMENT_LINE_LENGTH);
+		/* fgets() reads a line          */
+		/* capture return value          */
+		char *commentString = fgets(pgmStruct->commentLine, MAX_COMMENT_LINE_LENGTH, inputFile);
+		/* NULL means failure            */
+		if (commentString == NULL)
+			{ /* NULL comment read   */
+			/* free memory           */
+			free(pgmStruct->commentLine);
+			/* close file            */
+			fclose(inputFile);
 
-}
+			/* print an error message */
+			printf("Error: Failed to read pgm image from file %s\n", fileName);	
+		
+			/* and return            */
+			return EXIT_BAD_INPUT_FILE;
+			} /* NULL comment read   */
+		} /* comment line */
+	else
+	{ /* not a comment line */
+		/* put character back            */
+		ungetc(nextChar, inputFile);
+	} /* not a comment line */
+
+
+	/* read in width, height, grays          */
+	/* whitespace to skip blanks             */
+	scanCount = fscanf(inputFile, " %u %u %u", &(pgmStruct->width), &(pgmStruct->height), &(pgmStruct->maxGray));
+
+	/* sanity checks on size & grays         */
+	/* must read exactly three values        */
+	if 	(
+		(scanCount != 3				)	||
+		(pgmStruct->width 	< MIN_IMAGE_DIMENSION	) 	||
+		(pgmStruct->width 	> MAX_IMAGE_DIMENSION	) 	||
+		(pgmStruct->height < MIN_IMAGE_DIMENSION	) 	||
+		(pgmStruct->height > MAX_IMAGE_DIMENSION	) 	||
+		(pgmStruct->maxGray	!= 255		)
+		)
+		{ /* failed size sanity check    */
+		/* free up the memory            */
+		free(pgmStruct->commentLine);
+
+		/* be tidy: close file pointer   */
+		fclose(inputFile);
+
+		/* print an error message */
+		printf("Error: Failed to read pgm image from file %s\n", argv[1]);	
+		
+		/* and return                    */
+		return EXIT_BAD_INPUT_FILE;
+		} /* failed size sanity check    */
+
+	return EXIT_NO_ERRORS;
+
+} /* openReadFile()		*/

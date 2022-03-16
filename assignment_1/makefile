@@ -9,7 +9,7 @@ all:	${TARGETS}
 pgmEcho:	pgmEcho.o ${MODULES}
 	${CC} ${CCFLAGS} -o pgmEcho pgmEcho.o ${MODULES}
 
-pgmEcho.o:	pgmEcho.c	pgmEcho.h	pgmStruct.h	errors.h	openReadFile.h
+pgmEcho.o:	pgmEcho.c	pgmEcho.h	pgmStruct.h	errors.h	openReadFile.h	openReadFile.o
 	${CC} -c ${CCFLAGS} -o pgmEcho.o pgmEcho.c
 
 openReadFile.o:		openReadFile.c		pgmStruct.h	errors.h	openReadFile.h

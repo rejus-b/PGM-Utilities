@@ -2,6 +2,7 @@
 #define PGMECHO
 
 #include "pgmStruct.h"
+#include "openReadFile.h"
 
 #define MAGIC_NUMBER_RAW_PGM 0x3550
 #define MAGIC_NUMBER_ASCII_PGM 0x3250
@@ -12,6 +13,8 @@
 int main(int argc, char **argv);
 
 int pgmStructInit(pgm *pgmStruct);
+
+extern FILE inputFile;
 
 #endif
 

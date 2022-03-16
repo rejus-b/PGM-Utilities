@@ -28,7 +28,6 @@
 #include "openReadFile.h"
 
 
-
 /***********************************/
 /* main routine                    */
 /*                                 */
@@ -40,10 +39,6 @@
 /* non-zero error code on fail     */
 /***********************************/
 
-// int magicNumberReader(int magNum)
-// {
-
-// }
 
 int main(int argc, char **argv)
 	{ 
@@ -65,71 +60,18 @@ int main(int argc, char **argv)
 	pgmStruct = ((pgm*) malloc (sizeof(pgm)));
 	pgmStructInit(pgmStruct);
 
-	/* invoke the function to open the file and prepare it to be read */
-	openFile(argv[1]);
+	/* invoke the function to open the file and read from it */
+	readFile(*argv[1], *pgmStruct);
 
 
 	
 
 
 
-	/* check for a comment line              */
-	char nextChar = fgetc(inputFile);
-	if (nextChar == '#')
-		{ /* comment line                */
-		/* allocate buffer               */
-		commentLine = (char *) malloc(MAX_COMMENT_LINE_LENGTH);
-		/* fgets() reads a line          */
-		/* capture return value          */
-		char *commentString = fgets(commentLine, MAX_COMMENT_LINE_LENGTH, inputFile);
-		/* NULL means failure            */
-		if (commentString == NULL)
-			{ /* NULL comment read   */
-			/* free memory           */
-			free(commentLine);
-			/* close file            */
-			fclose(inputFile);
+	
+	
 
-			/* print an error message */
-			printf("Error: Failed to read pgm image from file %s\n", argv[1]);	
-		
-			/* and return            */
-			return EXIT_BAD_INPUT_FILE;
-			} /* NULL comment read   */
-		} /* comment line */
-	else
-		{ /* not a comment line */
-		/* put character back            */
-		ungetc(nextChar, inputFile);
-		} /* not a comment line */
-
-	/* read in width, height, grays          */
-	/* whitespace to skip blanks             */
-	scanCount = fscanf(inputFile, " %u %u %u", &(width), &(height), &(maxGray));
-
-	/* sanity checks on size & grays         */
-	/* must read exactly three values        */
-	if 	(
-		(scanCount != 3				)	||
-		(width 	< MIN_IMAGE_DIMENSION	) 	||
-		(width 	> MAX_IMAGE_DIMENSION	) 	||
-		(height < MIN_IMAGE_DIMENSION	) 	||
-		(height > MAX_IMAGE_DIMENSION	) 	||
-		(maxGray	!= 255		)
-		)
-		{ /* failed size sanity check    */
-		/* free up the memory            */
-		free(commentLine);
-
-		/* be tidy: close file pointer   */
-		fclose(inputFile);
-
-		/* print an error message */
-		printf("Error: Failed to read pgm image from file %s\n", argv[1]);	
-		
-		/* and return                    */
-		return EXIT_BAD_INPUT_FILE;
-		} /* failed size sanity check    */
+	
 
 	/* allocate the data pointer             */
 	long nImageBytes = width * height * sizeof(unsigned char);
@@ -216,10 +158,76 @@ int main(int argc, char **argv)
 		return EXIT_BAD_OUTPUT_FILE;
 		} /* dimensional write failed    */
 
-        /* pointer for efficient write code      */
-        for (unsigned char *nextGrayValue = imageData; nextGrayValue < imageData + nImageBytes; nextGrayValue++)
+        /* pointer for efficient write code	/* sanity checks on size & grays         */
+	/* must read exactly three values        */
+	if 	(
+		(scanCount != 3				)	||
+		(width 	< MIN_IMAGE_DIMENSION	) 	||
+		(width 	> MAX_IMAGE_DIMENSION	) 	||
+		(height < MIN_IMAGE_DIMENSION	) 	||
+		(height > MAX_IMAGE_DIMENSION	) 	||
+		(maxGray	!= 255		)
+		)
+		{ /* failed size sanity check    */
+		/* free up the memory            */
+		free(commentLine);
+
+		/* be tidy: close file pointer   */
+		fclose(inputFile);
+
+		/* print an error message */
+		printf("Error: Failed to read pgm image from file %s\n", argv[1]);	
+		
+		/* and return                    */
+		return EXIT_BAD_INPUT_FILE;
+		} /* failed size sanity check    */
+        for (unsigned char *nextGrayValue =	/* sanity checks on size & grays         */
+	/* must read exactly three values        */
+	if 	(
+		(scanCount != 3				)	||
+		(width 	< MIN_IMAGE_DIMENSION	) 	||
+		(width 	> MAX_IMAGE_DIMENSION	) 	||
+		(height < MIN_IMAGE_DIMENSION	) 	||
+		(height > MAX_IMAGE_DIMENSION	) 	||
+		(maxGray	!= 255		)
+		)
+		{ /* failed size sanity check    */
+		/* free up the memory            */
+		free(commentLine);
+
+		/* be tidy: close file pointer   */
+		fclose(inputFile);
+
+		/* print an error message */
+		printf("Error: Failed to read pgm image from file %s\n", argv[1]);	
+		
+		/* and return                    */
+		return EXIT_BAD_INPUT_FILE;
+		} /* failed size sanity check    */GrayValue < imageData + nImageBytes; nextGrayValue++)
                 { /* per gray value */
-		/* get next char's column        */
+		/* get next char's column        */	/* sanity checks on size & grays         */
+	/* must read exactly three values        */
+	if 	(
+		(scanCount != 3				)	||
+		(width 	< MIN_IMAGE_DIMENSION	) 	||
+		(width 	> MAX_IMAGE_DIMENSION	) 	||
+		(height < MIN_IMAGE_DIMENSION	) 	||
+		(height > MAX_IMAGE_DIMENSION	) 	||
+		(maxGray	!= 255		)
+		)
+		{ /* failed size sanity check    */
+		/* free up the memory            */
+		free(commentLine);
+
+		/* be tidy: close file pointer   */
+		fclose(inputFile);
+
+		/* print an error message */
+		printf("Error: Failed to read pgm image from file %s\n", argv[1]);	
+		
+		/* and return                    */
+		return EXIT_BAD_INPUT_FILE;
+		} /* failed size sanity check    */
 		int nextCol = (nextGrayValue - imageData + 1) % width;
 
 		/* write the entry & whitespace  */

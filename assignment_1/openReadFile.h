@@ -7,7 +7,8 @@
 #define MAX_IMAGE_DIMENSION 65536
 #define MAX_COMMENT_LINE_LENGTH 128
 
-int openFile(char *fileName);
+int readFile(char *fileName, pgm *pgmStruct);
+int magicNumCheck(unsigned short *magic_Number, FILE *inputFile, char *fileName)
 
 
 #endif
