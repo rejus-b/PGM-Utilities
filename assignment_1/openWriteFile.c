@@ -18,6 +18,7 @@
 int writeFile(char *fileName, pgm *pgmStruct)
 { /* writeFile() */
 
+
 	/* open a file for writing               */
 	FILE *outputFile = fopen(fileName, "w");
 
@@ -39,9 +40,9 @@ int writeFile(char *fileName, pgm *pgmStruct)
 	/* write magic number, size & gray value */
 	size_t nBytesWritten = fprintf(outputFile, "P2\n%d %d\n%d\n", pgmStruct->width, pgmStruct->height, pgmStruct->maxGray);
 
+
 	/* allocate the data pointer             */
 	long nImageBytes = pgmStruct->width * pgmStruct->height * sizeof(unsigned char);
-	pgmStruct->imageData = (unsigned char *) malloc(nImageBytes);
 
 	/* check that dimensions wrote correctly */
 	if (nBytesWritten < 0)
@@ -61,6 +62,7 @@ int writeFile(char *fileName, pgm *pgmStruct)
     for (unsigned char *nextGrayValue = pgmStruct->imageData; nextGrayValue < pgmStruct->imageData + nImageBytes; nextGrayValue++)
     { /* per gray value */
         /* get next char's column        */
+
         int nextCol = (nextGrayValue - pgmStruct->imageData + 1) % pgmStruct->width;
 
         /* write the entry & whitespace  */
