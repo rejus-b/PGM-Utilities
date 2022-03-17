@@ -15,6 +15,9 @@
 /* library for memory routines     */
 #include <stdlib.h>
 
+/* header for including string operations	*/
+#include <string.h>
+
 /* header for pgmComp				*/
 #include "pgmComp.h"
 
@@ -26,6 +29,7 @@
 
 /* header for openReadFile			 */
 #include "openReadFile.h"
+
 
 
 /***********************************/
@@ -56,25 +60,25 @@ int main(int argc, char **argv)
 	pgm *pgmStructFileOne = NULL;
 	pgmStructFileOne = ((pgm*) malloc (sizeof(pgm)));
 	pgmStructInit(pgmStructFileOne);
-
+	
+	
     /* malloc for a structure for the second input file then pass it into pgmStructInit() */ 
 	pgm *pgmStructFileTwo = NULL;
 	pgmStructFileTwo = ((pgm*) malloc (sizeof(pgm)));
 	pgmStructInit(pgmStructFileTwo);
 
-    /* pass the first pgm to be read from */
-    readFile(argv[1], pgmStructFileOne);
-
-	// printf("struc1 = %i, struc2 = %i\n",pgmStructFileOne->width, pgmStructFileTwo->width);
-
-    /* pass the second pgm to be read from */
-    readFile(argv[2], pgmStructFileTwo);
-
-	// printf("struc1 = %i, struc2 = %i\n",pgmStructFileOne->width, pgmStructFileTwo->width);
-
-	if (equivalence(pgmStructFileOne, pgmStructFileTwo) == 0)
+    // /* pass the first pgm to be read from */
+    if (readFile(argv[1], pgmStructFileOne) == 0)
 	{
-		printf("IDENTICAL \n");
+		/* pass the second pgm to be read from */
+		if (readFile(argv[2], pgmStructFileTwo) == 0)
+		{
+			/* If no errors are thrown when reading the two data files, see if they are equivelant */
+			if (equivalence(pgmStructFileOne, pgmStructFileTwo) == 0)
+			{
+				printf("IDENTICAL \n");
+			}			
+		}
 	}
 
 } /* main() */
@@ -83,23 +87,35 @@ int main(int argc, char **argv)
 int equivalence(pgm *pgmStructFileOne, pgm *pgmStructFileTwo)
 { /* equivalence()	*/
 
-	printf("struc1 = %i, struc2 = %i\n",pgmStructFileOne->maxGray, pgmStructFileTwo->maxGray);
-	if (pgmStructFileOne->width != pgmStructFileTwo->width ) // Maybe make a fix so that it tests the return of read file and not just equiv as otehrwise it will default
+	/* check that the width of the two input files is equivalent */
+	if (pgmStructFileOne->width != pgmStructFileTwo->width )
 	{
 		printf("ERROR: Miscellaneous Width Not Equivalent \n");
 		return EXIT_MISCELLANEOUS;
 	}
 
+	/* check that the height of the two input files is equivalent */
 	else if (pgmStructFileOne->height != pgmStructFileTwo->height)
 	{
 		printf("ERROR: Miscellaneous Height Not Equivalent \n");
 		return EXIT_MISCELLANEOUS;
 	}
 
+	/* check that the maxGray of the two input files is equivalent */
 	else if (pgmStructFileOne->maxGray != pgmStructFileTwo->maxGray)
 	{
-		printf("ERROR: Miscellaneous maxGray Not Equivalent \n");
+		printf("ERROR: Miscellaneous Max Gray Not Equivalent \n");
 		return EXIT_MISCELLANEOUS;
+	}
+
+	/* allocate the data pointer for one structure, this does not need to be done twice as you only have to read the data pointer once            */ 
+	long nImageBytes = pgmStructFileOne->width * pgmStructFileTwo->height * sizeof(unsigned char);
+
+	/* check that each pixel is equivalent  */
+	if (memcmp(pgmStructFileOne->imageData, pgmStructFileTwo->imageData, nImageBytes) != 0)
+	{
+		printf("ERROR: Miscellaneous Image Data Not Equivalent \n");
+		return EXIT_MISCELLANEOUS;			
 	}
 
 	return EXIT_NO_ERRORS;
