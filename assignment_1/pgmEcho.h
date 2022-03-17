@@ -14,7 +14,5 @@ int main(int argc, char **argv);
 
 int pgmStructInit(pgm *pgmStruct);
 
-extern FILE inputFile;
-
 #endif
 

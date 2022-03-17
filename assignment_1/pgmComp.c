@@ -15,6 +15,9 @@
 /* library for memory routines     */
 #include <stdlib.h>
 
+/* header for pgmComp				*/
+#include "pgmComp.h"
+
 /* header for pgm structures		*/
 #include "pgmStruct.h"
 
@@ -25,13 +28,13 @@
 #include "openReadFile.h"
 
 
-
 /***********************************/
 /* main routine                    */
 /*                                 */
 /* CLI parameters:                 */
-/* argv[0]: first file name        */
-/* argv[1]: second file name       */
+/* argv[0]: executable name        */
+/* argv[1]: first file name        */
+/* argv[2]: second file name       */
 /* returns 0 on success            */
 /* non-zero error code on fail     */
 /***********************************/
@@ -41,7 +44,7 @@
 int main(int argc, char **argv)
 { /* main() */
     /* check for correct number of arguments */
-    if (argc != 2)
+    if (argc != 3)
 	{ /* wrong arg count */
 		/* print an error message        */
 		printf("ERROR: Bad Argument Count\n");
@@ -49,32 +52,59 @@ int main(int argc, char **argv)
 		return EXIT_WRONG_ARG_COUNT;
 	} /* wrong arg count */
 
-
 	/* malloc for a structure for the first input file then pass it into pgmStructInit() */ 
 	pgm *pgmStructFileOne = NULL;
 	pgmStructFileOne = ((pgm*) malloc (sizeof(pgm)));
-	pgmStructInit(*pgmStructFileOne);
+	pgmStructInit(pgmStructFileOne);
 
     /* malloc for a structure for the second input file then pass it into pgmStructInit() */ 
 	pgm *pgmStructFileTwo = NULL;
 	pgmStructFileTwo = ((pgm*) malloc (sizeof(pgm)));
-	pgmStructInit(*pgmStructFileTwo);
-
+	pgmStructInit(pgmStructFileTwo);
 
     /* pass the first pgm to be read from */
-    int readFile(argv[0], *pgmStructFileOne);
+    readFile(argv[1], pgmStructFileOne);
+
+	// printf("struc1 = %i, struc2 = %i\n",pgmStructFileOne->width, pgmStructFileTwo->width);
 
     /* pass the second pgm to be read from */
-    int readFile(argv[1], *pgmStructFileTwo);
+    readFile(argv[2], pgmStructFileTwo);
 
-    
+	// printf("struc1 = %i, struc2 = %i\n",pgmStructFileOne->width, pgmStructFileTwo->width);
 
-
+	if (equivalence(pgmStructFileOne, pgmStructFileTwo) == 0)
+	{
+		printf("IDENTICAL \n");
+	}
 
 } /* main() */
 
 
+int equivalence(pgm *pgmStructFileOne, pgm *pgmStructFileTwo)
+{ /* equivalence()	*/
 
+	printf("struc1 = %i, struc2 = %i\n",pgmStructFileOne->maxGray, pgmStructFileTwo->maxGray);
+	if (pgmStructFileOne->width != pgmStructFileTwo->width ) // Maybe make a fix so that it tests the return of read file and not just equiv as otehrwise it will default
+	{
+		printf("ERROR: Miscellaneous Width Not Equivalent \n");
+		return EXIT_MISCELLANEOUS;
+	}
+
+	else if (pgmStructFileOne->height != pgmStructFileTwo->height)
+	{
+		printf("ERROR: Miscellaneous Height Not Equivalent \n");
+		return EXIT_MISCELLANEOUS;
+	}
+
+	else if (pgmStructFileOne->maxGray != pgmStructFileTwo->maxGray)
+	{
+		printf("ERROR: Miscellaneous maxGray Not Equivalent \n");
+		return EXIT_MISCELLANEOUS;
+	}
+
+	return EXIT_NO_ERRORS;
+
+} /* equivalence()	*/
 
 /* A function for initialising all the values of each pgm image */
 int pgmStructInit(pgm *pgmStruct) 

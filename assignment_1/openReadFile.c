@@ -95,7 +95,7 @@ int readFile(char *fileName, pgm *pgmStruct)
 	/* read in width, height, grays          */
 	/* whitespace to skip blanks             */
 	scanCount = fscanf(inputFile, " %u %u %u", &(pgmStruct->width), &(pgmStruct->height), &(pgmStruct->maxGray));
-	
+
 	if 	(
 		(scanCount != 3				)	||
 		(pgmStruct->width 	< MIN_IMAGE_DIMENSION	) 	||
@@ -107,7 +107,7 @@ int readFile(char *fileName, pgm *pgmStruct)
 		{ /* failed size sanity check    */
 		/* free up the memory            */
 		free(pgmStruct->commentLine);
-
+		
 		/* be tidy: close file pointer   */
 		fclose(inputFile);
 
