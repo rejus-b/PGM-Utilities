@@ -1,22 +1,19 @@
-/***********************************/
-/* COMP 1921M Programming Project  */
-/* 2021-22 Spring Semester         */
-/*                                 */
-/* Hamish Carr & Rejus Bulevicius  */
-/***********************************/
 
-/***********************************/
-/* Main Routine                    */
-/***********************************/
+// Read the contents of the pgm into pgmStruct
+// compare it with a second pgm struct
+// if two attributes != then break
+
+// malloc space for both structures then pass both into the openReadFile - Saul did the two structure approach
+// or just do 1 structure and then compare the values directly after reading the second set of values
+
+// pass by reference all the structs so that the original location data changes for them and thus can still be called through main
+
 
 /* library for I/O routines        */
 #include <stdio.h>
 
 /* library for memory routines     */
 #include <stdlib.h>
-
-/* header for pgmEcho				*/
-#include "pgmEcho.h"
 
 /* header for pgm structures		*/
 #include "pgmStruct.h"
@@ -27,57 +24,61 @@
 /* header for openReadFile			 */
 #include "openReadFile.h"
 
-/* header for openWriteFile			*/
-#include "openWriteFile.h"
+
 
 /***********************************/
 /* main routine                    */
 /*                                 */
 /* CLI parameters:                 */
-/* argv[0]: executable name        */
-/* argv[1]: input file name        */
-/* argv[2]: output file name       */
+/* argv[0]: first file name        */
+/* argv[1]: second file name       */
 /* returns 0 on success            */
 /* non-zero error code on fail     */
 /***********************************/
 
 
+
 int main(int argc, char **argv)
-	{ 
-	/* main() */
-	/* check for correct number of arguments */
-	if (argc != 3)	
-		{ /* wrong arg count */
+{ /* main() */
+    /* check for correct number of arguments */
+    if (argc != 2)
+	{ /* wrong arg count */
 		/* print an error message        */
 		printf("ERROR: Bad Argument Count\n");
 		/* and return an error code      */
 		return EXIT_WRONG_ARG_COUNT;
-		} /* wrong arg count */
-	
+	} /* wrong arg count */
+
+
+	/* malloc for a structure for the first input file then pass it into pgmStructInit() */ 
+	pgm *pgmStructFileOne = NULL;
+	pgmStructFileOne = ((pgm*) malloc (sizeof(pgm)));
+	pgmStructInit(*pgmStructFileOne);
+
+    /* malloc for a structure for the second input file then pass it into pgmStructInit() */ 
+	pgm *pgmStructFileTwo = NULL;
+	pgmStructFileTwo = ((pgm*) malloc (sizeof(pgm)));
+	pgmStructInit(*pgmStructFileTwo);
+
+
+    /* pass the first pgm to be read from */
+    int readFile(argv[0], *pgmStructFileOne);
+
+    /* pass the second pgm to be read from */
+    int readFile(argv[1], *pgmStructFileTwo);
+
+    
 
 
 
-	/* malloc for a structure then pass it into pgmStructInit() */ 
-	pgm *pgmStruct = NULL;
-	pgmStruct = ((pgm*) malloc (sizeof(pgm)));
-	pgmStructInit(pgmStruct);
+} /* main() */
 
-	/* invoke the function to open the file and read from it */
-	if ((readFile(argv[1], pgmStruct) == 0 ) && (writeFile(argv[2], pgmStruct) == 0))
-	{
-		/* If it works print 'ECHOED'*/
-		printf("ECHOED \n");
-	}
 
-	/* at this point, we are done and can exit with a success code */
-	return EXIT_NO_ERRORS;
-	} /* main() */
 
 
 /* A function for initialising all the values of each pgm image */
 int pgmStructInit(pgm *pgmStruct) 
-	{
-	/* pgmStructInit() */
+	{ /* pgmStructInit() */
 
 	/* variables for storing the image   */
 

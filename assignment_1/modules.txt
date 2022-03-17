@@ -4,9 +4,7 @@ MODULE 1 -- pgmEcho.c / pgmEcho.h
 
 	OpenRead file - This module opens a file to be read. This module will read the inputs of the input file.
 	
-	Write to file - This module will write the data from the main input file to the main output file.
-
-	Error checking module - This will check that the input can be used succesfully and that the output has been used succesfully.
+	OpenWrite file - This module will write the data from the main input file to the main output file.
 
 
 
@@ -17,8 +15,6 @@ MODULE 2 -- pgmComp.c / pgmComp.h
 	Read file - This module will read the inputs of the input file.
 
 	Logical equivilance - Tests whether two inputs are logically equivilant and returns a boolean statement.
-
-	Error checking module - This will check that the input can be used succesfully.
 
 
 
