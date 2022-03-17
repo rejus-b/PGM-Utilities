@@ -1,15 +1,5 @@
 
-// Read the contents of the pgm into pgmStruct
-// compare it with a second pgm struct
-// if two attributes != then break
-
-// malloc space for both structures then pass both into the openReadFile - Saul did the two structure approach
-// or just do 1 structure and then compare the values directly after reading the second set of values
-
-// pass by reference all the structs so that the original location data changes for them and thus can still be called through main
-
-
-/* library for I/O routines        */
+//* library for I/O routines        */
 #include <stdio.h>
 
 /* library for memory routines     */
@@ -77,7 +67,13 @@ int main(int argc, char **argv)
 			if (equivalence(pgmStructFileOne, pgmStructFileTwo) == 0)
 			{
 				printf("IDENTICAL \n");
-			}			
+				return EXIT_NO_ERRORS;
+			}
+			else 
+			{
+				printf("DIFFERENT \n");
+				return EXIT_NO_ERRORS;
+			}
 		}
 	}
 
