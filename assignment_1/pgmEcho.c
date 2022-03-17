@@ -65,8 +65,8 @@ int main(int argc, char **argv)
 	/* invoke the function to open the file and read from it */
 	if ((readFile(argv[1], pgmStruct) == 0 ) && (writeFile(argv[2], pgmStruct) == 0))
 	{
+		/* If it works print 'ECHOED'*/
 		printf("ECHOED \n");
-		return EXIT_NO_ERRORS;
 	}
 
 	/* at this point, we are done and can exit with a success code */
