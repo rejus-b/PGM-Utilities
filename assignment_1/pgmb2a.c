@@ -1,13 +1,3 @@
-/* 
-To convert from ASCII to binary fscanf() automatically converts the input data to binary, if I just fwrite it out to a file it will keep the binary representation
-
-So I can try use the read file to read in the data and pass it through the write file, hopefully it stays in binary representation?
-
-
-Make a struct for pgm -> then read with the default read file assinging the pgm struct values -> then write to it using fwrite
-*/
-
-
 /* library for I/O routines        */
 #include <stdio.h>
 
@@ -23,29 +13,11 @@ Make a struct for pgm -> then read with the default read file assinging the pgm 
 /* header for reading the error code */
 #include "errors.h"
 
-/* header for openReadFile			 */
-#include "openReadFile.h"
-
 /* header for openWriteFile			*/
 #include "openWriteFile.h"
 
-/* header for pgma2b                */
-#include "pgma2b.h"
-
 /* header for pgma2bFunc            */
-#include "pgma2bFunc.h"
-
-
-/***********************************/
-/* main routine                    */
-/*                                 */
-/* CLI parameters:                 */
-/* argv[0]: executable name        */
-/* argv[1]: input file name        */
-/* argv[2]: output file name       */
-/* returns 0 on success            */
-/* non-zero error code on fail     */
-/***********************************/
+#include "pgmb2aFunc.h"
 
 
 int main (int argc, char **argv)
@@ -65,31 +37,33 @@ int main (int argc, char **argv)
 	pgmStructInit(pgmStruct);
 
 
-    /* check that the file can be read successfully*/
-    if (readFile(argv[1], pgmStruct) != 0)
-    {
-        /* return that the file could not be read from */
-        printf("ERROR: Bad File Name %s \n", argv[1]);
-        return EXIT_BAD_INPUT_FILE;
-    }
+    // /* check that the file can be read successfully*/
+    // if (readFile(argv[1], pgmStruct) != 0)
+    // {
+    //     /* return that the file could not be read from */
+    //     printf("ERROR: Bad File Name %s \n", argv[1]);
+    //     return EXIT_BAD_INPUT_FILE;
+    // }
 
-    /* check that the magic number is not already P5, which is the magic number for raw pgm */
-    if (pgmStruct->magic_number[1] != '2')
-    {
-        /* return that the magic number was wrong */
-        printf("ERROR: Bad Magic Number %s \n", argv[1]);
-        return EXIT_BAD_MAGIC_NUMBER;
-    }
+    // /* check that the magic number is not already P2, which is the magic number for ASCII pgm */
+    // printf("%c\n",pgmStruct->magic_number[1]);
+    // if (pgmStruct->magic_number[1] != '5')
+    // {
+    //     /* return that the magic number was wrong */
+    //     printf("ERROR: Bad Magic Number %s \n", argv[1]);
+    //     return EXIT_BAD_MAGIC_NUMBER;
+    // }
 
 
-    /* call a function to write the input ASCII pgm as a raw pgm to the output fille */
-    if (a2b(pgmStruct, argv[2]) == 0)
+    /* call a function to write the input binary pgm as a ASCII pgm to the output fille */
+    if (b2a(pgmStruct, argv[1]) == 0)
     {
         /* return that it was sucessfully converted */
         printf("CONVERTED \n");
         return EXIT_NO_ERRORS;
     }
 } /* main() */
+
 
 /* A function for initialising all the values of each pgm image */
 int pgmStructInit(pgm *pgmStruct) 

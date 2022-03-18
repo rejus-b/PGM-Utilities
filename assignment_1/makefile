@@ -1,8 +1,8 @@
 CC=gcc
 CCFLAGS = -g -std=c99 -Wall -Werror
-MAINS = pgmEcho.o pgmComp.o pgma2b.o
-MODULES = openReadFile.o openWriteFile.o pgma2bFunc.o
-TARGETS = pgmEcho pgmComp pgma2b
+MAINS = pgmEcho.o pgmComp.o pgma2b.o pgmb2a.o
+MODULES = openReadFile.o openWriteFile.o pgma2bFunc.o pgmb2aFunc.o
+TARGETS = pgmEcho pgmComp pgma2b pgmb2a
 
 all:	${TARGETS}
 
@@ -17,6 +17,9 @@ pgmComp:	pgmComp.o ${MODULES}
 pgma2b:		pgma2b.o ${MODULES}
 	${CC} ${CCFLAGS} -o pgma2b pgma2b.o ${MODULES}
 
+pgmb2a:		pgmb2a.o ${MODULES}
+	${CC} ${CCFLAGS} -o pgmb2a pgmb2a.o ${MODULES}
+
 
 
 pgmEcho.o:	pgmEcho.c	pgmEcho.h	openReadFile.o	openWriteFile.o
@@ -28,6 +31,9 @@ pgmComp.o:	pgmComp.c
 pgma2b.o:	pgma2b.c	pgma2b.h	pgma2bFunc.h
 	${CC} -c ${CCFLAGS} -o pgma2b.o	pgma2b.c
 
+pgmb2a.o:	pgmb2a.c	pgmb2a.h	pgmb2aFunc.h
+	${CC} -c ${CCFLAGS} -o pgmb2a.o	pgmb2a.c
+
 
 
 openReadFile.o:		openReadFile.c		pgmStruct.h	errors.h	openReadFile.h
@@ -38,6 +44,9 @@ openWriteFile.o:	openWriteFile.c		pgmStruct.h	errors.h	openWriteFile.h
 
 pgma2bFunc.o:	pgma2bFunc.c	pgmStruct.h	errors.h	openWriteFile.h
 	${CC} -c ${CCFLAGS} -o pgma2bFunc.o	pgma2bFunc.c	
+
+pgmb2aFunc.o:	pgmb2aFunc.c	pgmStruct.h	errors.h	openWriteFile.h
+	${CC} -c ${CCFLAGS} -o pgmb2aFunc.o	pgmb2aFunc.c
 
 
 
