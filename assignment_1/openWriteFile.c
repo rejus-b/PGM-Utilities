@@ -60,6 +60,7 @@ int writeFile(char *fileName, pgm *pgmStruct)
 
         /* pointer for efficient write code      */
 
+	/* run the code that prints in ASCII if the magic number is 2	*/
 	if (pgmStruct->magic_number[1] == '2'){
 
 		for (unsigned char *nextGrayValue = pgmStruct->imageData; nextGrayValue < pgmStruct->imageData + nImageBytes; nextGrayValue++)
@@ -85,12 +86,13 @@ int writeFile(char *fileName, pgm *pgmStruct)
 				return EXIT_OUTPUT_FAILED;
 				} /* data write failed   */
 		} /* per gray value */
-	}
+	} 
 
+	/* if the magic number is binary then write the data in binary format	*/
 	else if (pgmStruct->magic_number[1] == '5')
 	{
 		fwrite(pgmStruct->imageData, sizeof(unsigned char), pgmStruct->width * pgmStruct->height, outputFile);
 	}
 
      return EXIT_NO_ERRORS;
-}
+} /* writeFile() */

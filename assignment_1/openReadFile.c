@@ -54,7 +54,6 @@ int readFile(char *fileName, pgm *pgmStruct)
 	pgmStruct->magic_Number = (unsigned short *) pgmStruct->magic_number;
 	
 	/* checks that the magic number is valid */
-
 	magicNumCheck(pgmStruct->magic_Number, inputFile, fileName);
 	
 	/* scan whitespace if present            */
