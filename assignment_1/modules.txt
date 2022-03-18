@@ -22,10 +22,8 @@ MODULE 3 --  pgma2b.c / pgma2b.h
 
 	Main - This module takes the command line arguements as input files. It will close any open files.
 	
-	Open file - This module opens a file to be read.
+	OpenRead file - This module opens a file to be read. This module will read the inputs of the input file.
 
-	Read file - This module will read the inputs of the input file.
-	
 	Converter - This module will convert input data from ASCII to Binary.
 
 	Error checking module - This will check that the input can be used succesfully.

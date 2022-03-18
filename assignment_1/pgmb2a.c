@@ -36,28 +36,9 @@ int main (int argc, char **argv)
 	pgmStruct = ((pgm*) malloc (sizeof(pgm)));
 	pgmStructInit(pgmStruct);
 
-
-    // /* check that the file can be read successfully*/
-    // if (readFile(argv[1], pgmStruct) != 0)
-    // {
-    //     /* return that the file could not be read from */
-    //     printf("ERROR: Bad File Name %s \n", argv[1]);
-    //     return EXIT_BAD_INPUT_FILE;
-    // }
-
-    // /* check that the magic number is not already P2, which is the magic number for ASCII pgm */
-    // printf("%c\n",pgmStruct->magic_number[1]);
-    // if (pgmStruct->magic_number[1] != '5')
-    // {
-    //     /* return that the magic number was wrong */
-    //     printf("ERROR: Bad Magic Number %s \n", argv[1]);
-    //     return EXIT_BAD_MAGIC_NUMBER;
-    // }
-
-
     /* call a function to write the input binary pgm as a ASCII pgm to the output fille */
 
-    
+    /* check that the binary to ASCII conversion does not throw an error */
     if (b2a(pgmStruct, argv[1], argv[2]) == 0)
     {
         /* return that it was sucessfully converted */
@@ -65,7 +46,6 @@ int main (int argc, char **argv)
         return EXIT_NO_ERRORS;
     }
 } /* main() */
-
 
 /* A function for initialising all the values of each pgm image */
 int pgmStructInit(pgm *pgmStruct) 
