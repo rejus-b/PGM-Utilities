@@ -63,7 +63,7 @@ int main(int argc, char **argv)
 	pgmStructInit(pgmStruct);
 
 	/* invoke the function to open the file and read from it */
-	if ((readFile(argv[1], pgmStruct, 0) == 0 ) && (writeFile(argv[2], pgmStruct) == 0))
+	if ((readFile(argv[1], pgmStruct) == 0 ) && (writeFile(argv[2], pgmStruct) == 0))
 	{
 		/* If it works print 'ECHOED'*/
 		printf("ECHOED \n");

@@ -58,30 +58,12 @@ int main (int argc, char **argv)
     /* call a function to write the input binary pgm as a ASCII pgm to the output fille */
 
     
-    // if (b2a(pgmStruct, argv[1], argv[2]) == 0)
-    // {
-    //     /* return that it was sucessfully converted */
-    //     printf("CONVERTED \n");
-    //     return EXIT_NO_ERRORS;
-    // }
-
-
-
-    // FILE *inputFile = fopen (argv[1], "rb");
-
-
-    readFile(argv[1], pgmStruct, 1);
-    
-    if (pgmStruct->magic_number[1] == '5'){
-        pgmStruct->magic_number[1] = '2';
-    
-    //FILE *outputFile = fopen(argv[2], "w");
-    writeFile(argv[2], pgmStruct);
+    if (b2a(pgmStruct, argv[1], argv[2]) == 0)
+    {
+        /* return that it was sucessfully converted */
+        printf("CONVERTED \n");
+        return EXIT_NO_ERRORS;
     }
-    
-return EXIT_NO_ERRORS;
-
-
 } /* main() */
 
 

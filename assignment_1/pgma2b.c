@@ -66,7 +66,7 @@ int main (int argc, char **argv)
 
 
     /* check that the file can be read successfully*/
-    if (readFile(argv[1], pgmStruct, 0) != 0)
+    if (readFile(argv[1], pgmStruct) != 0)
     {
         /* return that the file could not be read from */
         printf("ERROR: Bad File Name %s \n", argv[1]);

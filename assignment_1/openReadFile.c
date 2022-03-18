@@ -33,23 +33,13 @@ int magicNumCheck(unsigned short *magic_Number, FILE *inputFile, char *fileName)
 	return EXIT_NO_ERRORS;
 } /* magicNumCheck()	*/
 
-int readFile(char *fileName, pgm *pgmStruct, int readBinary)
+int readFile(char *fileName, pgm *pgmStruct)
 { /* openReadFile()		*/
 
 	/* now start reading in the data         */
 	/* try to open the file for text I/O     */
 	/* in ASCII mode b/c the header is text  */
-
 	FILE *inputFile = fopen(fileName, "r");
-
-	// if (readBinary == 0)
-	// {
-	// 	FILE *inputFile = fopen(fileName, "r");
-	// } 
-	// else if (readBinary == 1)
-	// {
-	// 	FILE *inputFile = fopen(fileName, "rb");
-	// }
 
 	/* if it fails, return error code        */
 	if (inputFile == NULL)
