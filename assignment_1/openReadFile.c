@@ -33,13 +33,23 @@ int magicNumCheck(unsigned short *magic_Number, FILE *inputFile, char *fileName)
 	return EXIT_NO_ERRORS;
 } /* magicNumCheck()	*/
 
-int readFile(char *fileName, pgm *pgmStruct)
+int readFile(char *fileName, pgm *pgmStruct, int readBinary)
 { /* openReadFile()		*/
 
 	/* now start reading in the data         */
 	/* try to open the file for text I/O     */
 	/* in ASCII mode b/c the header is text  */
+
 	FILE *inputFile = fopen(fileName, "r");
+
+	// if (readBinary == 0)
+	// {
+	// 	FILE *inputFile = fopen(fileName, "r");
+	// } 
+	// else if (readBinary == 1)
+	// {
+	// 	FILE *inputFile = fopen(fileName, "rb");
+	// }
 
 	/* if it fails, return error code        */
 	if (inputFile == NULL)
@@ -107,7 +117,7 @@ int readFile(char *fileName, pgm *pgmStruct)
 		{ /* failed size sanity check    */
 		/* free up the memory            */
 		free(pgmStruct->commentLine);
-		
+
 		/* be tidy: close file pointer   */
 		fclose(inputFile);
 
@@ -142,33 +152,39 @@ int readFile(char *fileName, pgm *pgmStruct)
 
 	
 
-	/* pointer for efficient read code       */
-	for (unsigned char *nextGrayValue = pgmStruct->imageData; nextGrayValue < pgmStruct->imageData + nImageBytes; nextGrayValue++)
-		{ /* per gray value */
-		/* read next value               */
-		int grayValue = -1;
-		int scanCount = fscanf(inputFile, " %u", &grayValue);
+	if (pgmStruct->magic_number[1]== '2'){
+		/* pointer for efficient read code       */
+		for (unsigned char *nextGrayValue = pgmStruct->imageData; nextGrayValue < pgmStruct->imageData + nImageBytes; nextGrayValue++)
+			{ /* per gray value */
+			/* read next value               */
+			int grayValue = -1;
+			int scanCount = fscanf(inputFile, " %u", &grayValue);
 
-		/* sanity check	                 */
-		if ((scanCount != 1) || (grayValue < 0) || (grayValue > 255))
-			{ /* fscanf failed */
-			/* free memory           */
-			free(pgmStruct->commentLine);
-			free(pgmStruct->imageData);	
+			/* sanity check	                 */
+			if ((scanCount != 1) || (grayValue < 0) || (grayValue > 255))
+				{ /* fscanf failed */
+				/* free memory           */
+				free(pgmStruct->commentLine);
+				free(pgmStruct->imageData);	
 
-			/* close file            */
-			fclose(inputFile);
+				/* close file            */
+				fclose(inputFile);
 
-			/* print error message   */
-			printf("ERROR: Bad Gray Value \n");	
-		
-			/* and return            */
-			return EXIT_MISCELLANEOUS;
-			} /* fscanf failed */
+				/* print error message   */
+				printf("ERROR: Bad Gray Value \n");	
+			
+				/* and return            */
+				return EXIT_MISCELLANEOUS;
+				} /* fscanf failed */
 
-		/* set the pixel value           */
-		*nextGrayValue = (unsigned char) grayValue;
-		} /* per gray value */
+			/* set the pixel value           */
+			*nextGrayValue = (unsigned char) grayValue;
+			} /* per gray value */
+		}
+	else if (pgmStruct->magic_number[1] == '5'){
+		fread(pgmStruct->imageData, sizeof(unsigned char), pgmStruct->width * pgmStruct->height, inputFile);
+	}
+
 
 	/* we're done with the file, so close it */
 	fclose(inputFile);

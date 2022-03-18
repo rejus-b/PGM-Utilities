@@ -59,29 +59,38 @@ int writeFile(char *fileName, pgm *pgmStruct)
 		} /* dimensional write failed    */
 
         /* pointer for efficient write code      */
-    for (unsigned char *nextGrayValue = pgmStruct->imageData; nextGrayValue < pgmStruct->imageData + nImageBytes; nextGrayValue++)
-    { /* per gray value */
-        /* get next char's column        */
 
-        int nextCol = (nextGrayValue - pgmStruct->imageData + 1) % pgmStruct->width;
+	if (pgmStruct->magic_number[1] == '2'){
 
-        /* write the entry & whitespace  */
-        nBytesWritten = fprintf(outputFile, "%d%c", *nextGrayValue, (nextCol ? ' ' : '\n') );
+		for (unsigned char *nextGrayValue = pgmStruct->imageData; nextGrayValue < pgmStruct->imageData + nImageBytes; nextGrayValue++)
+		{ /* per gray value */
+			/* get next char's column        */
 
-        /* sanity check on write         */
-        if (nBytesWritten < 0)
-            { /* data write failed   */
-            /* free memory           */
-            free(pgmStruct->commentLine);
-            free(pgmStruct->imageData);
+			int nextCol = (nextGrayValue - pgmStruct->imageData + 1) % pgmStruct->width;
 
-            /* print error message   */
-            printf("ERROR: Output Failed %s\n", fileName);	
+			/* write the entry & whitespace  */
+			nBytesWritten = fprintf(outputFile, "%d%c", *nextGrayValue, (nextCol ? ' ' : '\n') );
 
-            /* return an error code  */
-            return EXIT_OUTPUT_FAILED;
-            } /* data write failed   */
-    } /* per gray value */
+			/* sanity check on write         */
+			if (nBytesWritten < 0)
+				{ /* data write failed   */
+				/* free memory           */
+				free(pgmStruct->commentLine);
+				free(pgmStruct->imageData);
+
+				/* print error message   */
+				printf("ERROR: Output Failed %s\n", fileName);	
+
+				/* return an error code  */
+				return EXIT_OUTPUT_FAILED;
+				} /* data write failed   */
+		} /* per gray value */
+	}
+
+	else if (pgmStruct->magic_number[1] == '5')
+	{
+		fwrite(pgmStruct->imageData, sizeof(unsigned char), pgmStruct->width * pgmStruct->height, outputFile);
+	}
 
      return EXIT_NO_ERRORS;
 }

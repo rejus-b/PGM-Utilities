@@ -1,7 +1,7 @@
 #ifndef PGMB2AFUNC
 #define PGMB2AFUNC
 
-int b2a(pgm *pgmStruct, char *fileName);
+int b2a(pgm *pgmStruct, char *fileName, char *outputFileName);
 
 
 #endif
