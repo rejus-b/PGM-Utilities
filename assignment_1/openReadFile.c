@@ -93,7 +93,7 @@ int readFile(char *fileName, pgm *pgmStruct)
 
 	/* read in width, height, grays          */
 	/* whitespace to skip blanks             */
-	scanCount = fscanf(inputFile, " %u %u %u", &(pgmStruct->width), &(pgmStruct->height), &(pgmStruct->maxGray));
+	scanCount = fscanf(inputFile, " %u %u %u ", &(pgmStruct->width), &(pgmStruct->height), &(pgmStruct->maxGray));
 
 	if 	(
 		(scanCount != 3				)	||
