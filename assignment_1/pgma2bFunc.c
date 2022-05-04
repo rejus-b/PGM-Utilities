@@ -28,7 +28,7 @@ int a2b(pgm *pgmStruct, char *fileName)
     /* intialise the size of the image data */
     int imageSize = (pgmStruct->width * pgmStruct->height);
 
-    /* print in ASCII the header data of the pgm file to the output pgmn */
+    /* print in ASCII the header data of the pgm file to the output pgm */
     fprintf(outputFile, "P5\n%d %d\n%d\n", pgmStruct->width, pgmStruct->height, pgmStruct->maxGray);
 
     /* print in binary the image data to the output file */

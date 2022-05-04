@@ -39,7 +39,7 @@ int main (int argc, char **argv)
     /* call a function to write the input binary pgm as a ASCII pgm to the output fille */
 
     /* check that the binary to ASCII conversion does not throw an error */
-    if (b2a(pgmStruct, argv[1], argv[2]) == 0)
+    if (b2a(pgmStruct, argv[2]) == 0)
     {
         /* return that it was sucessfully converted */
         printf("CONVERTED \n");

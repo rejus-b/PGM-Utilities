@@ -25,22 +25,14 @@ int b2a(pgm *pgmStruct, char *fileName)
     /* open the outputfile in a writeable format */
     FILE *outputFile = fopen (fileName, "rb");
 
-    /* print in ASCII the header data of the pgm file to the output pgmn */
+    /* print in ASCII the header data of the pgm file to the output pgm */
     fprintf(outputFile, "P2\n%d %d\n%d\n", pgmStruct->width, pgmStruct->height, pgmStruct->maxGray);
 
-    /* initialise the value of nImageByytes */
-    long nImageBytes = pgmStruct->width * pgmStruct->height * sizeof(unsigned char);
+    /* intialise the size of the image data */
+    int imageSize = (pgmStruct->width * pgmStruct->height);
 
-    /* loop through the image to write the image data */
-    for (unsigned char *nextGrayValue = pgmStruct->imageData; nextGrayValue < pgmStruct->imageData + nImageBytes; nextGrayValue++)
-    { /* per gray value */
-        /* get next char's column        */
-
-        int nextCol = (nextGrayValue - pgmStruct->imageData + 1) % pgmStruct->width;
-
-        /* write the entry & whitespace  */
-        fprintf(outputFile, "%d%c", *nextGrayValue, (nextCol ? ' ' : '\n') );
-    }
+    /* print in binary the image data to the output file */
+    fwrite(pgmStruct->imageData, sizeof(unsigned char), imageSize, outputFile);
 
     /* be tidy, clean up and close the file */
     fclose(outputFile);
