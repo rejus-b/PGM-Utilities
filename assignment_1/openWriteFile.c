@@ -38,7 +38,7 @@ int writeFile(char *fileName, pgm *pgmStruct)
 
 
 	/* write magic number, size & gray value */
-	size_t nBytesWritten = fprintf(outputFile, "P2\n%d %d\n%d\n", pgmStruct->width, pgmStruct->height, pgmStruct->maxGray);
+	size_t nBytesWritten = fprintf(outputFile, "P%c\n%d %d\n%d\n",pgmStruct->magic_number[1], pgmStruct->width, pgmStruct->height, pgmStruct->maxGray);
 
 
 	/* allocate the data pointer             */
