@@ -1,7 +1,7 @@
 CC=gcc
 CCFLAGS = -g -std=c99 -Wall -Werror
 MAINS = pgmEcho.o pgmComp.o pgma2b.o pgmb2a.o
-MODULES = openReadFile.o openWriteFile.o pgma2bFunc.o pgmb2aFunc.o pgmStruct.o
+MODULES = openReadFile.o openWriteFile.o pgma2bFunc.o pgmb2aFunc.o 
 TARGETS = pgmEcho pgmComp pgma2b pgmb2a
 
 all:	${TARGETS}

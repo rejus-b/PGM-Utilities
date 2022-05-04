@@ -36,7 +36,13 @@ int main (int argc, char **argv)
 	pgmStruct = ((pgm*) malloc (sizeof(pgm)));
 	pgmStructInit(pgmStruct);
 
-    /* call a function to write the input binary pgm as a ASCII pgm to the output fille */
+	/* check that the file can be read successfully*/
+    if (readFile(argv[1], pgmStruct) != 0)
+    {
+        /* return that the file could not be read from */
+        printf("ERROR: Bad File Name %s \n", argv[1]);
+        return EXIT_BAD_INPUT_FILE;
+    }
 
     /* check that the binary to ASCII conversion does not throw an error */
     if (b2a(pgmStruct, argv[2]) == 0)

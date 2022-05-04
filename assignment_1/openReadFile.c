@@ -18,7 +18,7 @@ int magicNumCheck(unsigned short *magic_Number, FILE *inputFile, char *fileName)
 	/* sanity check on the magic number      */
 	/* sanity checks on size & grays         */
 	/* must read exactly three values        */
-	if (*magic_Number != MAGIC_NUMBER_ASCII_PGM)
+	if (*magic_Number != MAGIC_NUMBER_ASCII_PGM && *magic_Number != MAGIC_NUMBER_RAW_PGM)
 		{ /* failed magic number check   */
 		/* be tidy: close the file       */
 		fclose(inputFile);

@@ -23,7 +23,7 @@
 int b2a(pgm *pgmStruct, char *fileName)
 { /* b2a() */
     /* open the outputfile in a writeable format */
-    FILE *outputFile = fopen (fileName, "rb");
+    FILE *outputFile = fopen (fileName, "w");
 
     /* print in ASCII the header data of the pgm file to the output pgm */
     fprintf(outputFile, "P2\n%d %d\n%d\n", pgmStruct->width, pgmStruct->height, pgmStruct->maxGray);
