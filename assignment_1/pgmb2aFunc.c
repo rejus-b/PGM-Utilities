@@ -36,8 +36,8 @@ int b2a(pgm *pgmStruct, char *fileName)
 
 		for (unsigned char *nextGrayValue = pgmStruct->imageData; nextGrayValue < pgmStruct->imageData + nImageBytes; nextGrayValue++)
 		{ /* per gray value */
+        
 			/* get next char's column        */
-
 			int nextCol = (nextGrayValue - pgmStruct->imageData + 1) % pgmStruct->width;
 
 			/* write the entry & whitespace  */
