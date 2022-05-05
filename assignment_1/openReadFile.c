@@ -141,7 +141,7 @@ int readFile(char *fileName, pgm *pgmStruct)
 
 	
 
-	if (pgmStruct->magic_number[1]== '2'){
+	if (pgmStruct->magic_number[1] == '2'){
 		/* pointer for efficient read code       */
 		for (unsigned char *nextGrayValue = pgmStruct->imageData; nextGrayValue < pgmStruct->imageData + nImageBytes; nextGrayValue++)
 			{ /* per gray value */

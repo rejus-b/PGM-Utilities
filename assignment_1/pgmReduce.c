@@ -53,6 +53,9 @@ int main(int argc, char **argv)
 	pgmStruct = ((pgm*) malloc (sizeof(pgm)));
 	pgmStructInit(pgmStruct);
 
+	/* this converts the string integer factor to an integer */
+	int reduc_factor = atoi(argv[2]);
+
     /* this is too check that the input file is a valid file name */
 	if (readFile(argv[1], pgmStruct) != 0)
     {
@@ -62,19 +65,19 @@ int main(int argc, char **argv)
     }
 
     /* this checks that the integer factor is valid (less than 1, or greater than dimensions) */
-	if (*argv[2] < 1 || *argv[2] > pgmStruct->width || *argv[2] > pgmStruct->height)
+	if (reduc_factor < 1 || reduc_factor  > pgmStruct->width || reduc_factor  > pgmStruct->height)
     {
         /* exit the code */
-        printf("ERROR: Miscellaneous (Bad integer reduction factor) \n");
+        printf("ERROR: Miscellaneous (Bad integer reduction factor)\n");
         return EXIT_MISCELLANEOUS;
     }
 
 
-    /* this runs the code to actually reduce the code*/
-    if (reduce(pgmStruct, argv[1], argv[2], argv[3]) == 0)
+    /* this runs the code to actually reduce the code */
+    if (reduce(pgmStruct, argv[1], (int) *argv[2], argv[3]) == 0)
     {
         /* if no errors occur print 'REDUCED' */
-        printf("REDUCED \n");
+        printf("REDUCED\n");
     }
 
 
@@ -90,8 +93,16 @@ int reduce(pgm *pgmStruct, char *inputFile, int reductionFactor, char *outputFil
 /* 12 MOD 5 = 2
         MY CURRENT IDEA : convert binary files to ASCII first then I can read via the gray values and then rewrite it skipping certain data points
                             this could be achieved possibly by e.g. rewriting the pgmStruct-> ImageData to only include set points
-                            or make a custom openWriteFile that only writes certain points */
+                            or make a custom openWriteFile that only writes certain points 
+							
+			I realise the previous idea might be much harder to implement based off the fact we also deal with binary files, writing specific parts
+				of these is not the same as with ASCII. While I could convert the file to ASCII then use pgmb2a this would be very inefficient code
+				and/or would have me restructure my whole pgmUtilities to allow this without actually making files.
+				
+			So I suppose in the end im going to have to use the 2D array approach and just restructure image data to only have the required data */
 
+	printf(" %s ", pgmStruct->imageData);
+ 
 
     return EXIT_NO_ERRORS;
 
