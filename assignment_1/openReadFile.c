@@ -170,6 +170,7 @@ int readFile(char *fileName, pgm *pgmStruct)
 			*nextGrayValue = (unsigned char) grayValue;
 			} /* per gray value */
 		}
+	/* if the magic number is binary read in binary data */
 	else if (pgmStruct->magic_number[1] == '5'){
 		fread(pgmStruct->imageData, sizeof(unsigned char), pgmStruct->width * pgmStruct->height, inputFile);
 	}

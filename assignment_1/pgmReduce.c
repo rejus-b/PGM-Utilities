@@ -101,8 +101,22 @@ int reduce(pgm *pgmStruct, char *inputFile, int reductionFactor, char *outputFil
 				
 			So I suppose in the end im going to have to use the 2D array approach and just restructure image data to only have the required data */
 
-	printf(" %s ", pgmStruct->imageData);
+	//printf(" %i ", pgmStruct->imageData[2]);
  
+
+	/* logic is that you create a new array for a secondary imageData set. 
+		Now you calculat the width/height for this new imageData set with formula : (oldWidth  + factor -1) / factor 
+
+		iterate over the old image data traversing n+factor, base case n=0 to get the imageData[x] that translates to the new imageData set[x] 
+	*/
+
+	newWidth = (pgmStruct->width + reductionFactor -1) / reductionFactor;
+	newHeight = (pgmStruct->height + reductionFactor -1) / reductionFactor;
+	
+	long nImageBytes = newWidth * newHeight * sizeof(unsigned char);
+	newImageData = (unsigned char *) malloc(nImageBytes);
+
+	
 
     return EXIT_NO_ERRORS;
 
