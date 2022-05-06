@@ -158,11 +158,11 @@ int reduce(pgm *pgmStruct, pgm *reducedPgmStruct, char *inputFile, int reduction
 	// = reductionFactor REMOVING THIS CODE FROM THE 'j++' makes the first row work 
 		for (int j=0; j <= reducedPgmStruct->width; j ++)
 		{
-			/* if the rows pass the total width skip to next row */
-			if (j + reductionFactor > reducedPgmStruct->width)
-			{
-				j+= reductionFactor;
-			}
+			/* if the rows pass the total width skip to next row */          // REMOVING these out of bound reset checks made the first row fully work
+			// if (j + reductionFactor > reducedPgmStruct->width)
+			// {
+			// 	j+= reductionFactor;
+			// }
 			
 			reducedImage[i][j] = pgmStruct->imageData[newImageCount];
 			
