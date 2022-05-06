@@ -126,17 +126,39 @@ int reduce(pgm *pgmStruct, char *inputFile, int reductionFactor, char *outputFil
 
 
 	/* use a double for loop to traverse a 2D array containing the original image data */
-	// unsigned char reducedImage [reducedPgmStruct->width][reducedPgmStruct->height];
+	int reducedImage[reducedPgmStruct->width][reducedPgmStruct->height];
 
-	for (int i=0; i >= reducedPgmStruct->width; i += reductionFactor)
+
+		/* COULD IT BE A PROBLEM LATER DOWN THE LINE THAT I am looping through the reduced imageData and just moving along the original imageData by a 
+			a factor instead of directly looping through the original imageData
+		*/
+
+	printf("%i, %i \n",reducedPgmStruct->width, reducedPgmStruct->height);
+	/* this will be used to count what part of the imageData array we are currently corresponding to on a 2d array */
+	int count = 0;
+	for (int i=0; i <= reducedPgmStruct->height; i += reductionFactor)
 	{
-		printf("loop i");
-		for (int j=0; j >= reducedPgmStruct->height; j += reductionFactor)
+
+	
+		for (int j=0; j <= reducedPgmStruct->width; j += reductionFactor)
 		{
-			printf("loop j");
-			printf("%i\n", pgmStruct->imageData[0]);
+			/* if the rows pass the total width skip to next row */
+			if (j + reductionFactor > reducedPgmStruct->width)
+			{
+				j+= reductionFactor;
+			}
+			
+			reducedImage[j][i] = pgmStruct->imageData[count];
+			*reducedPgmStruct->imageData = reducedImage[j][i];
+
+			count += 1;
+
+			// printf("%i\n", pgmStruct->imageData[count]);
 		}
+
 	}
+
+	writeFile(outputFile, reducedPgmStruct);
 
 
     return EXIT_NO_ERRORS;
