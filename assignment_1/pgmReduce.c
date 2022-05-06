@@ -74,7 +74,7 @@ int main(int argc, char **argv)
 
 
     /* this runs the code to actually reduce the code */
-    if (reduce(pgmStruct, argv[1], (int) *argv[2], argv[3]) == 0)
+    if (reduce(pgmStruct, argv[1], reduc_factor, argv[3]) == 0)
     {
         /* if no errors occur print 'REDUCED' */
         printf("REDUCED\n");
@@ -117,16 +117,27 @@ int reduce(pgm *pgmStruct, char *inputFile, int reductionFactor, char *outputFil
 
 
 	/* calcualting the size of the new pgm file */
-	int newWidth = (pgmStruct->width + reductionFactor -1) / reductionFactor;
-	int newHeight = (pgmStruct->height + reductionFactor -1) / reductionFactor;
+	reducedPgmStruct->width = (pgmStruct->width + reductionFactor -1) / reductionFactor;
+	reducedPgmStruct->height = (pgmStruct->height + reductionFactor -1) / reductionFactor;
 	
 	/* mallocing the nessecary amount of data for the new pgm files image data */
-	long nImageBytes = newWidth * newHeight * sizeof(unsigned char);
-	reducedPgmStruct->imageData = (unsigned char *) malloc(nImageBytes);
+	long nImageBytes = reducedPgmStruct->width * reducedPgmStruct->height * sizeof(unsigned char);
+	reducedPgmStruct -> imageData = (unsigned char *) malloc(nImageBytes);
 
-	
 
-	
+	/* use a double for loop to traverse a 2D array containing the original image data */
+	// unsigned char reducedImage [reducedPgmStruct->width][reducedPgmStruct->height];
+
+	for (int i=0; i >= reducedPgmStruct->width; i += reductionFactor)
+	{
+		printf("loop i");
+		for (int j=0; j >= reducedPgmStruct->height; j += reductionFactor)
+		{
+			printf("loop j");
+			printf("%i\n", pgmStruct->imageData[0]);
+		}
+	}
+
 
     return EXIT_NO_ERRORS;
 
