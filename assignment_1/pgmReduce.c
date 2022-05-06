@@ -143,20 +143,20 @@ int reduce(pgm *pgmStruct, pgm *reducedPgmStruct, char *inputFile, int reduction
 	/* this will be used to count what part of the imageData array we are currently corresponding to on a 2d array */
 	int count = 0;
 	int newImageCount = 0;
-	for (int i=0; i <= reducedPgmStruct->height; i += reductionFactor)
+	for (int i=0; i < reducedPgmStruct->height; i += reductionFactor)
 	{
 
-	// if (i + reductionFactor > reducedPgmStruct->height)
-	// {
-	// 	continue;
-	// }
+	if (i + reductionFactor > reducedPgmStruct->height)
+	{
+		continue;
+	}
 
 
 	// IIMPROVE THIS BY HAVING A SEPERATE COUNT FOR KNOWING WHICH PART OF THE IMAGE DATA from PGM STRUCT WE ARE READING
 
 
 	// = reductionFactor REMOVING THIS CODE FROM THE 'j++' makes the first row work 
-		for (int j=0; j <= reducedPgmStruct->width; j ++)
+		for (int j=0; j < reducedPgmStruct->width; j ++)
 		{
 			/* if the rows pass the total width skip to next row */          // REMOVING these out of bound reset checks made the first row fully work
 			// if (j + reductionFactor > reducedPgmStruct->width)
