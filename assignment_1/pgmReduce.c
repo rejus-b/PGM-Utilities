@@ -173,11 +173,17 @@ int reduce(pgm *pgmStruct, pgm *reducedPgmStruct, char *inputFile, int reduction
 			count += 1;
 			newImageCount += reductionFactor;
 
+			printf("%i \n", reducedPgmStruct->imageData[count]);
+
 			// printf("%i\n", pgmStruct->imageData[count]);
 		}
 
 	}
 
+	reducedPgmStruct->magic_number[0] = pgmStruct->magic_number[0];
+	reducedPgmStruct->magic_number[1] = pgmStruct->magic_number[1];
+
+	// IMPORTANT: I believe reducedPgmStruct is incomplete since passing along pgmStruct allows the file to be written to
 	writeFile(outputFile, reducedPgmStruct);
 
 
