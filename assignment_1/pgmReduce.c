@@ -142,8 +142,19 @@ int reduce(pgm *pgmStruct, pgm *reducedPgmStruct, char *inputFile, int reduction
 	printf("%i, %i \n",reducedPgmStruct->width, reducedPgmStruct->height);
 	/* this will be used to count what part of the imageData array we are currently corresponding to on a 2d array */
 	int count = 0;
+	int newImageCount = 0;
 	for (int i=0; i <= reducedPgmStruct->height; i += reductionFactor)
 	{
+
+	if (i + reductionFactor > reducedPgmStruct->height)
+	{
+		continue;
+	}
+
+
+	// IIMPROVE THIS BY HAVING A SEPERATE COUNT FOR KNOWING WHICH PART OF THE IMAGE DATA from PGM STRUCT WE ARE READING
+
+
 		for (int j=0; j <= reducedPgmStruct->width; j += reductionFactor)
 		{
 			/* if the rows pass the total width skip to next row */
@@ -152,10 +163,15 @@ int reduce(pgm *pgmStruct, pgm *reducedPgmStruct, char *inputFile, int reduction
 				j+= reductionFactor;
 			}
 			
-			reducedImage[j][i] = pgmStruct->imageData[count];
-			reducedPgmStruct->imageData[count] = reducedImage[j][i];
+			reducedImage[i][j] = pgmStruct->imageData[newImageCount];
+			
+			reducedPgmStruct->imageData[count] = reducedImage[i][j];
+
+			// printf(" %i \n", pgmStruct->imageData[count]);
+			printf("%i \n", reducedPgmStruct->imageData[count]);
 
 			count += 1;
+			newImageCount += reductionFactor;
 
 			// printf("%i\n", pgmStruct->imageData[count]);
 		}
