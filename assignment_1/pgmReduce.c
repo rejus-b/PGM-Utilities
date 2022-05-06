@@ -146,16 +146,17 @@ int reduce(pgm *pgmStruct, pgm *reducedPgmStruct, char *inputFile, int reduction
 	for (int i=0; i <= reducedPgmStruct->height; i += reductionFactor)
 	{
 
-	if (i + reductionFactor > reducedPgmStruct->height)
-	{
-		continue;
-	}
+	// if (i + reductionFactor > reducedPgmStruct->height)
+	// {
+	// 	continue;
+	// }
 
 
 	// IIMPROVE THIS BY HAVING A SEPERATE COUNT FOR KNOWING WHICH PART OF THE IMAGE DATA from PGM STRUCT WE ARE READING
 
 
-		for (int j=0; j <= reducedPgmStruct->width; j += reductionFactor)
+	// = reductionFactor REMOVING THIS CODE FROM THE 'j++' makes the first row work 
+		for (int j=0; j <= reducedPgmStruct->width; j ++)
 		{
 			/* if the rows pass the total width skip to next row */
 			if (j + reductionFactor > reducedPgmStruct->width)
@@ -180,6 +181,7 @@ int reduce(pgm *pgmStruct, pgm *reducedPgmStruct, char *inputFile, int reduction
 
 	}
 
+	/* sets the reduced images magic number to the original magic number */
 	reducedPgmStruct->magic_number[0] = pgmStruct->magic_number[0];
 	reducedPgmStruct->magic_number[1] = pgmStruct->magic_number[1];
 
