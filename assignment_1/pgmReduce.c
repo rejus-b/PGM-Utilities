@@ -53,6 +53,15 @@ int main(int argc, char **argv)
 	pgmStruct = ((pgm*) malloc (sizeof(pgm)));
 	pgmStructInit(pgmStruct);
 
+
+
+	/* initialising a new structure that will store the reduced pgm image */
+	pgm *reducedPgmStruct = NULL;
+	reducedPgmStruct = ((pgm*) malloc (sizeof(pgm)));
+	pgmStructInit(reducedPgmStruct);
+
+
+
 	/* this converts the string integer factor to an integer */
 	int reduc_factor = atoi(argv[2]);
 
@@ -74,7 +83,7 @@ int main(int argc, char **argv)
 
 
     /* this runs the code to actually reduce the code */
-    if (reduce(pgmStruct, argv[1], reduc_factor, argv[3]) == 0)
+    if (reduce(pgmStruct, reducedPgmStruct, argv[1], reduc_factor, argv[3]) == 0)
     {
         /* if no errors occur print 'REDUCED' */
         printf("REDUCED\n");
@@ -86,7 +95,7 @@ int main(int argc, char **argv)
 	} /* main() */
 
 
-int reduce(pgm *pgmStruct, char *inputFile, int reductionFactor, char *outputFile)
+int reduce(pgm *pgmStruct, pgm *reducedPgmStruct, char *inputFile, int reductionFactor, char *outputFile)
 {
 /* reduce() */
 
@@ -110,10 +119,7 @@ int reduce(pgm *pgmStruct, char *inputFile, int reductionFactor, char *outputFil
 		iterate over the old image data traversing n+factor, base case n=0 to get the imageData[x] that translates to the new imageData set[x] 
 	*/
 
-	/* initialising a new structure that will store the reduced pgm image */
-	pgm *reducedPgmStruct = NULL;
-	reducedPgmStruct = ((pgm*) malloc (sizeof(pgm)));
-	pgmStructInit(reducedPgmStruct);
+
 
 
 	/* calcualting the size of the new pgm file */
@@ -138,8 +144,6 @@ int reduce(pgm *pgmStruct, char *inputFile, int reductionFactor, char *outputFil
 	int count = 0;
 	for (int i=0; i <= reducedPgmStruct->height; i += reductionFactor)
 	{
-
-	
 		for (int j=0; j <= reducedPgmStruct->width; j += reductionFactor)
 		{
 			/* if the rows pass the total width skip to next row */
@@ -149,7 +153,7 @@ int reduce(pgm *pgmStruct, char *inputFile, int reductionFactor, char *outputFil
 			}
 			
 			reducedImage[j][i] = pgmStruct->imageData[count];
-			*reducedPgmStruct->imageData = reducedImage[j][i];
+			reducedPgmStruct->imageData[count] = reducedImage[j][i];
 
 			count += 1;
 
