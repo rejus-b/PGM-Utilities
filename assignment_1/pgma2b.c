@@ -69,7 +69,7 @@ int main (int argc, char **argv)
     if (readFile(argv[1], pgmStruct) != 0)
     {
         /* return that the file could not be read from */
-        printf("ERROR: Bad File Name %s \n", argv[1]);
+        printf("ERROR: Bad File Name (%s)\n", argv[1]);
         return EXIT_BAD_INPUT_FILE;
     }
 
@@ -77,7 +77,7 @@ int main (int argc, char **argv)
     if (pgmStruct->magic_number[1] != '2')
     {
         /* return that the magic number was wrong */
-        printf("ERROR: Bad Magic Number %s \n", argv[1]);
+        printf("ERROR: Bad Magic Number (%s)\n", argv[1]);
         return EXIT_BAD_MAGIC_NUMBER;
     }
 

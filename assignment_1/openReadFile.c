@@ -24,7 +24,7 @@ int magicNumCheck(unsigned short *magic_Number, FILE *inputFile, char *fileName)
 		fclose(inputFile);
 
 		/* print an error message */
-		printf("ERROR: Bad Magic Number %s\n", fileName);	
+		printf("ERROR: Bad Magic Number (%s)\n", fileName);	
 		
 		/* and return                    */
 		return EXIT_BAD_MAGIC_NUMBER;
@@ -44,7 +44,7 @@ int readFile(char *fileName, pgm *pgmStruct)
 	/* if it fails, return error code        */
 	if (inputFile == NULL)
 	{
-		printf("ERROR: Bad File Name %s\n", fileName);
+		printf("ERROR: Bad File Name (%s)\n", fileName);
 		return EXIT_BAD_INPUT_FILE;
 	}
 
@@ -77,7 +77,7 @@ int readFile(char *fileName, pgm *pgmStruct)
 			fclose(inputFile);
 
 			/* print an error message */
-			printf("ERROR: Bad Comment Line %s\n", fileName);	
+			printf("ERROR: Bad Comment Line (%s)\n", fileName);	
 		
 			/* and return            */
 			return EXIT_BAD_COMMENT_LINE;
@@ -111,7 +111,7 @@ int readFile(char *fileName, pgm *pgmStruct)
 		fclose(inputFile);
 
 		/* print an error message */
-		printf("ERROR: Bad Dimensions %s\n", fileName);	
+		printf("ERROR: Bad Dimensions (%s)\n", fileName);	
 		
 		/* and return                    */
 		return EXIT_BAD_DIMENSIONS;
@@ -133,7 +133,7 @@ int readFile(char *fileName, pgm *pgmStruct)
 		fclose(inputFile);
 
 		/* print an error message */
-		printf("ERROR: Image Malloc Failed \n");	
+		printf("ERROR: Image Malloc Failed\n");	
 		
 		/* return error code             */
 		return EXIT_IMAGE_MALLOC_FAILED;
@@ -160,7 +160,7 @@ int readFile(char *fileName, pgm *pgmStruct)
 				fclose(inputFile);
 
 				/* print error message   */
-				printf("ERROR: Bad Gray Value \n");	
+				printf("ERROR: Bad Gray Value\n");	
 			
 				/* and return            */
 				return EXIT_MISCELLANEOUS;

@@ -40,7 +40,7 @@ int main (int argc, char **argv)
     if (readFile(argv[1], pgmStruct) != 0)
     {
         /* return that the file could not be read from */
-        printf("ERROR: Bad File Name %s \n", argv[1]);
+        printf("ERROR: Bad File Name (%s)\n", argv[1]);
         return EXIT_BAD_INPUT_FILE;
     }
 
@@ -48,7 +48,7 @@ int main (int argc, char **argv)
     if (b2a(pgmStruct, argv[2]) == 0)
     {
         /* return that it was sucessfully converted */
-        printf("CONVERTED \n");
+        printf("CONVERTED\n");
         return EXIT_NO_ERRORS;
     }
 } /* main() */
