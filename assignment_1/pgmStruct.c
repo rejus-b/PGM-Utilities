@@ -1,4 +1,12 @@
+/* library for I/O routines        */
+#include <stdio.h>
+
+/* library for memory routines     */
+#include <stdlib.h>
+
 #include "pgmStruct.h"
+
+#include "errors.h"
 
 /* A function for initialising all the values of each pgm image */
 int pgmStructInit(pgm *pgmStruct) 

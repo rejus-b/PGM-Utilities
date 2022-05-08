@@ -1,7 +1,7 @@
 CC=gcc
 CCFLAGS = -g -std=c99 -Wall -Werror
 MAINS = pgmEcho.o pgmComp.o pgma2b.o pgmb2a.o pgmReduce.o pgmTile.o
-MODULES = openReadFile.o openWriteFile.o pgma2bFunc.o pgmb2aFunc.o 
+MODULES = openReadFile.o openWriteFile.o pgma2bFunc.o pgmb2aFunc.o pgmStruct.o
 TARGETS = pgmEcho pgmComp pgma2b pgmb2a pgmReduce pgmTile
 
 all:	${TARGETS}
@@ -60,6 +60,8 @@ pgma2bFunc.o:	pgma2bFunc.c	pgmStruct.h	errors.h	openWriteFile.h
 pgmb2aFunc.o:	pgmb2aFunc.c	pgmStruct.h	errors.h	openWriteFile.h
 	${CC} -c ${CCFLAGS} -o pgmb2aFunc.o	pgmb2aFunc.c
 
+pgmStruct.o:	pgmStruct.c	pgmStruct.h
+	${CC} -c ${CCFLAGS} -o pgmStruct.o	pgmStruct.c
 
 
 
