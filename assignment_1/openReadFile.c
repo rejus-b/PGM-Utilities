@@ -27,7 +27,7 @@ int magicNumCheck(unsigned short *magic_Number, FILE *inputFile, char *fileName)
 		printf("ERROR: Bad Magic Number (%s)\n", fileName);	
 		
 		/* and return                    */
-		return EXIT_BAD_MAGIC_NUMBER;
+		exit(EXIT_BAD_MAGIC_NUMBER);
 	} /* failed magic number check   */
 
 	return EXIT_NO_ERRORS;
@@ -45,7 +45,7 @@ int readFile(char *fileName, pgm *pgmStruct)
 	if (inputFile == NULL)
 	{
 		printf("ERROR: Bad File Name (%s)\n", fileName);
-		return EXIT_BAD_INPUT_FILE;
+		exit(EXIT_BAD_INPUT_FILE);
 	}
 
 	/* read in the magic number              */
@@ -100,8 +100,7 @@ int readFile(char *fileName, pgm *pgmStruct)
 		(pgmStruct->width 	< MIN_IMAGE_DIMENSION	) 	||
 		(pgmStruct->width 	> MAX_IMAGE_DIMENSION	) 	||
 		(pgmStruct->height < MIN_IMAGE_DIMENSION	) 	||
-		(pgmStruct->height > MAX_IMAGE_DIMENSION	) 	||
-		(pgmStruct->maxGray	!= 255		)
+		(pgmStruct->height > MAX_IMAGE_DIMENSION	)		
 		)
 		{ /* failed size sanity check    */
 		/* free up the memory            */
@@ -114,9 +113,23 @@ int readFile(char *fileName, pgm *pgmStruct)
 		printf("ERROR: Bad Dimensions (%s)\n", fileName);	
 		
 		/* and return                    */
-		return EXIT_BAD_DIMENSIONS;
+		exit(EXIT_BAD_DIMENSIONS);
 		} /* failed size sanity check    */
 
+	if (pgmStruct->maxGray != 255)
+	{ /* failed maxGray sanity check	*/
+		/* free up the memory 				*/
+		free(pgmStruct->commentLine);
+
+		/* be tidy: close file pointer   */
+		fclose(inputFile);
+
+		/* print an error message */
+		printf("ERROR: Bad Max Gray Value (%s)\n", fileName);	
+		
+		/* and return                    */
+		exit(EXIT_BAD_MAX_GRAY_VALUE);
+		} /* failed maxGray sanity check    */
 	
 
 	/* allocate the data pointer             */
@@ -136,7 +149,7 @@ int readFile(char *fileName, pgm *pgmStruct)
 		printf("ERROR: Image Malloc Failed\n");	
 		
 		/* return error code             */
-		return EXIT_IMAGE_MALLOC_FAILED;
+		exit(EXIT_IMAGE_MALLOC_FAILED);
 		} /* malloc failed */
 
 	

@@ -46,6 +46,13 @@ int main(int argc, char **argv)
 	{ 
 	/* main() */
 	/* check for correct number of arguments */
+
+	// if (argc == 1)
+	// { /* no user args */
+	// 	printf("ERROR: Miscellaneous (No arguements given)\n");
+	// 	exit(EXIT_MISCELLANEOUS);
+	// }
+
 	if (argc != 3)	
 		{ /* wrong arg count */
 		/* print an error message        */
