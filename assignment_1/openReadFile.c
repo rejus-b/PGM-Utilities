@@ -80,7 +80,7 @@ int readFile(char *fileName, pgm *pgmStruct)
 			printf("ERROR: Bad Comment Line (%s)\n", fileName);	
 		
 			/* and return            */
-			return EXIT_BAD_COMMENT_LINE;
+			exit(EXIT_BAD_COMMENT_LINE);
 			} /* NULL comment read   */
 		} /* comment line */
 	else
@@ -161,6 +161,21 @@ int readFile(char *fileName, pgm *pgmStruct)
 			/* read next value               */
 			int grayValue = -1;
 			int scanCount = fscanf(inputFile, " %u", &grayValue);
+
+			/* sanity check too little data		*/
+			if (scanCount > (pgmStruct->width*pgmStruct->height))
+			{
+				/* free memory			*/
+				free(pgmStruct->commentLine);
+				free(pgmStruct->imageData);
+
+				/* print error message */
+				printf("ERROR: Bad Data (%s)\n", fileName);
+
+				/* exit with error code */
+				exit(EXIT_BAD_DATA);
+			}
+
 
 			/* sanity check	                 */
 			if ((scanCount != 1) || (grayValue < 0) || (grayValue > 255))
