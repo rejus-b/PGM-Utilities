@@ -16,6 +16,8 @@ MODULE 2 -- pgmComp.c / pgmComp.h
 
 	Logical equivilance - Tests whether two inputs are logically equivilant and returns a boolean statement.
 
+	OpenWrite file - This module will write the data from the main input file to the main output file.
+
 
 
 MODULE 3 --  pgma2b.c / pgma2b.h
@@ -26,7 +28,7 @@ MODULE 3 --  pgma2b.c / pgma2b.h
 
 	Converter - This module will convert input data from ASCII to Binary.
 
-	Error checking module - This will check that the input can be used succesfully.
+	OpenWrite file - This module will write the data from the main input file to the main output file.
 
 
 
@@ -34,13 +36,11 @@ MODULE 3 --  pgmb2a.c / pgmb2a.h
 
 	Main - This module takes the command line arguements as input files. It will close any open files.
 	
-	Open file - This module opens a file to be read.
-
-	Read file - This module will read the inputs of the input file.
+	OpenRead file - This module opens a file to be read. This module will read the inputs of the input file.
 	
 	Converter - This module will convert input data from Binary to ASCII.
-	
-	Error checking module - This will check that the input can be used succesfully.
+
+	OpenWrite file - This module will write the data from the main input file to the main output file.
 	
 	
 
@@ -48,34 +48,36 @@ MODULE 4 -- pgmReduce.c / pgmReduce.h
 
 	Main - This module takes the command line arguements as input files. It will close any open files.
 
-	Open file - This module opens a file to be read.
-	
-	Read file - This module will read the inputs of the file.
+	OpenRead file - This module opens a file to be read. This module will read the inputs of the input file.
 	
 	Integer factor reduction - This module will take the data from the input file and return a reduced output file.
 	
-	Write to file - This module will write to the output file taken as an input from main.
-	
-	Error checking module - This will check that the input/output are sucessful.
+	OpenWrite file - This module will write the data from the main input file to the main output file.
 
 
 
 MODULE 5 -- pgmTitle.c / pgmTitle.h
 
 	Main - This module takes an input file, an integer factor n and an output file template.
+
+	OpenRead file - This module opens a file to be read. This module will read the inputs of the input file.
 	
 	Image Divider - This module will split the input file and convert it to an nxn, which each subfile of the nxn having its own file export.
+
+	OpenWrite file - This module will write the data from the main input file to the main output file.
 	
-	Error checking module - This will check that the input can be used succesfully and that the output has been used succesfully.
 
 
 MODULE 6 -- pgmAssemble.c / pgmAssemble.h
 
 	Main - This module takes an output file, width and height of the output file. It will also take the row at which a subimage is made(3i+1), the column(3i+2) and the subimage to insert(3i+3).
+
+	OpenRead file - This module opens a file to be read. This module will read the inputs of the input file.
 	
 	Image Assembler - Takes the input data and concatenates this data to a single output file.
+
+	OpenWrite file - This module will write the data from the main input file to the main output file.
 	
-	Error checking module - This will check that the input can be used succesfully and that the output has been used succesfully.
 
 
 
