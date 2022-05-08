@@ -4,8 +4,10 @@
 /* library for memory routines     */
 #include <stdlib.h>
 
+/* header for pgmStruct */
 #include "pgmStruct.h"
 
+/* header for errors */
 #include "errors.h"
 
 /* A function for initialising all the values of each pgm image */

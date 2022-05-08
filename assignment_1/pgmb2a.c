@@ -13,9 +13,6 @@
 /* header for reading the error code */
 #include "errors.h"
 
-/* header for openWriteFile			*/
-#include "openWriteFile.h"
-
 /* header for pgma2bFunc            */
 #include "pgmb2aFunc.h"
 
@@ -36,7 +33,7 @@ int main (int argc, char **argv)
 	pgmStruct = ((pgm*) malloc (sizeof(pgm)));
 	pgmStructInit(pgmStruct);
 
-	/* check that the file can be read successfully*/
+	/* check that the file can be read successfully */
     if (readFile(argv[1], pgmStruct) != 0)
     {
         /* return that the file could not be read from */

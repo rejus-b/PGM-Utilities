@@ -31,9 +31,7 @@ int b2a(pgm *pgmStruct, char *fileName)
     /* allocate the data pointer             */
     long nImageBytes = pgmStruct->width * pgmStruct->height * sizeof(unsigned char);
 
-    // /* print in ASCII the header data of the pgm file to the output pgm */
-    // fprintf(outputFile, "P2\n%d %d\n%d\n", pgmStruct->width, pgmStruct->height, pgmStruct->maxGray);
-
+    /* pointer for efficient read code       */
 		for (unsigned char *nextGrayValue = pgmStruct->imageData; nextGrayValue < pgmStruct->imageData + nImageBytes; nextGrayValue++)
 		{ /* per gray value */
         

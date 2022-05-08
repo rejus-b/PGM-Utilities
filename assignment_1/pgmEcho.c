@@ -2,7 +2,6 @@
 /* COMP 1921M Programming Project  */
 /* 2021-22 Spring Semester         */
 /*                                 */
-/* Hamish Carr & Rejus Bulevicius  */
 /***********************************/
 
 /***********************************/

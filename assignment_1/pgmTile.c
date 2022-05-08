@@ -1,15 +1,20 @@
-/***********************************/
-/* Main Routine                    */
-/***********************************/
+/*************************************/
+/* main routine                      */
+/*                                   */
+/* CLI parameters:                   */
+/* argv[0]: executable name          */
+/* argv[1]: input file name          */
+/* argv[2]: integer tile factor		 */
+/* argv[3]: output file name         */
+/* returns 0 on success              */
+/* non-zero error code on fail       */
+/*************************************/
 
 /* library for I/O routines        */
 #include <stdio.h>
 
 /* library for memory routines     */
 #include <stdlib.h>
-
-/* header for pgmEcho				*/
-#include "pgmEcho.h"
 
 /* header for pgm structures		*/
 #include "pgmStruct.h"
@@ -22,6 +27,9 @@
 
 /* header for openWriteFile			*/
 #include "openWriteFile.h"
+
+/* header for pgmEcho				*/
+#include "pgmEcho.h"
 
 
 int main(int argc, char **argv)

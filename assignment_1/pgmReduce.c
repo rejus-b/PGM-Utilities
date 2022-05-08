@@ -4,9 +4,6 @@
 /* library for memory routines     */
 #include <stdlib.h>
 
-/* header for pgmEcho				*/
-#include "pgmEcho.h"
-
 /* header for pgm structures		*/
 #include "pgmStruct.h"
 

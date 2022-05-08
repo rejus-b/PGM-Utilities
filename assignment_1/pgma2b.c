@@ -1,13 +1,3 @@
-/* 
-To convert from ASCII to binary fscanf() automatically converts the input data to binary, if I just fwrite it out to a file it will keep the binary representation
-
-So I can try use the read file to read in the data and pass it through the write file, hopefully it stays in binary representation?
-
-
-Make a struct for pgm -> then read with the default read file assinging the pgm struct values -> then write to it using fwrite
-*/
-
-
 /* library for I/O routines        */
 #include <stdio.h>
 
@@ -25,9 +15,6 @@ Make a struct for pgm -> then read with the default read file assinging the pgm 
 
 /* header for openReadFile			 */
 #include "openReadFile.h"
-
-/* header for openWriteFile			*/
-#include "openWriteFile.h"
 
 /* header for pgma2b                */
 #include "pgma2b.h"
