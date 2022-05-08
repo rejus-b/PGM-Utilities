@@ -87,21 +87,21 @@ int equivalence(pgm *pgmStructFileOne, pgm *pgmStructFileTwo)
 	if (pgmStructFileOne->width != pgmStructFileTwo->width )
 	{
 		printf("ERROR: Miscellaneous (Width Not Equivalent)");
-		exit(EXIT_MISCELLANEOUS);
+		return EXIT_MISCELLANEOUS;
 	}
 
 	/* check that the height of the two input files is equivalent */
 	else if (pgmStructFileOne->height != pgmStructFileTwo->height)
 	{
 		printf("ERROR: Miscellaneous (Height Not Equivalent)");
-		exit(EXIT_MISCELLANEOUS);
+		return EXIT_MISCELLANEOUS;
 	}
 
 	/* check that the maxGray of the two input files is equivalent */
 	else if (pgmStructFileOne->maxGray != pgmStructFileTwo->maxGray)
 	{
 		printf("ERROR: Miscellaneous (Max Gray Not Equivalent)");
-		exit(EXIT_MISCELLANEOUS);
+		return EXIT_MISCELLANEOUS;
 	}
 
 	/* allocate the data pointer for one structure, this does not need to be done twice as you only have to read the data pointer once            */ 
@@ -111,7 +111,7 @@ int equivalence(pgm *pgmStructFileOne, pgm *pgmStructFileTwo)
 	if (memcmp(pgmStructFileOne->imageData, pgmStructFileTwo->imageData, nImageBytes) != 0)
 	{
 		printf("ERROR: Miscellaneous Image Data Not Equivalent \n");
-		exit(EXIT_MISCELLANEOUS);			
+		return EXIT_MISCELLANEOUS;			
 	}
 
 	return EXIT_NO_ERRORS;
