@@ -132,7 +132,7 @@ int reduce(pgm *pgmStruct, pgm *reducedPgmStruct, char *inputFile, int reduction
 
 
 	/* use a double for loop to traverse a 2D array containing the original image data */
-	int reducedImage[reducedPgmStruct->width][reducedPgmStruct->height];
+	// int reducedImage[reducedPgmStruct->width][reducedPgmStruct->height];
 
 
 		/* COULD IT BE A PROBLEM LATER DOWN THE LINE THAT I am looping through the reduced imageData and just moving along the original imageData by a 
@@ -143,38 +143,40 @@ int reduce(pgm *pgmStruct, pgm *reducedPgmStruct, char *inputFile, int reduction
 	/* this will be used to count what part of the imageData array we are currently corresponding to on a 2d array */
 	int count = 0;
 	int newImageCount = 0;
-	for (int i=0; i < reducedPgmStruct->height; i += reductionFactor)
+	for (int i=0; i < reducedPgmStruct->height; i ++)
 	{
 
-	if (i + reductionFactor > reducedPgmStruct->height)
-	{
-		continue;
-	}
+	// if (i + reductionFactor > reducedPgmStruct->height)
+	// {
+	// 	i+= reductionFactor;
+	// }
 
 
 	// IIMPROVE THIS BY HAVING A SEPERATE COUNT FOR KNOWING WHICH PART OF THE IMAGE DATA from PGM STRUCT WE ARE READING
 
 
 	// = reductionFactor REMOVING THIS CODE FROM THE 'j++' makes the first row work 
-		for (int j=0; j < reducedPgmStruct->width; j ++)
+		for (int j=0; j < reducedPgmStruct->width ; j ++)
 		{
 			/* if the rows pass the total width skip to next row */          // REMOVING these out of bound reset checks made the first row fully work
-			// if (j + reductionFactor > reducedPgmStruct->width)
+			// if (j > reducedPgmStruct->width)
 			// {
-			// 	j+= reductionFactor;
+			// 	continue;
 			// }
 			
-			reducedImage[i][j] = pgmStruct->imageData[newImageCount];
+			// reducedImage[i][j] = pgmStruct->imageData[newImageCount];
 			
-			reducedPgmStruct->imageData[count] = reducedImage[i][j];
+			// reducedPgmStruct->imageData[count] = reducedImage[i][j];
 
-			// printf(" %i \n", pgmStruct->imageData[count]);
+			reducedPgmStruct->imageData[count] = pgmStruct->imageData[newImageCount];
+
 			printf("%i \n", reducedPgmStruct->imageData[count]);
+			printf("%i\n", pgmStruct->imageData[newImageCount]);
 
-			count += 1;
+			count ++;
 			newImageCount += reductionFactor;
 
-			printf("%i \n", reducedPgmStruct->imageData[count]);
+			// printf("%i \n", reducedPgmStruct->imageData[count]);
 
 			// printf("%i\n", pgmStruct->imageData[count]);
 		}
@@ -184,6 +186,8 @@ int reduce(pgm *pgmStruct, pgm *reducedPgmStruct, char *inputFile, int reduction
 	/* sets the reduced images magic number to the original magic number */
 	reducedPgmStruct->magic_number[0] = pgmStruct->magic_number[0];
 	reducedPgmStruct->magic_number[1] = pgmStruct->magic_number[1];
+
+	// printf("%i\n", reducedImage[reducedPgmStruct->width][reducedPgmStruct->height]);
 
 	// IMPORTANT: I believe reducedPgmStruct is incomplete since passing along pgmStruct allows the file to be written to
 	writeFile(outputFile, reducedPgmStruct);
