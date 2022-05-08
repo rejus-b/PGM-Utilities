@@ -43,7 +43,7 @@ int main(int argc, char **argv)
 	if (argc != 4)	
 		{ /* wrong arg count */
 		/* print an error message        */
-		printf("ERROR: Bad Argument Count\n");
+		printf("ERROR: Bad Argument Count");
 		/* and return an error code      */
 		return EXIT_WRONG_ARG_COUNT;
 		} /* wrong arg count */
@@ -69,7 +69,7 @@ int main(int argc, char **argv)
 	if (readFile(argv[1], pgmStruct) != 0)
     {
         /* exit the code */
-        printf("ERROR: Bad File Name (%s)\n", argv[1]);
+        printf("ERROR: Bad File Name (%s)", argv[1]);
         return EXIT_BAD_INPUT_FILE;
     }
 
@@ -77,7 +77,7 @@ int main(int argc, char **argv)
 	if (reduc_factor < 1 || reduc_factor  > pgmStruct->width || reduc_factor  > pgmStruct->height)
     {
         /* exit the code */
-        printf("ERROR: Miscellaneous (Bad integer reduction factor)\n");
+        printf("ERROR: Miscellaneous (Bad integer reduction factor)");
         return EXIT_MISCELLANEOUS;
     }
 

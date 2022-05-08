@@ -54,7 +54,7 @@ int main (int argc, char **argv)
     if (argc != 3)
 	{ /* wrong arg count */
 		/* print an error message        */
-		printf("ERROR: Bad Argument Count\n");
+		printf("ERROR: Bad Argument Count");
 		/* and return an error code      */
 		return EXIT_WRONG_ARG_COUNT;
 	} /* wrong arg count */
@@ -69,7 +69,7 @@ int main (int argc, char **argv)
     if (readFile(argv[1], pgmStruct) != 0)
     {
         /* return that the file could not be read from */
-        printf("ERROR: Bad File Name (%s)\n", argv[1]);
+        printf("ERROR: Bad File Name (%s)", argv[1]);
         return EXIT_BAD_INPUT_FILE;
     }
 
@@ -77,7 +77,7 @@ int main (int argc, char **argv)
     if (pgmStruct->magic_number[1] != '2')
     {
         /* return that the magic number was wrong */
-        printf("ERROR: Bad Magic Number (%s)\n", argv[1]);
+        printf("ERROR: Bad Magic Number (%s)", argv[1]);
         return EXIT_BAD_MAGIC_NUMBER;
     }
 
@@ -86,7 +86,7 @@ int main (int argc, char **argv)
     if (a2b(pgmStruct, argv[2]) == 0)
     {
         /* return that it was sucessfully converted */
-        printf("CONVERTED \n");
+        printf("CONVERTED");
         return EXIT_NO_ERRORS;
     }
 } /* main() */

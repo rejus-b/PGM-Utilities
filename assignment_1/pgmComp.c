@@ -41,7 +41,7 @@ int main(int argc, char **argv)
     if (argc != 3)
 	{ /* wrong arg count */
 		/* print an error message        */
-		printf("ERROR: Bad Argument Count\n");
+		printf("ERROR: Bad Argument Count");
 		/* and return an error code      */
 		return EXIT_WRONG_ARG_COUNT;
 	} /* wrong arg count */
@@ -66,12 +66,12 @@ int main(int argc, char **argv)
 			/* If no errors are thrown when reading the two data files, see if they are equivelant */
 			if (equivalence(pgmStructFileOne, pgmStructFileTwo) == 0)
 			{
-				printf("IDENTICAL \n");
+				printf("IDENTICAL");
 				return EXIT_NO_ERRORS;
 			}
 			else 
 			{
-				printf("DIFFERENT \n");
+				printf("DIFFERENT");
 				return EXIT_NO_ERRORS;
 			}
 		}
@@ -86,22 +86,22 @@ int equivalence(pgm *pgmStructFileOne, pgm *pgmStructFileTwo)
 	/* check that the width of the two input files is equivalent */
 	if (pgmStructFileOne->width != pgmStructFileTwo->width )
 	{
-		printf("ERROR: Miscellaneous Width Not Equivalent \n");
-		return EXIT_MISCELLANEOUS;
+		printf("ERROR: Miscellaneous (Width Not Equivalent)");
+		exit(EXIT_MISCELLANEOUS);
 	}
 
 	/* check that the height of the two input files is equivalent */
 	else if (pgmStructFileOne->height != pgmStructFileTwo->height)
 	{
-		printf("ERROR: Miscellaneous Height Not Equivalent \n");
-		return EXIT_MISCELLANEOUS;
+		printf("ERROR: Miscellaneous (Height Not Equivalent)");
+		exit(EXIT_MISCELLANEOUS);
 	}
 
 	/* check that the maxGray of the two input files is equivalent */
 	else if (pgmStructFileOne->maxGray != pgmStructFileTwo->maxGray)
 	{
-		printf("ERROR: Miscellaneous Max Gray Not Equivalent \n");
-		return EXIT_MISCELLANEOUS;
+		printf("ERROR: Miscellaneous (Max Gray Not Equivalent)");
+		exit(EXIT_MISCELLANEOUS);
 	}
 
 	/* allocate the data pointer for one structure, this does not need to be done twice as you only have to read the data pointer once            */ 
@@ -111,7 +111,7 @@ int equivalence(pgm *pgmStructFileOne, pgm *pgmStructFileTwo)
 	if (memcmp(pgmStructFileOne->imageData, pgmStructFileTwo->imageData, nImageBytes) != 0)
 	{
 		printf("ERROR: Miscellaneous Image Data Not Equivalent \n");
-		return EXIT_MISCELLANEOUS;			
+		exit(EXIT_MISCELLANEOUS);			
 	}
 
 	return EXIT_NO_ERRORS;

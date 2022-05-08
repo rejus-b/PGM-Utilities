@@ -30,7 +30,7 @@ int writeFile(char *fileName, pgm *pgmStruct)
 		free(pgmStruct->imageData);
 
 		/* print an error message        */
-		printf("ERROR: Output Failed (%s)\n", fileName);	
+		printf("ERROR: Output Failed (%s)", fileName);	
 
 		/* return an error code          */
 		return EXIT_OUTPUT_FAILED;
@@ -52,7 +52,7 @@ int writeFile(char *fileName, pgm *pgmStruct)
 		free(pgmStruct->imageData);
 
 		/* print an error message        */
-		printf("ERROR: Bad Dimensions (%s)\n", fileName);	
+		printf("ERROR: Bad Dimensions (%s)", fileName);	
 
 		/* return an error code          */
 		return EXIT_BAD_DIMENSIONS;
@@ -80,7 +80,7 @@ int writeFile(char *fileName, pgm *pgmStruct)
 				free(pgmStruct->imageData);
 
 				/* print error message   */
-				printf("ERROR: Output Failed (%s)\n", fileName);	
+				printf("ERROR: Output Failed (%s)", fileName);	
 
 				/* return an error code  */
 				return EXIT_OUTPUT_FAILED;

@@ -24,7 +24,7 @@ int magicNumCheck(unsigned short *magic_Number, FILE *inputFile, char *fileName)
 		fclose(inputFile);
 
 		/* print an error message */
-		printf("ERROR: Bad Magic Number (%s)\n", fileName);	
+		printf("ERROR: Bad Magic Number (%s)", fileName);	
 		
 		/* and return                    */
 		exit(EXIT_BAD_MAGIC_NUMBER);
@@ -44,7 +44,7 @@ int readFile(char *fileName, pgm *pgmStruct)
 	/* if it fails, return error code        */
 	if (inputFile == NULL)
 	{
-		printf("ERROR: Bad File Name (%s)\n", fileName);
+		printf("ERROR: Bad File Name (%s)", fileName);
 		exit(EXIT_BAD_INPUT_FILE);
 	}
 
@@ -77,7 +77,7 @@ int readFile(char *fileName, pgm *pgmStruct)
 			fclose(inputFile);
 
 			/* print an error message */
-			printf("ERROR: Bad Comment Line (%s)\n", fileName);	
+			printf("ERROR: Bad Comment Line (%s)", fileName);	
 		
 			/* and return            */
 			exit(EXIT_BAD_COMMENT_LINE);
@@ -110,7 +110,7 @@ int readFile(char *fileName, pgm *pgmStruct)
 		fclose(inputFile);
 
 		/* print an error message */
-		printf("ERROR: Bad Dimensions (%s)\n", fileName);	
+		printf("ERROR: Bad Dimensions (%s)", fileName);	
 		
 		/* and return                    */
 		exit(EXIT_BAD_DIMENSIONS);
@@ -125,7 +125,7 @@ int readFile(char *fileName, pgm *pgmStruct)
 		fclose(inputFile);
 
 		/* print an error message */
-		printf("ERROR: Bad Max Gray Value (%s)\n", fileName);	
+		printf("ERROR: Bad Max Gray Value (%s)", fileName);	
 		
 		/* and return                    */
 		exit(EXIT_BAD_MAX_GRAY_VALUE);
@@ -146,7 +146,7 @@ int readFile(char *fileName, pgm *pgmStruct)
 		fclose(inputFile);
 
 		/* print an error message */
-		printf("ERROR: Image Malloc Failed\n");	
+		printf("ERROR: Image Malloc Failed");	
 		
 		/* return error code             */
 		exit(EXIT_IMAGE_MALLOC_FAILED);
@@ -170,7 +170,7 @@ int readFile(char *fileName, pgm *pgmStruct)
 				free(pgmStruct->imageData);
 
 				/* print error message */
-				printf("ERROR: Bad Data (%s)\n", fileName);
+				printf("ERROR: Bad Data (%s)", fileName);
 
 				/* exit with error code */
 				exit(EXIT_BAD_DATA);
@@ -188,7 +188,7 @@ int readFile(char *fileName, pgm *pgmStruct)
 				fclose(inputFile);
 
 				/* print error message   */
-				printf("ERROR: Bad Gray Value\n");	
+				printf("ERROR: Bad Gray Value");	
 			
 				/* and return            */
 				return EXIT_MISCELLANEOUS;

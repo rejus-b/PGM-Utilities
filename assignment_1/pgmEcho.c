@@ -47,16 +47,10 @@ int main(int argc, char **argv)
 	/* main() */
 	/* check for correct number of arguments */
 
-	// if (argc == 1)
-	// { /* no user args */
-	// 	printf("ERROR: Miscellaneous (No arguements given)\n");
-	// 	exit(EXIT_MISCELLANEOUS);
-	// }
-
 	if (argc != 3)	
 		{ /* wrong arg count */
 		/* print an error message        */
-		printf("ERROR: Bad Argument Count\n");
+		printf("ERROR: Bad Argument Count");
 		/* and return an error code      */
 		return EXIT_WRONG_ARG_COUNT;
 		} /* wrong arg count */
@@ -74,7 +68,7 @@ int main(int argc, char **argv)
 	if ((readFile(argv[1], pgmStruct) == 0 ) && (writeFile(argv[2], pgmStruct) == 0))
 	{
 		/* If it works print 'ECHOED'*/
-		printf("ECHOED\n");
+		printf("ECHOED");
 	}
 
 	/* at this point, we are done and can exit with a success code */

@@ -51,10 +51,10 @@ int b2a(pgm *pgmStruct, char *fileName)
 				free(pgmStruct->imageData);
 
 				/* print error message   */
-				printf("ERROR: Output Failed (%s)\n", fileName);	
+				printf("ERROR: Output Failed (%s)", fileName);	
 
 				/* return an error code  */
-				return EXIT_OUTPUT_FAILED;
+				exit(EXIT_OUTPUT_FAILED);
 				} /* data write failed   */
 		} /* per gray value */
 	
