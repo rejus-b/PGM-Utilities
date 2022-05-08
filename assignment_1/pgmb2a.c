@@ -41,6 +41,14 @@ int main (int argc, char **argv)
         return EXIT_BAD_INPUT_FILE;
     }
 
+    /* check that the magic number is not already P5, which is the magic number for raw pgm */
+    if (pgmStruct->magic_number[1] != '5' && pgmStruct->magic_number[2] != '5')
+    {
+        /* return that the magic number was wrong */
+        printf("ERROR: Bad Magic Number (%s)", argv[1]);
+        return EXIT_BAD_MAGIC_NUMBER;
+    }
+
     /* check that the binary to ASCII conversion does not throw an error */
     if (b2a(pgmStruct, argv[2]) == 0)
     {

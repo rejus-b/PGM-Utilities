@@ -60,8 +60,8 @@ int main (int argc, char **argv)
         return EXIT_BAD_INPUT_FILE;
     }
 
-    /* check that the magic number is not already P5, which is the magic number for raw pgm */
-    if (pgmStruct->magic_number[1] != '2')
+    /* check that the magic number is not already P2, which is the magic number for raw pgm */
+    if (pgmStruct->magic_number[1] != '2' && pgmStruct->magic_number[2] != '2')
     {
         /* return that the magic number was wrong */
         printf("ERROR: Bad Magic Number (%s)", argv[1]);

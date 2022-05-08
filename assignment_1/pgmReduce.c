@@ -83,7 +83,7 @@ int main(int argc, char **argv)
     if (reduce(pgmStruct, reducedPgmStruct, argv[1], reduc_factor, argv[3]) == 0)
     {
         /* if no errors occur print 'REDUCED' */
-        printf("REDUCED\n");
+        printf("REDUCED");
     }
 
 
