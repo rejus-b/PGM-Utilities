@@ -159,28 +159,22 @@ int reduce(pgm *pgmStruct, pgm *reducedPgmStruct, char *inputFile, int reduction
 		for (int j=0; j < reducedPgmStruct->width ; j ++)
 		{
 			/* if the rows pass the total width skip to next row */          // REMOVING these out of bound reset checks made the first row fully work
-			// if (j > reducedPgmStruct->width)
+			// if (reducedPgmStruct->width - j < reductionFactor)
 			// {
-			// 	continue;
+			// 	count += count % j;
+			// 	break;
 			// }
 			
-			// reducedImage[i][j] = pgmStruct->imageData[newImageCount];
+
+			reducedPgmStruct->imageData[newImageCount] = pgmStruct->imageData[count];
+			count += reductionFactor;
+			newImageCount ++;
+		
 			
-			// reducedPgmStruct->imageData[count] = reducedImage[i][j];
-
-			reducedPgmStruct->imageData[count] = pgmStruct->imageData[newImageCount];
-
-			printf("%i \n", reducedPgmStruct->imageData[count]);
-			printf("%i\n", pgmStruct->imageData[newImageCount]);
-
-			count ++;
-			newImageCount += reductionFactor;
-
-			// printf("%i \n", reducedPgmStruct->imageData[count]);
-
-			// printf("%i\n", pgmStruct->imageData[count]);
 		}
 
+		
+		// count += reducedPgmStruct->width;
 	}
 
 	/* sets the reduced images magic number to the original magic number */
