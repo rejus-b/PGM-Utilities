@@ -44,15 +44,23 @@
 int main(int argc, char **argv)
 	{ 
 	/* main() */
-	/* check for correct number of arguments */
 
+	/* check for no input/output args */
+	if (argc == 1)
+	{/* print a bad usage message */
+		printf("Usage: %s inputImage.pgm outputImage.pgm", argv[0]);
+		/* return no errors */
+		return EXIT_NO_ERRORS;
+	}
+
+	/* check for correct number of arguments */
 	if (argc != 3)	
-		{ /* wrong arg count */
+	{ /* wrong arg count */
 		/* print an error message        */
 		printf("ERROR: Bad Argument Count");
 		/* and return an error code      */
 		return EXIT_WRONG_ARG_COUNT;
-		} /* wrong arg count */
+	} /* wrong arg count */
 	
 
 

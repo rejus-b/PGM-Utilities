@@ -19,6 +19,15 @@
 
 int main (int argc, char **argv)
 { /* main() */
+
+	/* check for no input/output args */
+	if (argc == 1)
+	{/* print a bad usage message */
+		printf("Usage: %s inputImage.pgm outputImage.pgm", argv[0]);
+		/* return no errors */
+		return EXIT_NO_ERRORS;
+	}
+    
     /* check for correct number of arguments */
     if (argc != 3)
 	{ /* wrong arg count */
