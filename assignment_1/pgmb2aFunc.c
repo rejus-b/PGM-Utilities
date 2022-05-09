@@ -38,6 +38,19 @@ int b2a(pgm *pgmStruct, char *fileName)
 			/* get next char's column        */
 			int nextCol = (nextGrayValue - pgmStruct->imageData + 1) % pgmStruct->width;
 
+			if (*nextGrayValue > (pgmStruct->width*pgmStruct->height))
+			{
+				/* free memory			*/
+				free(pgmStruct->commentLine);
+				free(pgmStruct->imageData);
+
+				/* print error message */
+				printf("ERROR: Bad Data (%s)", fileName);
+
+				/* exit with error code */
+				exit(EXIT_BAD_DATA);
+			}
+
 			/* write the entry & whitespace  */
 			nBytesWritten = fprintf(outputFile, "%d%c", *nextGrayValue, (nextCol ? ' ' : '\n') );
 
