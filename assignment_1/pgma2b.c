@@ -4,6 +4,9 @@
 /* library for memory routines     */
 #include <stdlib.h>
 
+/* header for including string operations	*/
+#include <string.h>
+
 /* header for pgmEcho				*/
 #include "pgmEcho.h"
 
@@ -45,7 +48,7 @@ int main (int argc, char **argv)
 		/* return no errors */
 		return EXIT_NO_ERRORS;
 	}
-    
+
     /* check for correct number of arguments */
     if (argc != 3)
 	{ /* wrong arg count */

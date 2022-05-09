@@ -4,6 +4,9 @@
 /* library for memory routines     */
 #include <stdlib.h>
 
+/* header for including string operations	*/
+#include <string.h>
+
 /* header for pgm structures		*/
 #include "pgmStruct.h"
 
@@ -33,7 +36,7 @@ int writeFile(char *fileName, pgm *pgmStruct)
 		printf("ERROR: Output Failed (%s)", fileName);	
 
 		/* return an error code          */
-		return EXIT_OUTPUT_FAILED;
+		exit(EXIT_OUTPUT_FAILED);
 		} /* NULL output file */
 
 

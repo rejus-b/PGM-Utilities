@@ -4,6 +4,9 @@
 /* library for memory routines     */
 #include <stdlib.h>
 
+/* header for including string operations	*/
+#include <string.h>
+
 /* header for pgmEcho				*/
 #include "pgmEcho.h"
 
@@ -27,7 +30,7 @@ int main (int argc, char **argv)
 		/* return no errors */
 		return EXIT_NO_ERRORS;
 	}
-    
+
     /* check for correct number of arguments */
     if (argc != 3)
 	{ /* wrong arg count */
@@ -51,7 +54,7 @@ int main (int argc, char **argv)
     }
 
     /* check that the magic number is not already P5, which is the magic number for raw pgm */
-    if (pgmStruct->magic_number[1] != '5' && pgmStruct->magic_number[2] != '5')
+    if (pgmStruct->magic_number[0] != '5' && pgmStruct->magic_number[1] != '5')
     {
         /* return that the magic number was wrong */
         printf("ERROR: Bad Magic Number (%s)", argv[1]);

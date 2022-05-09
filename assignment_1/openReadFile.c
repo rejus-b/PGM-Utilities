@@ -4,6 +4,9 @@
 /* library for memory routines     */
 #include <stdlib.h>
 
+/* header for including string operations	*/
+#include <string.h>
+
 /* header for pgm structures		*/
 #include "pgmStruct.h"
 
@@ -64,13 +67,12 @@ int readFile(char *fileName, pgm *pgmStruct)
 	if (nextChar == '#')
 		{ /* comment line                */
 		/* allocate buffer               */
-		pgmStruct->commentLine = (char *) malloc(MAX_COMMENT_LINE_LENGTH);
+		pgmStruct->commentLine = (char *) malloc(MAX_COMMENT_LINE_LENGTH +2 );
 		/* fgets() reads a line          */
 		/* capture return value          */
-		char *commentString = fgets(pgmStruct->commentLine, MAX_COMMENT_LINE_LENGTH, inputFile);
-
+		char *commentString = fgets(pgmStruct->commentLine, MAX_COMMENT_LINE_LENGTH + 2, inputFile);
 		/* NULL means failure            */
-		if (commentString == NULL)
+		if (commentString == NULL || strlen(commentString) > 128)
 			{ /* NULL comment read   */
 			/* free memory           */
 			free(pgmStruct->commentLine);
@@ -198,8 +200,8 @@ int readFile(char *fileName, pgm *pgmStruct)
 			/* set the pixel value           */
 			*nextGrayValue = (unsigned char) grayValue;
 			} /* per gray value */
-			
 		}
+		
 	/* if the magic number is binary read in binary data */
 	else if (pgmStruct->magic_number[1] == '5'){
 		fread(pgmStruct->imageData, sizeof(unsigned char), pgmStruct->width * pgmStruct->height, inputFile);

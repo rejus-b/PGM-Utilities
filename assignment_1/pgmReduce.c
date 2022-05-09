@@ -105,29 +105,6 @@ int reduce(pgm *pgmStruct, pgm *reducedPgmStruct, char *inputFile, int reduction
 {
 /* reduce() */
 
-/* 12 MOD 5 = 2
-        MY CURRENT IDEA : convert binary files to ASCII first then I can read via the gray values and then rewrite it skipping certain data points
-                            this could be achieved possibly by e.g. rewriting the pgmStruct-> ImageData to only include set points
-                            or make a custom openWriteFile that only writes certain points 
-							
-			I realise the previous idea might be much harder to implement based off the fact we also deal with binary files, writing specific parts
-				of these is not the same as with ASCII. While I could convert the file to ASCII then use pgmb2a this would be very inefficient code
-				and/or would have me restructure my whole pgmUtilities to allow this without actually making files.
-				
-			So I suppose in the end im going to have to use the 2D array approach and just restructure image data to only have the required data */
-
-	//printf(" %i ", pgmStruct->imageData[2]);
- 
-
-	/* logic is that you create a new array for a secondary imageData set. 
-		Now you calculat the width/height for this new imageData set with formula : (oldWidth  + factor -1) / factor 
-
-		iterate over the old image data traversing n+factor, base case n=0 to get the imageData[x] that translates to the new imageData set[x] 
-	*/
-
-
-
-
 	/* calcualting the size of the new pgm file */
 	reducedPgmStruct->width = (pgmStruct->width + reductionFactor -1) / reductionFactor;
 	reducedPgmStruct->height = (pgmStruct->height + reductionFactor -1) / reductionFactor;
@@ -136,16 +113,41 @@ int reduce(pgm *pgmStruct, pgm *reducedPgmStruct, char *inputFile, int reduction
 	long nImageBytes = reducedPgmStruct->width * reducedPgmStruct->height * sizeof(unsigned char);
 	reducedPgmStruct -> imageData = (unsigned char *) malloc(nImageBytes);
 
+	int reducedImage [reducedPgmStruct->width][reducedPgmStruct->height];
 
+	int subCount = 0;
 
+	for (int i = 0; i < reducedPgmStruct->width; i++)
+	{
+		subCount = pgmStruct->width * reductionFactor * i;
+		for (int j = 0; j < reducedPgmStruct->height; j++)
+		{			
+			reducedImage[i][j] = pgmStruct->imageData[subCount];		
 
-	/* sets the reduced images magic number to the original magic number */
+			subCount += reductionFactor;
+
+		}
+	}
+
+	// /* sets the reduced images magic number to the original magic number */
 	reducedPgmStruct->magic_number[0] = pgmStruct->magic_number[0];
 	reducedPgmStruct->magic_number[1] = pgmStruct->magic_number[1];
 
-	// printf("%i\n", reducedImage[reducedPgmStruct->width][reducedPgmStruct->height]);
+	printf("%i", reducedImage[0][1]);
 
-	// IMPORTANT: I believe reducedPgmStruct is incomplete since passing along pgmStruct allows the file to be written to
+
+	
+	int writeToCount = 0;
+	for (int i = 0; i < reducedPgmStruct->height; i++)
+	{
+		for (int j = 0; j < reducedPgmStruct->width; j++)
+		{
+			reducedPgmStruct->imageData[writeToCount] = reducedImage[i][j];
+			writeToCount ++;
+		}
+
+	}
+
 	writeFile(outputFile, reducedPgmStruct);
 
 
