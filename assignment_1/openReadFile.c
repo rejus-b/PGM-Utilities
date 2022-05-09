@@ -68,6 +68,7 @@ int readFile(char *fileName, pgm *pgmStruct)
 		/* fgets() reads a line          */
 		/* capture return value          */
 		char *commentString = fgets(pgmStruct->commentLine, MAX_COMMENT_LINE_LENGTH, inputFile);
+
 		/* NULL means failure            */
 		if (commentString == NULL)
 			{ /* NULL comment read   */
@@ -197,6 +198,7 @@ int readFile(char *fileName, pgm *pgmStruct)
 			/* set the pixel value           */
 			*nextGrayValue = (unsigned char) grayValue;
 			} /* per gray value */
+			
 		}
 	/* if the magic number is binary read in binary data */
 	else if (pgmStruct->magic_number[1] == '5'){
