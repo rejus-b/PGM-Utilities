@@ -4,6 +4,9 @@
 /* library for memory routines     */
 #include <stdlib.h>
 
+/* header for including string operations	*/
+#include <string.h>
+
 /* header for pgm structures		*/
 #include "pgmStruct.h"
 
@@ -78,6 +81,19 @@ int main(int argc, char **argv)
         printf("ERROR: Bad File Name (%s)", argv[1]);
         return EXIT_BAD_INPUT_FILE;
     }
+
+	// const char *fileName = argv[3];
+	// const char* extension = ".pgm";
+	// int length = strlen(fileName);
+	// const char* fileType = &fileName[length - 4];
+	// int check = strcmp(extension, fileType);
+	// if (check != 0)
+	// {
+    //     /* exit the code */
+    //     printf("ERROR: Output Failed (%s)", fileName);
+    //     return EXIT_OUTPUT_FAILED;		
+	// }
+
 
     /* this checks that the integer factor is valid (less than 1, or greater than dimensions) */
 	if (reduc_factor < 1 || reduc_factor  > pgmStruct->width || reduc_factor  > pgmStruct->height)

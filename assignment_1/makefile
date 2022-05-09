@@ -1,8 +1,8 @@
 CC=gcc
 CCFLAGS = -g -std=c99 -Wall -Werror
-MAINS = pgmEcho.o pgmComp.o pgma2b.o pgmb2a.o pgmReduce.o pgmTile.o
+MAINS = pgmEcho.o pgmComp.o pgma2b.o pgmb2a.o pgmReduce.o pgmTile.o pgmAssemble.o
 MODULES = openReadFile.o openWriteFile.o pgma2bFunc.o pgmb2aFunc.o pgmStruct.o
-TARGETS = pgmEcho pgmComp pgma2b pgmb2a pgmReduce pgmTile
+TARGETS = pgmEcho pgmComp pgma2b pgmb2a pgmReduce pgmTile pgmAssemble
 
 all:	${TARGETS}
 
@@ -26,6 +26,9 @@ pgmReduce:	pgmReduce.o ${MODULES}
 pgmTile:	pgmTile.o ${MODULES}
 	${CC} ${CCFLAGS} -o pgmTile pgmTile.o ${MODULES}
 
+pgmAssemble:	pgmAssemble.o ${MODULES}
+	${CC} ${CCFLAGS} -o pgmAssemble pgmAssemble.o ${MODULES}
+
 
 
 pgmEcho.o:	pgmEcho.c	pgmEcho.h	openReadFile.o	openWriteFile.o
@@ -45,6 +48,9 @@ pgmReduce.o:	pgmReduce.c	pgmStruct.h	openReadFile.h	openWriteFile.h
 
 pgmTile.o:	pgmTile.c	pgmStruct.h	openReadFile.h	openWriteFile.h 
 	${CC} -c ${CCFLAGS} -o pgmTile.o	pgmTile.c
+
+pgmAssemble.o:	pgmAssemble.c	pgmStruct.h	openReadFile.h	openWriteFile.h 
+	${CC} -c ${CCFLAGS} -o pgmAssemble.o	pgmAssemble.c
 
 
 
