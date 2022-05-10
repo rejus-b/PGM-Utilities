@@ -221,7 +221,7 @@ int readFile(char *fileName, pgm *pgmStruct)
 					// } /* per gray */
 				}
 			}
-			printf("\n %i \n ", pgmStruct->imageData[1][1]);  		// This line doesnt work with [0][0] as it expects an int but we are reading in ints
+			// printf("\n %i \n ", pgmStruct->imageData[1][1]);  		// This line doesnt work with [0][0] as it expects an int but we are reading in ints
 		}
 
 

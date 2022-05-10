@@ -45,7 +45,7 @@ int writeFile(char *fileName, pgm *pgmStruct)
 
 
 	/* allocate the data pointer             */
-	long nImageBytes = pgmStruct->width * pgmStruct->height * sizeof(unsigned char);
+	// long nImageBytes = pgmStruct->width * pgmStruct->height * sizeof(unsigned char);
 
 	/* check that dimensions wrote correctly */
 	if (nBytesWritten < 0)
@@ -64,32 +64,38 @@ int writeFile(char *fileName, pgm *pgmStruct)
         /* pointer for efficient write code      */
 
 	/* run the code that prints in ASCII if the magic number is 2	*/
-	if (pgmStruct->magic_number[1] == '2'){
+	if (pgmStruct->magic_number[1] == '2')
+	{
+		for (int i = 0; i < pgmStruct->height; i++)
+		{
+			for (int j = 0; j < pgmStruct->width; j++)
+			{
 
+				// for (unsigned char **nextGrayValue = pgmStruct->imageData; nextGrayValue < pgmStruct->imageData + nImageBytes; nextGrayValue++)
+				// { /* per gray value */
+					// int nextCol = (nextGrayValue - pgmStruct->imageData + 1) % pgmStruct->width;
+					int nextCol = pgmStruct->imageData[i][j];
 
-		for (unsigned char **nextGrayValue = pgmStruct->imageData; nextGrayValue < pgmStruct->imageData + nImageBytes; nextGrayValue++)
-		{ /* per gray value */
-			/* get next char's column        */
+					/* write the entry & whitespace  */
+					nBytesWritten = fprintf(outputFile, "%d%c", pgmStruct->imageData[i][j], (nextCol ? ' ' : '\n') );
 
-			int nextCol = (nextGrayValue - pgmStruct->imageData + 1) % pgmStruct->width;
+					/* sanity check on write         */
+					if (nBytesWritten < 0)
+						{ /* data write failed   */
+						/* free memory           */
+						free(pgmStruct->commentLine);
+						free(pgmStruct->imageData);
 
-			/* write the entry & whitespace  */
-			nBytesWritten = fprintf(outputFile, "%d%c", **nextGrayValue, (nextCol ? ' ' : '\n') );
+						/* print error message   */
+						printf("ERROR: Output Failed (%s)", fileName);	
 
-			/* sanity check on write         */
-			if (nBytesWritten < 0)
-				{ /* data write failed   */
-				/* free memory           */
-				free(pgmStruct->commentLine);
-				free(pgmStruct->imageData);
-
-				/* print error message   */
-				printf("ERROR: Output Failed (%s)", fileName);	
-
-				/* return an error code  */
-				return EXIT_OUTPUT_FAILED;
-				} /* data write failed   */
-		} /* per gray value */
+						/* return an error code  */
+						return EXIT_OUTPUT_FAILED;
+						} /* data write failed   */
+				// } /* per gray value */
+			}
+		}
+	}	
 
 
 
@@ -119,7 +125,7 @@ int writeFile(char *fileName, pgm *pgmStruct)
 		// 		return EXIT_OUTPUT_FAILED;
 		// 		} /* data write failed   */
 		// } /* per gray value */
-	} 
+	// } 
 
 	/* if the magic number is binary then write the data in binary format	*/
 	else if (pgmStruct->magic_number[1] == '5')
