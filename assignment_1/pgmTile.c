@@ -65,7 +65,7 @@ int main(int argc, char **argv)
 	if (check != 0)
 	{
         /* exit the code */
-        printf("ERROR: Miscellaneous ()");
+        printf("ERROR: Miscellaneous (Bad tile layout)");
 		printf("\n %s \n", fileType);
         exit(EXIT_MISCELLANEOUS);		
 	}
