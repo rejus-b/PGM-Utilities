@@ -172,7 +172,7 @@ int reduce(pgm *pgmStruct, pgm *reducedPgmStruct, char *inputFile, int reduction
 
 	}
 
-	/* write to an output file the reduced iamge */
+	/* write to an output file the reduced image */
 	writeFile(outputFile, reducedPgmStruct);
 
 	/* return on success */

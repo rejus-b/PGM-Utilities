@@ -62,7 +62,7 @@ int main (int argc, char **argv)
     }
 
     /* check that the binary to ASCII conversion does not throw an error */
-    if (b2a(pgmStruct, argv[2]) == 0)
+    if (b2a(pgmStruct, argv[2], argv[1]) == 0)
     {
         /* return that it was sucessfully converted */
         printf("CONVERTED");

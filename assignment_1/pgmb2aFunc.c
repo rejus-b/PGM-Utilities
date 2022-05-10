@@ -20,7 +20,7 @@
 #include "pgma2bFunc.h"
 
 
-int b2a(pgm *pgmStruct, char *fileName)
+int b2a(pgm *pgmStruct, char *fileName, char *inputFileName)
 { /* b2a() */
     /* open the outputfile in a writeable format */
     FILE *outputFile = fopen (fileName, "w");
@@ -45,7 +45,7 @@ int b2a(pgm *pgmStruct, char *fileName)
 				free(pgmStruct->imageData);
 
 				/* print error message */
-				printf("ERROR: Bad Data (%s)", fileName);
+				printf("ERROR: Bad Data (%s)", inputFileName);
 
 				/* exit with error code */
 				exit(EXIT_BAD_DATA);

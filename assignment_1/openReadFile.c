@@ -205,6 +205,18 @@ int readFile(char *fileName, pgm *pgmStruct)
 	/* if the magic number is binary read in binary data */
 	else if (pgmStruct->magic_number[1] == '5'){
 		fread(pgmStruct->imageData, sizeof(unsigned char), pgmStruct->width * pgmStruct->height, inputFile);
+		if (fgetc(inputFile) != EOF)
+		{
+			/* free memory			*/
+			free(pgmStruct->commentLine);
+			free(pgmStruct->imageData);
+
+			/* print error message */
+			printf("ERROR: Bad Data (%s)", fileName);
+
+			/* exit with error code */
+			exit(EXIT_BAD_DATA);
+		}
 	}
 
 

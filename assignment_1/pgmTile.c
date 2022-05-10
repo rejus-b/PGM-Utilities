@@ -16,6 +16,9 @@
 /* library for memory routines     */
 #include <stdlib.h>
 
+/* header for including string operations	*/
+#include <string.h>
+
 /* header for pgm structures		*/
 #include "pgmStruct.h"
 
@@ -52,6 +55,21 @@ int main(int argc, char **argv)
 		/* and return an error code      */
 		return EXIT_WRONG_ARG_COUNT;
 		} /* wrong arg count */
+
+
+	const char *fileName = argv[3];
+	const char* extension = "_<row>_<column>.pgm";
+	int length = strlen(fileName);
+	const char* fileType = &fileName[length - 19];
+	int check = strcmp(extension, fileType);
+	if (check != 0)
+	{
+        /* exit the code */
+        printf("ERROR: Bad Layout");
+		printf("\n %s \n", fileType);
+        return EXIT_BAD_LAYOUT;		
+	}
+
 
 	/* malloc for a structure then pass it into pgmStructInit() */ 
 	pgm *pgmStruct = NULL;
