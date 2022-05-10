@@ -24,7 +24,7 @@ unsigned int width, height;
 unsigned int maxGray;
 
 /* pointer to raw image data	         */
-unsigned char *imageData;
+unsigned char **imageData;
 
 } pgm;
 
