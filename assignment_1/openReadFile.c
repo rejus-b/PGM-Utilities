@@ -136,7 +136,7 @@ int readFile(char *fileName, pgm *pgmStruct)
 	
 
 	/* allocate the data pointer             */
-	long nImageBytes = pgmStruct->width * pgmStruct->height * sizeof(unsigned char);
+	// long nImageBytes = pgmStruct->width * pgmStruct->height * sizeof(unsigned char);
 	// pgmStruct->imageData = (unsigned char **) malloc(nImageBytes);
 
 	
@@ -174,12 +174,12 @@ int readFile(char *fileName, pgm *pgmStruct)
 	{
 		for (int i = 0; i < pgmStruct->height; i++)
 		{
-			// for (int j = 0; j < pgmStruct->width; j++)
-			// {
-				/* pointer for efficient read code       */
-				for (unsigned char **nextGrayValue = pgmStruct->imageData; nextGrayValue < pgmStruct->imageData + nImageBytes; nextGrayValue++)
-					{ /* per gray value */
-					/* read next value               */
+			for (int j = 0; j < pgmStruct->width; j++)
+			{
+				// /* pointer for efficient read code       */
+				// for (unsigned char nextGrayValue = pgmStruct->imageData[i][j]; nextGrayValue < pgmStruct->imageData[i][j] + nImageBytes; nextGrayValue++)
+				// 	{ /* per gray value */
+				// 	/* read next value               */
 					int grayValue = -1;
 					int scanCount = fscanf(inputFile, " %u", &grayValue);
 
@@ -216,12 +216,14 @@ int readFile(char *fileName, pgm *pgmStruct)
 						} /* fscanf failed */
 
 					/* set the pixel value           */
-					**nextGrayValue = (unsigned char) grayValue;
-					} /* per gray */
-				// }
+					// nextGrayValue = (unsigned char) grayValue;
+					pgmStruct->imageData[i][j] = (unsigned char) grayValue;
+					// } /* per gray */
+				}
 			}
+			printf("\n %i \n ", pgmStruct->imageData[1][1]);  		// This line doesnt work with [0][0] as it expects an int but we are reading in ints
 		}
-		// printf("\n %s \n ", pgmStruct->imageData[0]);  		// This line doesnt work with [0][0] as it expects an int but we are reading in ints
+
 
 
 		
