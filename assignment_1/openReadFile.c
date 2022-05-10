@@ -136,7 +136,7 @@ int readFile(char *fileName, pgm *pgmStruct)
 	
 
 	/* allocate the data pointer             */
-	// long nImageBytes = pgmStruct->width * pgmStruct->height * sizeof(unsigned char);
+	long nImageBytes = pgmStruct->width * pgmStruct->height * sizeof(unsigned char);
 	// pgmStruct->imageData = (unsigned char **) malloc(nImageBytes);
 
 	
@@ -144,15 +144,13 @@ int readFile(char *fileName, pgm *pgmStruct)
 	/*
 		for mallocing the 2d array do a single hard malloc for the height or row, and then loop through the rest of the data and single array mallocs for each 
 			sub array which will store the 2D array data 
-	/*
+	*/
 
-	for (int i = 0; i < pgmStruct->height; i++)
+	pgmStruct->imageData = (unsigned char **) malloc(pgmStruct->height * sizeof(unsigned char*));
+
+	for (int i = 0; i < pgmStruct->width; i++)
 	{
-		pgmStruct->
-		for (int j = 0; j < pgmStruct->width; j++)
-		{
-
-		}
+		pgmStruct->imageData[i] = (unsigned char *) malloc (pgmStruct->width * sizeof(unsigned char));
 	}
 
 
@@ -172,59 +170,104 @@ int readFile(char *fileName, pgm *pgmStruct)
 		exit(EXIT_IMAGE_MALLOC_FAILED);
 		} /* malloc failed */
 
-	
-
 	if (pgmStruct->magic_number[1] == '2'){
 
+		for (int i = 0; i < pgmStruct->height; i++){
+
+			/* pointer for efficient read code       */
+			for (unsigned char **nextGrayValue = pgmStruct->imageData; nextGrayValue < pgmStruct->imageData + nImageBytes; nextGrayValue++)
+				{ /* per gray value */
+				/* read next value               */
+				int grayValue = -1;
+				int scanCount = fscanf(inputFile, " %u", &grayValue);
+
+				/* sanity check too little data		*/
+				if (scanCount > (pgmStruct->width*pgmStruct->height))
+				{
+					/* free memory			*/
+					free(pgmStruct->commentLine);
+					free(pgmStruct->imageData);
+
+					/* print error message */
+					printf("ERROR: Bad Data (%s)", fileName);
+
+					/* exit with error code */
+					exit(EXIT_BAD_DATA);
+				}
 
 
+				/* sanity check	                 */
+				if ((scanCount != 1) || (grayValue < 0) || (grayValue > 255))
+					{ /* fscanf failed */
+					/* free memory           */
+					free(pgmStruct->commentLine);
+					free(pgmStruct->imageData);	
 
+					/* close file            */
+					fclose(inputFile);
 
+					/* print error message   */
+					printf("ERROR: Bad Gray Value");	
+				
+					/* and return            */
+					return EXIT_MISCELLANEOUS;
+					} /* fscanf failed */
 
-
-		// /* pointer for efficient read code       */
-		// for (unsigned char *nextGrayValue = pgmStruct->imageData; nextGrayValue < pgmStruct->imageData + nImageBytes; nextGrayValue++)
-		// 	{ /* per gray value */
-		// 	/* read next value               */
-		// 	int grayValue = -1;
-		// 	int scanCount = fscanf(inputFile, " %u", &grayValue);
-
-		// 	/* sanity check too little data		*/
-		// 	if (scanCount > (pgmStruct->width*pgmStruct->height))
-		// 	{
-		// 		/* free memory			*/
-		// 		free(pgmStruct->commentLine);
-		// 		free(pgmStruct->imageData);
-
-		// 		/* print error message */
-		// 		printf("ERROR: Bad Data (%s)", fileName);
-
-		// 		/* exit with error code */
-		// 		exit(EXIT_BAD_DATA);
-		// 	}
-
-
-		// 	/* sanity check	                 */
-		// 	if ((scanCount != 1) || (grayValue < 0) || (grayValue > 255))
-		// 		{ /* fscanf failed */
-		// 		/* free memory           */
-		// 		free(pgmStruct->commentLine);
-		// 		free(pgmStruct->imageData);	
-
-		// 		/* close file            */
-		// 		fclose(inputFile);
-
-		// 		/* print error message   */
-		// 		printf("ERROR: Bad Gray Value");	
-			
-		// 		/* and return            */
-		// 		return EXIT_MISCELLANEOUS;
-		// 		} /* fscanf failed */
-
-		// 	/* set the pixel value           */
-		// 	*nextGrayValue = (unsigned char) grayValue;
-		// 	} /* per gray value */
+				/* set the pixel value           */
+				**nextGrayValue = (unsigned char) grayValue;
+				} /* per gray */
+			}
 		}
+		// printf("\n %s \n ", pgmStruct->imageData[0]);  		// This line doesnt work with [0][0] as it expects an int but we are reading in ints
+
+
+		
+															/* OLD 1D ARRAY IMAGE DATA READ */ 
+	// if (pgmStruct->magic_number[1] == '2'){
+
+	// 	/* pointer for efficient read code       */
+	// 	for (unsigned char *nextGrayValue = pgmStruct->imageData; nextGrayValue < pgmStruct->imageData + nImageBytes; nextGrayValue++)
+	// 		{ /* per gray value */
+	// 		/* read next value               */
+	// 		int grayValue = -1;
+	// 		int scanCount = fscanf(inputFile, " %u", &grayValue);
+
+	// 		/* sanity check too little data		*/
+	// 		if (scanCount > (pgmStruct->width*pgmStruct->height))
+	// 		{
+	// 			/* free memory			*/
+	// 			free(pgmStruct->commentLine);
+	// 			free(pgmStruct->imageData);
+
+	// 			/* print error message */
+	// 			printf("ERROR: Bad Data (%s)", fileName);
+
+	// 			/* exit with error code */
+	// 			exit(EXIT_BAD_DATA);
+	// 		}
+
+
+	// 		/* sanity check	                 */
+	// 		if ((scanCount != 1) || (grayValue < 0) || (grayValue > 255))
+	// 			{ /* fscanf failed */
+	// 			/* free memory           */
+	// 			free(pgmStruct->commentLine);
+	// 			free(pgmStruct->imageData);	
+
+	// 			/* close file            */
+	// 			fclose(inputFile);
+
+	// 			/* print error message   */
+	// 			printf("ERROR: Bad Gray Value");	
+			
+	// 			/* and return            */
+	// 			return EXIT_MISCELLANEOUS;
+	// 			} /* fscanf failed */
+
+	// 		/* set the pixel value           */
+	// 		*nextGrayValue = (unsigned char) grayValue;
+	// 		} /* per gray value */
+	//	}
 		
 	/* if the magic number is binary read in binary data */
 	else if (pgmStruct->magic_number[1] == '5'){
