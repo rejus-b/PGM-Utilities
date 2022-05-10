@@ -65,9 +65,9 @@ int main(int argc, char **argv)
 	if (check != 0)
 	{
         /* exit the code */
-        printf("ERROR: Bad Layout");
+        printf("ERROR: Miscellaneous ()");
 		printf("\n %s \n", fileType);
-        return EXIT_BAD_LAYOUT;		
+        exit(EXIT_MISCELLANEOUS);		
 	}
 
 
