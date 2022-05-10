@@ -66,14 +66,15 @@ int writeFile(char *fileName, pgm *pgmStruct)
 	/* run the code that prints in ASCII if the magic number is 2	*/
 	if (pgmStruct->magic_number[1] == '2'){
 
-		for (unsigned char *nextGrayValue = pgmStruct->imageData; nextGrayValue < pgmStruct->imageData + nImageBytes; nextGrayValue++)
+
+		for (unsigned char **nextGrayValue = pgmStruct->imageData; nextGrayValue < pgmStruct->imageData + nImageBytes; nextGrayValue++)
 		{ /* per gray value */
 			/* get next char's column        */
 
 			int nextCol = (nextGrayValue - pgmStruct->imageData + 1) % pgmStruct->width;
 
 			/* write the entry & whitespace  */
-			nBytesWritten = fprintf(outputFile, "%d%c", *nextGrayValue, (nextCol ? ' ' : '\n') );
+			nBytesWritten = fprintf(outputFile, "%d%c", **nextGrayValue, (nextCol ? ' ' : '\n') );
 
 			/* sanity check on write         */
 			if (nBytesWritten < 0)
@@ -89,6 +90,35 @@ int writeFile(char *fileName, pgm *pgmStruct)
 				return EXIT_OUTPUT_FAILED;
 				} /* data write failed   */
 		} /* per gray value */
+
+
+
+
+
+
+		// for (unsigned char *nextGrayValue = pgmStruct->imageData; nextGrayValue < pgmStruct->imageData + nImageBytes; nextGrayValue++)
+		// { /* per gray value */
+		// 	/* get next char's column        */
+
+		// 	int nextCol = (nextGrayValue - pgmStruct->imageData + 1) % pgmStruct->width;
+
+		// 	/* write the entry & whitespace  */
+		// 	nBytesWritten = fprintf(outputFile, "%d%c", *nextGrayValue, (nextCol ? ' ' : '\n') );
+
+		// 	/* sanity check on write         */
+		// 	if (nBytesWritten < 0)
+		// 		{ /* data write failed   */
+		// 		/* free memory           */
+		// 		free(pgmStruct->commentLine);
+		// 		free(pgmStruct->imageData);
+
+		// 		/* print error message   */
+		// 		printf("ERROR: Output Failed (%s)", fileName);	
+
+		// 		/* return an error code  */
+		// 		return EXIT_OUTPUT_FAILED;
+		// 		} /* data write failed   */
+		// } /* per gray value */
 	} 
 
 	/* if the magic number is binary then write the data in binary format	*/

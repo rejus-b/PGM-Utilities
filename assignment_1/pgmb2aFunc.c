@@ -32,13 +32,13 @@ int b2a(pgm *pgmStruct, char *fileName, char *inputFileName)
     long nImageBytes = pgmStruct->width * pgmStruct->height * sizeof(unsigned char);
 
     /* pointer for efficient read code       */
-		for (unsigned char *nextGrayValue = pgmStruct->imageData; nextGrayValue < pgmStruct->imageData + nImageBytes; nextGrayValue++)
+		for (unsigned char **nextGrayValue = pgmStruct->imageData; nextGrayValue < pgmStruct->imageData + nImageBytes; nextGrayValue++)
 		{ /* per gray value */
         
 			/* get next char's column        */
 			int nextCol = (nextGrayValue - pgmStruct->imageData + 1) % pgmStruct->width;
 
-			if (*nextGrayValue > (pgmStruct->width*pgmStruct->height))
+			if (**nextGrayValue > (pgmStruct->width*pgmStruct->height))
 			{
 				/* free memory			*/
 				free(pgmStruct->commentLine);
@@ -52,7 +52,7 @@ int b2a(pgm *pgmStruct, char *fileName, char *inputFileName)
 			}
 
 			/* write the entry & whitespace  */
-			nBytesWritten = fprintf(outputFile, "%d%c", *nextGrayValue, (nextCol ? ' ' : '\n') );
+			nBytesWritten = fprintf(outputFile, "%d%c", **nextGrayValue, (nextCol ? ' ' : '\n') );
 
 			/* sanity check on write         */
 			if (nBytesWritten < 0)
