@@ -281,7 +281,6 @@ int readFile(char *fileName, pgm *pgmStruct)
 		for (int i = 0; i < pgmStruct->height; i++)
 		{
 				fread(pgmStruct->imageData[i], sizeof(unsigned char), pgmStruct->width, inputFile);
-			
 		}
 		
 

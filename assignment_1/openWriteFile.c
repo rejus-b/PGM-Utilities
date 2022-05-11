@@ -97,11 +97,12 @@ int writeFile(char *fileName, pgm *pgmStruct)
 
 						/* return an error code  */
 						return EXIT_OUTPUT_FAILED;
-						} /* data write failed   */
-				// } /* per gray value */
+						// } /* data write failed   */
+					} /* per gray value */
+					
 			}
 		}
-	}	
+	}
 
 
 
@@ -136,8 +137,13 @@ int writeFile(char *fileName, pgm *pgmStruct)
 	/* if the magic number is binary then write the data in binary format	*/
 	else if (pgmStruct->magic_number[1] == '5')
 	{
-		fwrite(pgmStruct->imageData, sizeof(unsigned char), pgmStruct->width * pgmStruct->height, outputFile);
+		for (int i = 0; i < pgmStruct->height; i++)
+		{
+			fwrite(pgmStruct->imageData[i], sizeof(unsigned char), pgmStruct->width, outputFile);
+		}
+		
+		// fwrite(pgmStruct->imageData, sizeof(unsigned char), pgmStruct->width * pgmStruct->height, outputFile);
 	}
 
      return EXIT_NO_ERRORS;
-} /* writeFile() */
+}
