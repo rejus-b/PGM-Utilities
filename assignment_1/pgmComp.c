@@ -91,27 +91,35 @@ int main(int argc, char **argv)
 
 int equivalence(pgm *pgmStructFileOne, pgm *pgmStructFileTwo)
 { /* equivalence()	*/
+	/* check that the maxGray of the two input files is equivalent */
+	if (pgmStructFileOne->magic_number[0] != pgmStructFileTwo->magic_number[0])
+	{
+		// printf("ERROR: Miscellaneous (Magic Number Not Equivalent)");
+		return EXIT_MISCELLANEOUS;
+	}
 
 	/* check that the width of the two input files is equivalent */
 	if (pgmStructFileOne->width != pgmStructFileTwo->width )
 	{
-		printf("ERROR: Miscellaneous (Width Not Equivalent)");
+		// printf("ERROR: Miscellaneous (Width Not Equivalent)");
 		return EXIT_MISCELLANEOUS;
 	}
 
 	/* check that the height of the two input files is equivalent */
 	else if (pgmStructFileOne->height != pgmStructFileTwo->height)
 	{
-		printf("ERROR: Miscellaneous (Height Not Equivalent)");
+		// printf("ERROR: Miscellaneous (Height Not Equivalent)");
 		return EXIT_MISCELLANEOUS;
 	}
 
 	/* check that the maxGray of the two input files is equivalent */
 	else if (pgmStructFileOne->maxGray != pgmStructFileTwo->maxGray)
 	{
-		printf("ERROR: Miscellaneous (Max Gray Not Equivalent)");
+		// printf("ERROR: Miscellaneous (Max Gray Not Equivalent)");
 		return EXIT_MISCELLANEOUS;
 	}
+
+	
 
 	// /* allocate the data pointer for one structure, this does not need to be done twice as you only have to read the data pointer once            */ 
 	// long nImageBytes = pgmStructFileOne->width * pgmStructFileTwo->height * sizeof(unsigned char);
@@ -138,11 +146,13 @@ int equivalence(pgm *pgmStructFileOne, pgm *pgmStructFileTwo)
 
 	for (int i = 0; i < pgmStructFileOne->height; i++)
 	{
-		for (int j = 0; j < pgmStructFileTwo->width; j++)
+		for (int j = 0; j < pgmStructFileOne->width; j++)
 		{
+			printf("\n One %i \n", pgmStructFileOne->imageData[i][j]);
+			printf("\n Two %i \n", pgmStructFileTwo->imageData[i][j]);
 			if (pgmStructFileOne->imageData[i][j] != pgmStructFileTwo->imageData[i][j])
 			{
-				printf("ERROR: Miscellaneous (Image Data Not Equivalent)");
+				// printf("ERROR: Miscellaneous (Image Data Not Equivalent)");
 				return EXIT_MISCELLANEOUS;
 			}
 		}

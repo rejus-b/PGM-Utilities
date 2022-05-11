@@ -276,19 +276,34 @@ int readFile(char *fileName, pgm *pgmStruct)
 		
 	/* if the magic number is binary read in binary data */
 	else if (pgmStruct->magic_number[1] == '5'){
-		fread(pgmStruct->imageData, sizeof(unsigned char), pgmStruct->width * pgmStruct->height, inputFile);
-		if (fgetc(inputFile) != EOF)
+		// So do this by looping through the outer array first (height) and then for each column read through each inner array (width) and then fread the row into the outer array 
+
+		for (int i = 0; i < pgmStruct->height; i++)
 		{
-			/* free memory			*/
-			free(pgmStruct->commentLine);
-			free(pgmStruct->imageData);
-
-			/* print error message */
-			printf("ERROR: Bad Data (%s)", fileName);
-
-			/* exit with error code */
-			exit(EXIT_BAD_DATA);
+				fread(pgmStruct->imageData[i], sizeof(unsigned char), pgmStruct->width, inputFile);
+			
 		}
+		
+
+	
+
+	
+		
+
+
+		// fread(pgmStruct->imageData, sizeof(unsigned char), pgmStruct->width * pgmStruct->height, inputFile);
+		// if (fgetc(inputFile) != EOF)
+		// {
+		// 	/* free memory			*/
+		// 	free(pgmStruct->commentLine);
+		// 	free(pgmStruct->imageData);
+
+		// 	/* print error message */
+		// 	printf("ERROR: Bad Data (%s)", fileName);
+
+		// 	/* exit with error code */
+		// 	exit(EXIT_BAD_DATA);
+		// }
 	}
 
 
