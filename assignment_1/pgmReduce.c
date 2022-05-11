@@ -82,6 +82,7 @@ int main(int argc, char **argv)
         return EXIT_BAD_INPUT_FILE;
     }
 
+
 	const char *fileName = argv[3];
 	const char* extension = ".pgm";
 	int length = strlen(fileName);
@@ -125,24 +126,56 @@ int reduce(pgm *pgmStruct, pgm *reducedPgmStruct, char *inputFile, int reduction
 	reducedPgmStruct->width = (pgmStruct->width + reductionFactor -1) / reductionFactor;
 	reducedPgmStruct->height = (pgmStruct->height + reductionFactor -1) / reductionFactor;
 
-	int subCount = 0;
-	int count = 0;
-	/* loops through the reduced image */
-	for (int i = 0; i < reducedPgmStruct->height; i++)
+
+
+	reducedPgmStruct->imageData = (unsigned char **) malloc(reducedPgmStruct->height * sizeof(unsigned char*));
+
+	for (int i = 0; i < reducedPgmStruct->width; i++)
 	{
-		
-		for (int j = 0; j < reducedPgmStruct->width; j++)
+		reducedPgmStruct->imageData[i] = (unsigned char *) malloc(reducedPgmStruct->width * sizeof(unsigned char));
+	}
+	
+
+
+	// have seperate counts for the small image and reset when out of bounds, only increase the small image count when it reads a pixel
+
+
+
+	
+	int count = 0;
+	int subCount = 0;
+	/* loops through the reduced image */
+	for (int i = 0; i < pgmStruct->height; i++)
+	{
+		// int subCount = 0;
+		for (int j = 0; j < pgmStruct->width; j++)
 		{
-			if (subCount % reductionFactor == 0 && count % reductionFactor == 0)
+
+			printf("\n %i , %i\n", i, j);
+			if (i % reductionFactor == 0 && j % reductionFactor == 0)
 			{
-			/* assigns the reduced image data from the 2D array */
-			reducedPgmStruct->imageData[i][j] = pgmStruct->imageData[subCount][count];
-			/* increment the data to be read too */
+				// printf("\n %i , %i\n", count, subCount);
+				reducedPgmStruct->imageData[i][j] = pgmStruct->imageData[i][j];
+				subCount ++;
+				
+				
+				
 			}
-			// subCount += reductionFactor;
+
+
+			// if (subCount == reducedPgmStruct->width || count == reducedPgmStruct->height);
+			// {
+			// 	continue;
+			// }
+			
 		}
-		subCount ++;
-		count ++;
+
+			if (i % reductionFactor == 0)
+			{
+				count++;
+			}
+		
+		
 	}
 
 	reducedPgmStruct->magic_number[0] = pgmStruct->magic_number[0];

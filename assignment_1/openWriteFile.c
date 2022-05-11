@@ -66,7 +66,7 @@ int writeFile(char *fileName, pgm *pgmStruct)
 	/* run the code that prints in ASCII if the magic number is 2	*/
 	if (pgmStruct->magic_number[1] == '2')
 	{
-		/* loops through all the image data */
+		
 		for (int i = 0; i < pgmStruct->height; i++)
 		{
 			int colCount = 0;
