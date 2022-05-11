@@ -68,16 +68,22 @@ int writeFile(char *fileName, pgm *pgmStruct)
 	{
 		for (int i = 0; i < pgmStruct->height; i++)
 		{
+			int colCount = 0;
 			for (int j = 0; j < pgmStruct->width; j++)
 			{
+				
 
 				// for (unsigned char **nextGrayValue = pgmStruct->imageData; nextGrayValue < pgmStruct->imageData + nImageBytes; nextGrayValue++)
 				// { /* per gray value */
 					// int nextCol = (nextGrayValue - pgmStruct->imageData + 1) % pgmStruct->width;
-					int nextCol = pgmStruct->imageData[i][j];
+					// int nextCol = pgmStruct->imageData[i][j];
+					int nextCol = (colCount - pgmStruct->imageData[i][j] + 1) % pgmStruct->width;
 
 					/* write the entry & whitespace  */
 					nBytesWritten = fprintf(outputFile, "%d%c", pgmStruct->imageData[i][j], (nextCol ? ' ' : '\n') );
+
+					
+					colCount++;
 
 					/* sanity check on write         */
 					if (nBytesWritten < 0)
