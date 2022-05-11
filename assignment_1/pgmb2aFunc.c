@@ -25,48 +25,42 @@ int b2a(pgm *pgmStruct, char *fileName, char *inputFileName)
     /* open the outputfile in a writeable format */
     FILE *outputFile = fopen (fileName, "w");
 
-	/* write magic number, size & gray value */
-	size_t nBytesWritten = fprintf(outputFile, "P2\n%d %d\n%d\n", pgmStruct->width, pgmStruct->height, pgmStruct->maxGray);
+		/* write magic number, size & gray value */
+		// size_t nBytesWritten = fprintf(outputFile, "P2\n%d %d\n%d\n", pgmStruct->width, pgmStruct->height, pgmStruct->maxGray);
+		fprintf(outputFile, "P2\n%d %d\n%d\n", pgmStruct->width, pgmStruct->height, pgmStruct->maxGray);
 
     /* allocate the data pointer             */
-    long nImageBytes = pgmStruct->width * pgmStruct->height * sizeof(unsigned char);
+    // long nImageBytes = pgmStruct->width * pgmStruct->height * sizeof(unsigned char);
 
-    /* pointer for efficient read code       */
-		for (unsigned char **nextGrayValue = pgmStruct->imageData; nextGrayValue < pgmStruct->imageData + nImageBytes; nextGrayValue++)
-		{ /* per gray value */
-        
-			/* get next char's column        */
-			int nextCol = (nextGrayValue - pgmStruct->imageData + 1) % pgmStruct->width;
-
-			if (**nextGrayValue > (pgmStruct->width*pgmStruct->height))
+		/* loops through all the image data */
+		for (int i = 0; i < pgmStruct->height; i++)
+		{
+			int colCount = 0;
+			for (int j = 0; j < pgmStruct->width; j++)
 			{
-				/* free memory			*/
-				free(pgmStruct->commentLine);
-				free(pgmStruct->imageData);
+				/* finds the next column location */
+				int nextCol = (colCount - pgmStruct->imageData[i][j] + 1) % pgmStruct->width;
 
-				/* print error message */
-				printf("ERROR: Bad Data (%s)", inputFileName);
+				/* write the entry & whitespace  */
+				int nBytesWritten = fprintf(outputFile, "%d%c", pgmStruct->imageData[i][j], (nextCol ? ' ' : '\n') );
+				colCount++;
 
-				/* exit with error code */
-				exit(EXIT_BAD_DATA);
-			}
+				/* sanity check on write         */
+				if (nBytesWritten < 0)
+					{ /* data write failed   */
+					/* free memory           */
+					free(pgmStruct->commentLine);
+					free(pgmStruct->imageData);
 
-			/* write the entry & whitespace  */
-			nBytesWritten = fprintf(outputFile, "%d%c", **nextGrayValue, (nextCol ? ' ' : '\n') );
+					/* print error message   */
+					printf("ERROR: Output Failed (%s)", fileName);	
 
-			/* sanity check on write         */
-			if (nBytesWritten < 0)
-				{ /* data write failed   */
-				/* free memory           */
-				free(pgmStruct->commentLine);
-				free(pgmStruct->imageData);
-
-				/* print error message   */
-				printf("ERROR: Output Failed (%s)", fileName);	
-
-				/* return an error code  */
-				exit(EXIT_OUTPUT_FAILED);
-				} /* data write failed   */
+					/* return an error code  */
+					return EXIT_OUTPUT_FAILED;
+					/* data write failed   */
+					}
+			} /* per gray value */
+		
 		} /* per gray value */
 	
 
