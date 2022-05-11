@@ -73,7 +73,7 @@ int main (int argc, char **argv)
     }
 
     /* check that the magic number is not already P2, which is the magic number for raw pgm */
-    if (pgmStruct->magic_number[1] != '2' && pgmStruct->magic_number[2] != '2')
+    if (pgmStruct->magic_number[1] != '2' && pgmStruct->magic_number[1] != '2')
     {
         /* return that the magic number was wrong */
         printf("ERROR: Bad Magic Number (%s)", argv[1]);

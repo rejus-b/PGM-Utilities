@@ -71,35 +71,27 @@ int writeFile(char *fileName, pgm *pgmStruct)
 			int colCount = 0;
 			for (int j = 0; j < pgmStruct->width; j++)
 			{
-				
+				/* finds the next column location */
+				int nextCol = (colCount - pgmStruct->imageData[i][j] + 1) % pgmStruct->width;
 
-				// for (unsigned char **nextGrayValue = pgmStruct->imageData; nextGrayValue < pgmStruct->imageData + nImageBytes; nextGrayValue++)
-				// { /* per gray value */
-					// int nextCol = (nextGrayValue - pgmStruct->imageData + 1) % pgmStruct->width;
-					// int nextCol = pgmStruct->imageData[i][j];
-					int nextCol = (colCount - pgmStruct->imageData[i][j] + 1) % pgmStruct->width;
+				/* write the entry & whitespace  */
+				nBytesWritten = fprintf(outputFile, "%d%c", pgmStruct->imageData[i][j], (nextCol ? ' ' : '\n') );
+				colCount++;
 
-					/* write the entry & whitespace  */
-					nBytesWritten = fprintf(outputFile, "%d%c", pgmStruct->imageData[i][j], (nextCol ? ' ' : '\n') );
+				/* sanity check on write         */
+				if (nBytesWritten < 0)
+					{ /* data write failed   */
+					/* free memory           */
+					free(pgmStruct->commentLine);
+					free(pgmStruct->imageData);
 
-					
-					colCount++;
+					/* print error message   */
+					printf("ERROR: Output Failed (%s)", fileName);	
 
-					/* sanity check on write         */
-					if (nBytesWritten < 0)
-						{ /* data write failed   */
-						/* free memory           */
-						free(pgmStruct->commentLine);
-						free(pgmStruct->imageData);
-
-						/* print error message   */
-						printf("ERROR: Output Failed (%s)", fileName);	
-
-						/* return an error code  */
-						return EXIT_OUTPUT_FAILED;
-						// } /* data write failed   */
-					} /* per gray value */
-					
+					/* return an error code  */
+					return EXIT_OUTPUT_FAILED;
+					/* data write failed   */
+				} 
 			}
 		}
 	}
