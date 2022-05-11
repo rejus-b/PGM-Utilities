@@ -114,13 +114,18 @@ int equivalence(pgm *pgmStructFileOne, pgm *pgmStructFileTwo)
 	}
 
 	/* allocate the data pointer for one structure, this does not need to be done twice as you only have to read the data pointer once            */ 
-	long nImageBytes = pgmStructFileOne->width * pgmStructFileTwo->height * sizeof(unsigned char);
+	// long nImageBytes = pgmStructFileOne->width * pgmStructFileTwo->height * sizeof(unsigned char);
+	long nImageBytes = pgmStructFileOne->width * sizeof(unsigned char);
 
-	/* check that each pixel is equivalent  */
-	if (memcmp(pgmStructFileOne->imageData, pgmStructFileTwo->imageData, nImageBytes) != 0)
+	for (int i = 0; i < pgmStructFileOne->height; i++)
 	{
-		printf("ERROR: Miscellaneous Image Data Not Equivalent \n");
-		return EXIT_MISCELLANEOUS;			
+		/* check that each pixel is equivalent  */
+		if (memcmp(pgmStructFileOne->imageData[i], pgmStructFileTwo->imageData[i], nImageBytes) != 0)
+		{
+			printf("\n (%i) \n", memcmp(pgmStructFileOne->imageData[i], pgmStructFileTwo->imageData[i], nImageBytes));
+			printf("ERROR: Miscellaneous (Image Data Not Equivalent)");
+			return EXIT_MISCELLANEOUS;			
+		}
 	}
 
 	return EXIT_NO_ERRORS;
