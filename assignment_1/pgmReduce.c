@@ -82,17 +82,17 @@ int main(int argc, char **argv)
         return EXIT_BAD_INPUT_FILE;
     }
 
-	// const char *fileName = argv[3];
-	// const char* extension = ".pgm";
-	// int length = strlen(fileName);
-	// const char* fileType = &fileName[length - 4];
-	// int check = strcmp(extension, fileType);
-	// if (check != 0)
-	// {
-    //     /* exit the code */
-    //     printf("ERROR: Output Failed (%s)", fileName);
-    //     return EXIT_OUTPUT_FAILED;		
-	// }
+	const char *fileName = argv[3];
+	const char* extension = ".pgm";
+	int length = strlen(fileName);
+	const char* fileType = &fileName[length - 4];
+	int check = strcmp(extension, fileType);
+	if (check != 0)
+	{
+        /* exit the code */
+        printf("ERROR: Output Failed (%s)", fileName);
+        return EXIT_OUTPUT_FAILED;		
+	}
 
 
     /* this checks that the integer factor is valid (less than 1, or greater than dimensions) */
@@ -104,12 +104,12 @@ int main(int argc, char **argv)
     }
 
 
-    // /* this runs the code to actually reduce the code */
-    // if (reduce(pgmStruct, reducedPgmStruct, argv[1], reduc_factor, argv[3]) == 0)
-    // {
-    //     /* if no errors occur print 'REDUCED' */
-    //     printf("REDUCED");
-    // }
+    /* this runs the code to actually reduce the code */
+    if (reduce(pgmStruct, reducedPgmStruct, argv[1], reduc_factor, argv[3]) == 0)
+    {
+        /* if no errors occur print 'REDUCED' */
+        printf("REDUCED");
+    }
 
 
 	/* at this point, we are done and can exit with a success code */
@@ -117,9 +117,51 @@ int main(int argc, char **argv)
 	} /* main() */
 
 
+int reduce(pgm *pgmStruct, pgm *reducedPgmStruct, char *inputFile, int reductionFactor, char *outputFile)
+{
+/* reduce() */
+
+	/* calcualting the size of the new pgm file */
+	reducedPgmStruct->width = (pgmStruct->width + reductionFactor -1) / reductionFactor;
+	reducedPgmStruct->height = (pgmStruct->height + reductionFactor -1) / reductionFactor;
+
+	int subCount = 0;
+	int count = 0;
+	/* loops through the reduced image */
+	for (int i = 0; i < reducedPgmStruct->height; i++)
+	{
+		
+		for (int j = 0; j < reducedPgmStruct->width; j++)
+		{
+			if (subCount % reductionFactor == 0 && count % reductionFactor == 0)
+			{
+			/* assigns the reduced image data from the 2D array */
+			reducedPgmStruct->imageData[i][j] = pgmStruct->imageData[subCount][count];
+			/* increment the data to be read too */
+			}
+			// subCount += reductionFactor;
+		}
+		subCount ++;
+		count ++;
+	}
+
+	reducedPgmStruct->magic_number[0] = pgmStruct->magic_number[0];
+	reducedPgmStruct->magic_number[1] = pgmStruct->magic_number[1];
+
+	/* write to an output file the reduced image */
+	writeFile(outputFile, reducedPgmStruct);
+
+	
+	/* return on success */
+    return EXIT_NO_ERRORS;
+
+
+} /* reduce() */
+
+
+
 // int reduce(pgm *pgmStruct, pgm *reducedPgmStruct, char *inputFile, int reductionFactor, char *outputFile)
 // {
-// /* reduce() */
 
 // 	/* calcualting the size of the new pgm file */
 // 	reducedPgmStruct->width = (pgmStruct->width + reductionFactor -1) / reductionFactor;
