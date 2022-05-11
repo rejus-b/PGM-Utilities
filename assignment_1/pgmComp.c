@@ -113,21 +113,50 @@ int equivalence(pgm *pgmStructFileOne, pgm *pgmStructFileTwo)
 		return EXIT_MISCELLANEOUS;
 	}
 
-	/* allocate the data pointer for one structure, this does not need to be done twice as you only have to read the data pointer once            */ 
+	// /* allocate the data pointer for one structure, this does not need to be done twice as you only have to read the data pointer once            */ 
 	// long nImageBytes = pgmStructFileOne->width * pgmStructFileTwo->height * sizeof(unsigned char);
-	long nImageBytes = pgmStructFileOne->width * sizeof(unsigned char);
+
+	// /* check that each pixel is equivalent  */
+	// if (memcmp(pgmStructFileOne->imageData, pgmStructFileTwo->imageData, nImageBytes) != 0)
+	// {
+	// 	printf("ERROR: Miscellaneous Image Data Not Equivalent \n");
+	// 	return EXIT_MISCELLANEOUS;			
+	// }
+
+	// 	long nImageBytes = pgmStructFileOne->width * sizeof(unsigned char);
+
+	// for (int i = 0; i < pgmStructFileOne->height ; i++)
+	// {
+	// 	/* check that each pixel is equivalent  */
+	// 	if (memcmp(pgmStructFileOne->imageData, pgmStructFileTwo->imageData, nImageBytes) != 0)
+	// 	{
+	// 		printf("\n (%i) \n", memcmp(pgmStructFileOne->imageData[i], pgmStructFileTwo->imageData[i], nImageBytes));
+	// 		printf("ERROR: Miscellaneous (Image Data Not Equivalent)");
+	// 		return EXIT_MISCELLANEOUS;			
+	// 	}
+	// }
 
 	for (int i = 0; i < pgmStructFileOne->height; i++)
 	{
-		/* check that each pixel is equivalent  */
-		if (memcmp(pgmStructFileOne->imageData[i], pgmStructFileTwo->imageData[i], nImageBytes) != 0)
+		for (int j = 0; j < pgmStructFileTwo->width; j++)
 		{
-			printf("\n (%i) \n", memcmp(pgmStructFileOne->imageData[i], pgmStructFileTwo->imageData[i], nImageBytes));
-			printf("ERROR: Miscellaneous (Image Data Not Equivalent)");
-			return EXIT_MISCELLANEOUS;			
+			if (pgmStructFileOne->imageData[i][j] != pgmStructFileTwo->imageData[i][j])
+			{
+				printf("ERROR: Miscellaneous (Image Data Not Equivalent)");
+				return EXIT_MISCELLANEOUS;
+			}
 		}
 	}
+	
 
 	return EXIT_NO_ERRORS;
+
+	/*
+	for h in range height:
+		for w in range width:
+			if a[h][w] != b[h][w]:
+				return bad;
+	
+	*/
 
 } /* equivalence()	*/
