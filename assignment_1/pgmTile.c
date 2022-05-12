@@ -34,6 +34,9 @@
 /* header for pgmEcho				*/
 #include "pgmEcho.h"
 
+/* header for pgmTile				*/
+#include "pgmTile.h"
+
 
 int main(int argc, char **argv)
 	{ 
@@ -57,24 +60,29 @@ int main(int argc, char **argv)
 		} /* wrong arg count */
 
 
-	const char *fileName = argv[3];
+	// const char *fileName = argv[3];
 	const char* extension = "_<row>_<column>.pgm";
-	int length = strlen(fileName);
-	const char* fileType = &fileName[length - 19];
-	int check = strcmp(extension, fileType);
-	if (check != 0)
-	{
-        /* exit the code */
-        printf("ERROR: Miscellaneous (Bad tile layout)");
-		printf("\n %s \n", fileType);
-        exit(EXIT_MISCELLANEOUS);		
-	}
+	// int length = strlen(fileName);
+	// const char* fileType = &fileName[length - 19];
+	// int check = strcmp(extension, fileType);
+	// if (check != 0)
+	// {
+    //     /* exit the code */
+    //     printf("ERROR: Miscellaneous (Bad tile layout)");
+	// 	printf("\n %s \n", fileType);
+    //     exit(EXIT_MISCELLANEOUS);		
+	// }
 
 
 	/* malloc for a structure then pass it into pgmStructInit() */ 
 	pgm *pgmStruct = NULL;
 	pgmStruct = ((pgm*) malloc (sizeof(pgm)));
 	pgmStructInit(pgmStruct);
+
+	/* initialising a new structure that will store the tiled pgm image */
+	pgm *tilePgmStruct = NULL;
+	tilePgmStruct = ((pgm*) malloc (sizeof(pgm)));
+	pgmStructInit(tilePgmStruct);
 	
     /* this is too check that the input file is a valid file name */
 	if (readFile(argv[1], pgmStruct) != 0)
@@ -87,23 +95,43 @@ int main(int argc, char **argv)
 	/* If it works print 'TILED'*/
 	printf("TILED");
 
+	tile(pgmStruct, tilePgmStruct, argv[3], 2, extension);
+
 	/* at this point, we are done and can exit with a success code */
 	return EXIT_NO_ERRORS;
 	} /* main() */
 
 
-int Tile(pgm *pgmStruct, argv[2])
-{
-	/* calcualting the size of the new pgm file */
-	reducedPgmStruct->width = (pgmStruct->width + reductionFactor -1) / reductionFactor;
-	reducedPgmStruct->height = (pgmStruct->height + reductionFactor -1) / reductionFactor;
+int tile(pgm *pgmStruct, pgm *tilePgmStruct, char *inputFile, int tileFactor, const char *extension)
+{ /* tile() */
+	/* calcualting the size of a new pgm struct which will temporarily store each tile */
+	tilePgmStruct->width = pgmStruct->width / tileFactor;
+	tilePgmStruct->height = pgmStruct->height / tileFactor;
 
-	/* malloc data for a new structure to store the reduced image */
-	reducedPgmStruct->imageData = (unsigned char **) malloc(reducedPgmStruct->height * sizeof(unsigned char*));
+	/* malloc data for a new structure to store the tiled image */
+	tilePgmStruct->imageData = (unsigned char **) malloc(tilePgmStruct->height * sizeof(unsigned char*));
 
-	for (int i = 0; i < reducedPgmStruct->width; i++)
+	for (int i = 0; i < tilePgmStruct->width; i++)
 	{
-		reducedPgmStruct->imageData[i] = (unsigned char *) malloc(reducedPgmStruct->width * sizeof(unsigned char));
+		tilePgmStruct->imageData[i] = (unsigned char *) malloc(tilePgmStruct->width * sizeof(unsigned char));
 	}
-}
+
+	/* code segment for finding the name of the file */
+	char *name = ((char*) malloc (sizeof(char)));
+	char *strptr = strstr(extension, inputFile);
+	strncpy(name, inputFile, strlen(strptr));
+
+
+	// for (int i = 0; i < strlen(strptr); i++)
+	// {
+	// 	name[i] = 'a';
+	// }
+	// char *name = strptr[0,strlen(strptr)];
+	printf("\n %s \n",strptr);
+	
+
+	/* at this point, we are done and can exit with a success code */
+	return EXIT_NO_ERRORS;
+
+} /* tile() */
 
