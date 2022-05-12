@@ -91,3 +91,19 @@ int main(int argc, char **argv)
 	return EXIT_NO_ERRORS;
 	} /* main() */
 
+
+int Tile(pgm *pgmStruct, argv[2])
+{
+	/* calcualting the size of the new pgm file */
+	reducedPgmStruct->width = (pgmStruct->width + reductionFactor -1) / reductionFactor;
+	reducedPgmStruct->height = (pgmStruct->height + reductionFactor -1) / reductionFactor;
+
+	/* malloc data for a new structure to store the reduced image */
+	reducedPgmStruct->imageData = (unsigned char **) malloc(reducedPgmStruct->height * sizeof(unsigned char*));
+
+	for (int i = 0; i < reducedPgmStruct->width; i++)
+	{
+		reducedPgmStruct->imageData[i] = (unsigned char *) malloc(reducedPgmStruct->width * sizeof(unsigned char));
+	}
+}
+

@@ -242,6 +242,26 @@ int readFile(char *fileName, pgm *pgmStruct)
 		/* loop through the image data to be fread, reading in a row at a time */
 		for (int i = 0; i < pgmStruct->height; i++)
 		{
+
+			// idea here was that if u read more data than the width it should return bad data 
+
+
+			// if (fread(pgmStruct->imageData[i], sizeof(unsigned char), pgmStruct->width + 1, inputFile) > pgmStruct->width)
+			// {
+			// 	free(pgmStruct->commentLine);
+			// 	free(pgmStruct->imageData);	
+		
+			// 	/* close file            */
+			// 	fclose(inputFile);
+		
+			// 	/* print error message */
+			// 	printf("ERROR: Bad Data (%s)", fileName);
+			
+			// 	/* exit with error code */
+			// 	exit(EXIT_BAD_DATA);	
+			// }
+
+			
 			/* this tests for too little data */
 			if (fread(pgmStruct->imageData[i], sizeof(unsigned char), pgmStruct->width, inputFile) == 0)
 			{
@@ -258,24 +278,8 @@ int readFile(char *fileName, pgm *pgmStruct)
 				exit(EXIT_BAD_DATA);
 			}
 
+			// fread(pgmStruct->imageData[i], sizeof(unsigned char), pgmStruct->width + 1, inputFile);
 
-				// idea here was that if u read more data than the width it should return bad data 
-
-				
-			// if (fread(pgmStruct->imageData[i], sizeof(unsigned char), pgmStruct->width + 1, inputFile) > pgmStruct->width)
-			// {
-			// 	free(pgmStruct->commentLine);
-			// 	free(pgmStruct->imageData);	
-		
-			// 	/* close file            */
-			// 	fclose(inputFile);
-		
-			// 	/* print error message */
-			// 	printf("ERROR: Bad Data (%s)", fileName);
-			
-			// 	/* exit with error code */
-			// 	exit(EXIT_BAD_DATA);	
-			// }
 		}
 	}
 

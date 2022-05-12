@@ -9,6 +9,7 @@
 
 int readFile(char *fileName, pgm *pgmStruct);
 int magicNumCheck(unsigned short *magic_Number, FILE *inputFile, char *fileName);
+int imageMallocCheck(FILE *inputFile, pgm *pgmStruct);
 
 
 #endif
