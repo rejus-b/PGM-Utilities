@@ -36,6 +36,29 @@ int magicNumCheck(unsigned short *magic_Number, FILE *inputFile, char *fileName)
 	return EXIT_NO_ERRORS;
 } /* magicNumCheck()	*/
 
+int imageMallocCheck(FILE *inputFile, pgm *pgmStruct)
+{	/* imageMallocCheck()	*/
+	/* sanity check for memory allocation    */
+	for (int i = 0; i < pgmStruct->width; i++)
+	{
+		if (pgmStruct->imageData[i] == NULL)	
+		{ /* malloc failed */
+		/* free up memory                */
+		free(pgmStruct->commentLine);
+
+		/* close file pointer            */
+		fclose(inputFile);
+
+		/* print an error message */
+		printf("ERROR: Image Malloc Failed");	
+		
+		/* return error code             */
+		exit(EXIT_IMAGE_MALLOC_FAILED);
+		} /* malloc failed */
+	}
+	return 0;
+}
+
 int readFile(char *fileName, pgm *pgmStruct)
 { /* openReadFile()		*/
 
@@ -135,50 +158,22 @@ int readFile(char *fileName, pgm *pgmStruct)
 		} /* failed maxGray sanity check    */
 	
 
-	/* allocate the data pointer             */
-	// long nImageBytes = pgmStruct->width * pgmStruct->height * sizeof(unsigned char);
-	// pgmStruct->imageData = (unsigned char **) malloc(nImageBytes);
-
-	
-	/* mallocing for 2D array */
-	/*
-		for mallocing the 2d array do a single hard malloc for the height or row, and then loop through the rest of the data and single array mallocs for each 
-			sub array which will store the 2D array data 
-	*/
-
+	/* mallocing for a 2D array, malloc a 1D array first, then malloc arrays into this array */
 	pgmStruct->imageData = (unsigned char **) malloc(pgmStruct->height * sizeof(unsigned char*));
-
 	for (int i = 0; i < pgmStruct->width; i++)
 	{
 		pgmStruct->imageData[i] = (unsigned char *) malloc (pgmStruct->width * sizeof(unsigned char));
 	}
 
-
 	/* sanity check for memory allocation    */
-	if (pgmStruct->imageData == NULL)
-		{ /* malloc failed */
-		/* free up memory                */
-		free(pgmStruct->commentLine);
-
-		/* close file pointer            */
-		fclose(inputFile);
-
-		/* print an error message */
-		printf("ERROR: Image Malloc Failed");	
-		
-		/* return error code             */
-		exit(EXIT_IMAGE_MALLOC_FAILED);
-		} /* malloc failed */
+	imageMallocCheck(inputFile, pgmStruct);
 
 	if (pgmStruct->magic_number[1] == '2')
 	{
 		for (int i = 0; i < pgmStruct->height; i++)
 		{
 			for (int j = 0; j < pgmStruct->width; j++)
-			{
-				// /* pointer for efficient read code       */
-				// for (unsigned char nextGrayValue = pgmStruct->imageData[i][j]; nextGrayValue < pgmStruct->imageData[i][j] + nImageBytes; nextGrayValue++)
-				// 	{ /* per gray value */
+			{				
 				// 	/* read next value               */
 					int grayValue = -1;
 					int scanCount = fscanf(inputFile, " %u", &grayValue);
@@ -216,95 +211,39 @@ int readFile(char *fileName, pgm *pgmStruct)
 						} /* fscanf failed */
 
 					/* set the pixel value           */
-					// nextGrayValue = (unsigned char) grayValue;
 					pgmStruct->imageData[i][j] = (unsigned char) grayValue;
-					// } /* per gray */
 				}
 			}
-			// printf("\n %i \n ", pgmStruct->imageData[1][1]);  		// This line doesnt work with [0][0] as it expects an int but we are reading in ints
+			int grayValue = -1;
+			scanCount = fscanf(inputFile, " %u", &grayValue);
+		
+			/* sanity check	                 */
+			if ((scanCount != -1))
+			{ /* fscanf failed */
+				/* free memory           */
+				free(pgmStruct->commentLine);
+				free(pgmStruct->imageData);	
+		
+				/* close file            */
+				fclose(inputFile);
+		
+				/* print error message */
+				printf("ERROR: Bad Data (%s)", fileName);
+			
+				/* exit with error code */
+				exit(EXIT_BAD_DATA);
+			} /* fscanf failed */
 		}
 
-
-
-		
-															/* OLD 1D ARRAY IMAGE DATA READ */ 
-	// if (pgmStruct->magic_number[1] == '2'){
-
-	// 	/* pointer for efficient read code       */
-	// 	for (unsigned char *nextGrayValue = pgmStruct->imageData; nextGrayValue < pgmStruct->imageData + nImageBytes; nextGrayValue++)
-	// 		{ /* per gray value */
-	// 		/* read next value               */
-	// 		int grayValue = -1;
-	// 		int scanCount = fscanf(inputFile, " %u", &grayValue);
-
-	// 		/* sanity check too little data		*/
-	// 		if (scanCount > (pgmStruct->width*pgmStruct->height))
-	// 		{
-	// 			/* free memory			*/
-	// 			free(pgmStruct->commentLine);
-	// 			free(pgmStruct->imageData);
-
-	// 			/* print error message */
-	// 			printf("ERROR: Bad Data (%s)", fileName);
-
-	// 			/* exit with error code */
-	// 			exit(EXIT_BAD_DATA);
-	// 		}
-
-
-	// 		/* sanity check	                 */
-	// 		if ((scanCount != 1) || (grayValue < 0) || (grayValue > 255))
-	// 			{ /* fscanf failed */
-	// 			/* free memory           */
-	// 			free(pgmStruct->commentLine);
-	// 			free(pgmStruct->imageData);	
-
-	// 			/* close file            */
-	// 			fclose(inputFile);
-
-	// 			/* print error message   */
-	// 			printf("ERROR: Bad Gray Value");	
-			
-	// 			/* and return            */
-	// 			return EXIT_MISCELLANEOUS;
-	// 			} /* fscanf failed */
-
-	// 		/* set the pixel value           */
-	// 		*nextGrayValue = (unsigned char) grayValue;
-	// 		} /* per gray value */
-	//	}
 		
 	/* if the magic number is binary read in binary data */
 	else if (pgmStruct->magic_number[1] == '5'){
-		// So do this by looping through the outer array first (height) and then for each column read through each inner array (width) and then fread the row into the outer array 
-
+		/* loop through the image data to be fread, reading in a row at a time */
 		for (int i = 0; i < pgmStruct->height; i++)
 		{
 				fread(pgmStruct->imageData[i], sizeof(unsigned char), pgmStruct->width, inputFile);
 		}
-		
-
-	
-
-	
-		
-
-
-		// fread(pgmStruct->imageData, sizeof(unsigned char), pgmStruct->width * pgmStruct->height, inputFile);
-		// if (fgetc(inputFile) != EOF)
-		// {
-		// 	/* free memory			*/
-		// 	free(pgmStruct->commentLine);
-		// 	free(pgmStruct->imageData);
-
-		// 	/* print error message */
-		// 	printf("ERROR: Bad Data (%s)", fileName);
-
-		// 	/* exit with error code */
-		// 	exit(EXIT_BAD_DATA);
-		// }
 	}
-
 
 	/* we're done with the file, so close it */
 	fclose(inputFile);
