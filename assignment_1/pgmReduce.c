@@ -119,15 +119,13 @@ int main(int argc, char **argv)
 
 
 int reduce(pgm *pgmStruct, pgm *reducedPgmStruct, char *inputFile, int reductionFactor, char *outputFile)
-{
-/* reduce() */
+{ /* reduce() */
 
 	/* calcualting the size of the new pgm file */
 	reducedPgmStruct->width = (pgmStruct->width + reductionFactor -1) / reductionFactor;
 	reducedPgmStruct->height = (pgmStruct->height + reductionFactor -1) / reductionFactor;
 
-
-
+	/* malloc data for a new structure to store the reduced image */
 	reducedPgmStruct->imageData = (unsigned char **) malloc(reducedPgmStruct->height * sizeof(unsigned char*));
 
 	for (int i = 0; i < reducedPgmStruct->width; i++)
@@ -136,46 +134,30 @@ int reduce(pgm *pgmStruct, pgm *reducedPgmStruct, char *inputFile, int reduction
 	}
 	
 
-
-	// have seperate counts for the small image and reset when out of bounds, only increase the small image count when it reads a pixel
-
-
-
-	
+	/* initialises the variables that count for the reduced image */
 	int count = 0;
+	int nextCol = 0;
 	int subCount = 0;
+
 	/* loops through the reduced image */
 	for (int i = 0; i < pgmStruct->height; i++)
 	{
-		// int subCount = 0;
+		subCount = 0;
 		for (int j = 0; j < pgmStruct->width; j++)
 		{
-
-			printf("\n %i , %i\n", i, j);
 			if (i % reductionFactor == 0 && j % reductionFactor == 0)
 			{
-				// printf("\n %i , %i\n", count, subCount);
-				reducedPgmStruct->imageData[i][j] = pgmStruct->imageData[i][j];
+				reducedPgmStruct->imageData[count][subCount] = pgmStruct->imageData[i][j];
 				subCount ++;
-				
-				
-				
+				nextCol = 1;
 			}
-
-
-			// if (subCount == reducedPgmStruct->width || count == reducedPgmStruct->height);
-			// {
-			// 	continue;
-			// }
-			
 		}
-
-			if (i % reductionFactor == 0)
-			{
-				count++;
-			}
-		
-		
+		/* if any data has been read in this row then move onto the next column of image data */
+		if (nextCol == 1)
+		{
+			count++;
+			nextCol = 0;
+		}
 	}
 
 	reducedPgmStruct->magic_number[0] = pgmStruct->magic_number[0];
@@ -190,71 +172,3 @@ int reduce(pgm *pgmStruct, pgm *reducedPgmStruct, char *inputFile, int reduction
 
 
 } /* reduce() */
-
-
-
-// int reduce(pgm *pgmStruct, pgm *reducedPgmStruct, char *inputFile, int reductionFactor, char *outputFile)
-// {
-
-// 	/* calcualting the size of the new pgm file */
-// 	reducedPgmStruct->width = (pgmStruct->width + reductionFactor -1) / reductionFactor;
-// 	reducedPgmStruct->height = (pgmStruct->height + reductionFactor -1) / reductionFactor;
-	
-// 	/* mallocing the nessecary amount of data for the new pgm files image data */
-// 	long nImageBytes = reducedPgmStruct->width * reducedPgmStruct->height * sizeof(unsigned char);
-// 	reducedPgmStruct -> imageData = (unsigned char *) malloc(nImageBytes);
-
-// 	/* initalises a 2D array for storing the reduced image data */
-// 	int reducedImage [reducedPgmStruct->width][reducedPgmStruct->height];
-
-// 	/* this counts the subposition of the original image data */
-// 	int subCount = 0;
-
-// 	/* through the reduced image */
-// 	for (int i = 0; i < reducedPgmStruct->width; i++)
-// 	{
-// 		/* finds the correct image data from the original image */
-// 		subCount = pgmStruct->width * reductionFactor * i;
-// 		for (int j = 0; j < reducedPgmStruct->height; j++)
-// 		{
-// 			/* assigns data to the 2D array */
-// 			reducedImage[i][j] = pgmStruct->imageData[subCount];		
-
-// 			/* increments the subCount by the reduction factor */
-// 			subCount += reductionFactor;
-
-// 		}
-// 	}
-
-// 	// /* sets the reduced images magic number to the original magic number */
-// 	reducedPgmStruct->magic_number[0] = pgmStruct->magic_number[0];
-// 	reducedPgmStruct->magic_number[1] = pgmStruct->magic_number[1];
-
-
-
-// 	/* initalises a count for how much data is to be read */
-// 	int writeToCount = 0;
-// 	/* loops through the reduce image */
-// 	for (int i = 0; i < reducedPgmStruct->height; i++)
-// 	{
-// 		for (int j = 0; j < reducedPgmStruct->width; j++)
-// 		{
-// 			/* assigns the reduced image data from the 2D array */
-// 			reducedPgmStruct->imageData[writeToCount] = reducedImage[i][j];
-// 			/* increment the data to be read too */
-// 			writeToCount ++;
-// 		}
-
-// 	}
-
-// 	/* write to an output file the reduced image */
-// 	writeFile(outputFile, reducedPgmStruct);
-
-	// /* return on success */
-    // return EXIT_NO_ERRORS;
-
-// } /* reduce() */
-
-
-
-
