@@ -95,7 +95,7 @@ int main(int argc, char **argv)
 	/* If it works print 'TILED'*/
 	printf("TILED");
 
-	tile(pgmStruct, tilePgmStruct, argv[3], 2, extension);
+	tile(pgmStruct, tilePgmStruct, argv[3], 256, extension);
 
 	/* at this point, we are done and can exit with a success code */
 	return EXIT_NO_ERRORS;
@@ -105,8 +105,11 @@ int main(int argc, char **argv)
 int tile(pgm *pgmStruct, pgm *tilePgmStruct, char *inputFile, int tileFactor, const char *extension)
 { /* tile() */
 	/* calcualting the size of a new pgm struct which will temporarily store each tile */
-	tilePgmStruct->width = pgmStruct->width / tileFactor;
-	tilePgmStruct->height = pgmStruct->height / tileFactor;
+	tilePgmStruct->width = tileFactor;
+	tilePgmStruct->height = tileFactor;
+	printf("\n %i \n", tileFactor);
+	tilePgmStruct->magic_number[0] = pgmStruct->magic_number[0];
+	tilePgmStruct->magic_number[1] = pgmStruct->magic_number[1];
 
 	/* malloc data for a new structure to store the tiled image temporarily */
 	tilePgmStruct->imageData = (unsigned char **) malloc(tilePgmStruct->height * sizeof(unsigned char*));
@@ -121,26 +124,39 @@ int tile(pgm *pgmStruct, pgm *tilePgmStruct, char *inputFile, int tileFactor, co
 	char name[strlen(inputFile)-strlen(extension)];
 	for (int i = 0; i < (strlen(inputFile)-strlen(extension)); i++)
 	{
+		name[i+1] = '\0';
 		name[i] = inputFile[i];
 	}
+	char nam[100];
 
-	printf (" %c ", name[0]);
+	printf ("\nBUFFER:  %c\n", name[1]);
 
 
 	/* segmenting the main image into tiles */
 
-	for (int yOffSet = 0; yOffSet < tileFactor; yOffSet ++)
+	
+	int yCount = 0;
+
+	for (int yOffSet = 0; yOffSet < pgmStruct->height; yOffSet += tileFactor)
 	{
-		for (int xOffSet = 0; xOffSet < tileFactor; xOffSet ++)
+		int xCount = 0;
+		for (int xOffSet = 0; xOffSet < pgmStruct->width; xOffSet += tileFactor)
 		{
+			
 			for (int i = 0; i < tilePgmStruct->height; i++)
 			{
 				for (int j = 0; j < tilePgmStruct->width; j++)
 				{
-						tilePgmStruct->imageData[i][j] = 
+						tilePgmStruct->imageData[i][j] = pgmStruct->imageData[i+xOffSet][j+yOffSet];
 				}
 			}
+			
+			printf("\n x %i y %i\n", xCount, yCount);
+			sprintf(nam, "%s_<%i>_<%i>", name, xCount, yCount);
+			writeFile(nam, tilePgmStruct);
+			xCount ++;
 		}
+		yCount ++;
 	}
 
 
