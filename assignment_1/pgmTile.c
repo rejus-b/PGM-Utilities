@@ -108,7 +108,7 @@ int tile(pgm *pgmStruct, pgm *tilePgmStruct, char *inputFile, int tileFactor, co
 	tilePgmStruct->width = pgmStruct->width / tileFactor;
 	tilePgmStruct->height = pgmStruct->height / tileFactor;
 
-	/* malloc data for a new structure to store the tiled image */
+	/* malloc data for a new structure to store the tiled image temporarily */
 	tilePgmStruct->imageData = (unsigned char **) malloc(tilePgmStruct->height * sizeof(unsigned char*));
 
 	for (int i = 0; i < tilePgmStruct->width; i++)
@@ -116,7 +116,7 @@ int tile(pgm *pgmStruct, pgm *tilePgmStruct, char *inputFile, int tileFactor, co
 		tilePgmStruct->imageData[i] = (unsigned char *) malloc(tilePgmStruct->width * sizeof(unsigned char));
 	}
 
-	/* code segment for finding the name of the file */
+	/* finding the name of the file */
 
 	char name[strlen(inputFile)-strlen(extension)];
 	for (int i = 0; i < (strlen(inputFile)-strlen(extension)); i++)
@@ -127,19 +127,22 @@ int tile(pgm *pgmStruct, pgm *tilePgmStruct, char *inputFile, int tileFactor, co
 	printf (" %c ", name[0]);
 
 
+	/* segmenting the main image into tiles */
 
-	// char *name = ((char*) malloc (sizeof(char)));
-	// char *strptr = strstr(extension, inputFile);
-	// strncpy(name, inputFile, strlen(strptr));
+	for (int yOffSet = 0; yOffSet < tileFactor; yOffSet ++)
+	{
+		for (int xOffSet = 0; xOffSet < tileFactor; xOffSet ++)
+		{
+			for (int i = 0; i < tilePgmStruct->height; i++)
+			{
+				for (int j = 0; j < tilePgmStruct->width; j++)
+				{
+						tilePgmStruct->imageData[i][j] = 
+				}
+			}
+		}
+	}
 
-
-	// for (int i = 0; i < strlen(strptr); i++)
-	// {
-	// 	name[i] = 'a';
-	// }
-	// char *name = strptr[0,strlen(strptr)];
-	// printf("\n %s \n",strptr);
-	
 
 	/* at this point, we are done and can exit with a success code */
 	return EXIT_NO_ERRORS;
