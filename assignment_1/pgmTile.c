@@ -144,6 +144,7 @@ int tile(pgm *pgmStruct, pgm *tilePgmStruct, char *inputFile, int tileFactor, co
 			{
 				for (int j = 0; j < tilePgmStruct->width; j++)
 				{
+					/* assin the pixel of the tile to the corresponding input image pixel */
 					tilePgmStruct->imageData[i][j] = pgmStruct->imageData[i+xOffSet][j+yOffSet];
 				}
 			}
