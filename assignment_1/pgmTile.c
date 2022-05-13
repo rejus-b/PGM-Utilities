@@ -62,10 +62,11 @@ int main(int argc, char **argv)
 
 	const char *fileName = argv[3];
 	const char* extension = "_<row>_<column>.pgm";
-	int length = strlen(fileName);
-	const char* fileType = &fileName[length - 19];
-	int check = strcmp(extension, fileType);
-	if (check != 0)
+	int fileNameLength = strlen(fileName);
+	const char* fileType = &fileName[fileNameLength - strlen(extension)];
+	int checkExtension = strcmp(extension, fileType);
+
+	if (checkExtension != 0)
 	{
         /* exit the code */
         printf("ERROR: Miscellaneous (Bad tile layout)");
@@ -120,26 +121,23 @@ int tile(pgm *pgmStruct, pgm *tilePgmStruct, char *inputFile, int tileFactor, co
 	}
 
 	/* finding the name of the file */
-
 	char name[strlen(inputFile)-strlen(extension)];
 	for (int i = 0; i < (strlen(inputFile)-strlen(extension)); i++)
 	{
+		/* loop through the file name to copy it letter by letter, add a newline character to terminate the string */
 		name[i+1] = '\0';
 		name[i] = inputFile[i];
 	}
+
+	/* initialise a new string for the name that will be formated with row and column */
 	char newName[strlen(name)+strlen(extension)];
 
-	printf ("\nBUFFER:  %c\n", name[1]);
-
-
 	/* segmenting the main image into tiles */
-
-	
-	int yCount = 0;
+	int yNameCount = 0;
 
 	for (int yOffSet = 0; yOffSet < pgmStruct->height; yOffSet += tileFactor)
 	{
-		int xCount = 0;
+		int xNameCount = 0;
 		for (int xOffSet = 0; xOffSet < pgmStruct->width; xOffSet += tileFactor)
 		{
 			for (int i = 0; i < tilePgmStruct->height; i++)
@@ -149,15 +147,13 @@ int tile(pgm *pgmStruct, pgm *tilePgmStruct, char *inputFile, int tileFactor, co
 					tilePgmStruct->imageData[i][j] = pgmStruct->imageData[i+xOffSet][j+yOffSet];
 				}
 			}
-			
-			printf("\n x %i y %i\n", xCount, yCount);
-			sprintf(newName, "%s_<%i>_<%i>", name, xCount, yCount);
+			/* create a formated string with the row and columns then write it to a new file */
+			sprintf(newName, "%s_<%i>_<%i>", name, xNameCount, yNameCount);
 			writeFile(newName, tilePgmStruct);
-			xCount ++;
+			xNameCount ++;
 		}
-		yCount ++;
+		yNameCount ++;
 	}
-
 
 	/* at this point, we are done and can exit with a success code */
 	return EXIT_NO_ERRORS;

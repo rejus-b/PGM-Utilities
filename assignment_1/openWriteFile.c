@@ -35,9 +35,6 @@ int writeFile(char *fileName, pgm *pgmStruct)
 		/* print an error message        */
 		printf("ERROR: Output Failed (%s)", fileName);	
 
-
-		// fclose(outputFile);
-
 		/* return an error code          */
 		exit(EXIT_OUTPUT_FAILED);
 		} /* NULL output file */
@@ -45,10 +42,6 @@ int writeFile(char *fileName, pgm *pgmStruct)
 
 	/* write magic number, size & gray value */
 	size_t nBytesWritten = fprintf(outputFile, "P%c\n%d %d\n%d\n",pgmStruct->magic_number[1], pgmStruct->width, pgmStruct->height, pgmStruct->maxGray);
-
-
-	/* allocate the data pointer             */
-	// long nImageBytes = pgmStruct->width * pgmStruct->height * sizeof(unsigned char);
 
 	/* check that dimensions wrote correctly */
 	if (nBytesWritten < 0)
@@ -63,8 +56,6 @@ int writeFile(char *fileName, pgm *pgmStruct)
 		/* return an error code          */
 		return EXIT_BAD_DIMENSIONS;
 		} /* dimensional write failed    */
-
-        /* pointer for efficient write code      */
 
 	/* run the code that prints in ASCII if the magic number is 2	*/
 	if (pgmStruct->magic_number[1] == '2')
@@ -100,36 +91,6 @@ int writeFile(char *fileName, pgm *pgmStruct)
 		}
 	}
 
-
-
-
-
-
-		// for (unsigned char *nextGrayValue = pgmStruct->imageData; nextGrayValue < pgmStruct->imageData + nImageBytes; nextGrayValue++)
-		// { /* per gray value */
-		// 	/* get next char's column        */
-
-		// 	int nextCol = (nextGrayValue - pgmStruct->imageData + 1) % pgmStruct->width;
-
-		// 	/* write the entry & whitespace  */
-		// 	nBytesWritten = fprintf(outputFile, "%d%c", *nextGrayValue, (nextCol ? ' ' : '\n') );
-
-		// 	/* sanity check on write         */
-		// 	if (nBytesWritten < 0)
-		// 		{ /* data write failed   */
-		// 		/* free memory           */
-		// 		free(pgmStruct->commentLine);
-		// 		free(pgmStruct->imageData);
-
-		// 		/* print error message   */
-		// 		printf("ERROR: Output Failed (%s)", fileName);	
-
-		// 		/* return an error code  */
-		// 		return EXIT_OUTPUT_FAILED;
-		// 		} /* data write failed   */
-		// } /* per gray value */
-	// } 
-
 	/* if the magic number is binary then write the data in binary format	*/
 	else if (pgmStruct->magic_number[1] == '5')
 	{
@@ -137,8 +98,6 @@ int writeFile(char *fileName, pgm *pgmStruct)
 		{
 			fwrite(pgmStruct->imageData[i], sizeof(unsigned char), pgmStruct->width, outputFile);
 		}
-		
-		// fwrite(pgmStruct->imageData, sizeof(unsigned char), pgmStruct->width * pgmStruct->height, outputFile);
 	}
 
      return EXIT_NO_ERRORS;

@@ -83,19 +83,6 @@ int main(int argc, char **argv)
     }
 
 
-	const char *fileName = argv[3];
-	const char* extension = ".pgm";
-	int length = strlen(fileName);
-	const char* fileType = &fileName[length - 4];
-	int check = strcmp(extension, fileType);
-	if (check != 0)
-	{
-        /* exit the code */
-        printf("ERROR: Output Failed (%s)", fileName);
-        return EXIT_OUTPUT_FAILED;		
-	}
-
-
     /* this checks that the integer factor is valid (less than 1, or greater than dimensions) */
 	if (reduc_factor < 1 || reduc_factor  > pgmStruct->width || reduc_factor  > pgmStruct->height)
     {
@@ -160,6 +147,7 @@ int reduce(pgm *pgmStruct, pgm *reducedPgmStruct, char *inputFile, int reduction
 		}
 	}
 
+	/* assigns the reduced image the same magic number as teh original */
 	reducedPgmStruct->magic_number[0] = pgmStruct->magic_number[0];
 	reducedPgmStruct->magic_number[1] = pgmStruct->magic_number[1];
 
