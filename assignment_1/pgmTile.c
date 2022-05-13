@@ -60,18 +60,18 @@ int main(int argc, char **argv)
 		} /* wrong arg count */
 
 
-	// const char *fileName = argv[3];
+	const char *fileName = argv[3];
 	const char* extension = "_<row>_<column>.pgm";
-	// int length = strlen(fileName);
-	// const char* fileType = &fileName[length - 19];
-	// int check = strcmp(extension, fileType);
-	// if (check != 0)
-	// {
-    //     /* exit the code */
-    //     printf("ERROR: Miscellaneous (Bad tile layout)");
-	// 	printf("\n %s \n", fileType);
-    //     exit(EXIT_MISCELLANEOUS);		
-	// }
+	int length = strlen(fileName);
+	const char* fileType = &fileName[length - 19];
+	int check = strcmp(extension, fileType);
+	if (check != 0)
+	{
+        /* exit the code */
+        printf("ERROR: Miscellaneous (Bad tile layout)");
+		printf("\n %s \n", fileType);
+        exit(EXIT_MISCELLANEOUS);		
+	}
 
 
 	/* malloc for a structure then pass it into pgmStructInit() */ 
@@ -117,9 +117,20 @@ int tile(pgm *pgmStruct, pgm *tilePgmStruct, char *inputFile, int tileFactor, co
 	}
 
 	/* code segment for finding the name of the file */
-	char *name = ((char*) malloc (sizeof(char)));
-	char *strptr = strstr(extension, inputFile);
-	strncpy(name, inputFile, strlen(strptr));
+
+	char name[strlen(inputFile)-strlen(extension)];
+	for (int i = 0; i < (strlen(inputFile)-strlen(extension)); i++)
+	{
+		name[i] = inputFile[i];
+	}
+
+	printf (" %c ", name[0]);
+
+
+
+	// char *name = ((char*) malloc (sizeof(char)));
+	// char *strptr = strstr(extension, inputFile);
+	// strncpy(name, inputFile, strlen(strptr));
 
 
 	// for (int i = 0; i < strlen(strptr); i++)
@@ -127,7 +138,7 @@ int tile(pgm *pgmStruct, pgm *tilePgmStruct, char *inputFile, int tileFactor, co
 	// 	name[i] = 'a';
 	// }
 	// char *name = strptr[0,strlen(strptr)];
-	printf("\n %s \n",strptr);
+	// printf("\n %s \n",strptr);
 	
 
 	/* at this point, we are done and can exit with a success code */
