@@ -127,7 +127,7 @@ int tile(pgm *pgmStruct, pgm *tilePgmStruct, char *inputFile, int tileFactor, co
 		name[i+1] = '\0';
 		name[i] = inputFile[i];
 	}
-	char nam[100];
+	char newName[strlen(name)+strlen(extension)];
 
 	printf ("\nBUFFER:  %c\n", name[1]);
 
@@ -142,18 +142,17 @@ int tile(pgm *pgmStruct, pgm *tilePgmStruct, char *inputFile, int tileFactor, co
 		int xCount = 0;
 		for (int xOffSet = 0; xOffSet < pgmStruct->width; xOffSet += tileFactor)
 		{
-			
 			for (int i = 0; i < tilePgmStruct->height; i++)
 			{
 				for (int j = 0; j < tilePgmStruct->width; j++)
 				{
-						tilePgmStruct->imageData[i][j] = pgmStruct->imageData[i+xOffSet][j+yOffSet];
+					tilePgmStruct->imageData[i][j] = pgmStruct->imageData[i+xOffSet][j+yOffSet];
 				}
 			}
 			
 			printf("\n x %i y %i\n", xCount, yCount);
-			sprintf(nam, "%s_<%i>_<%i>", name, xCount, yCount);
-			writeFile(nam, tilePgmStruct);
+			sprintf(newName, "%s_<%i>_<%i>", name, xCount, yCount);
+			writeFile(newName, tilePgmStruct);
 			xCount ++;
 		}
 		yCount ++;
@@ -164,4 +163,3 @@ int tile(pgm *pgmStruct, pgm *tilePgmStruct, char *inputFile, int tileFactor, co
 	return EXIT_NO_ERRORS;
 
 } /* tile() */
-

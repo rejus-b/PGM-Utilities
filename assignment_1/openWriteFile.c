@@ -35,6 +35,9 @@ int writeFile(char *fileName, pgm *pgmStruct)
 		/* print an error message        */
 		printf("ERROR: Output Failed (%s)", fileName);	
 
+
+		// fclose(outputFile);
+
 		/* return an error code          */
 		exit(EXIT_OUTPUT_FAILED);
 		} /* NULL output file */
