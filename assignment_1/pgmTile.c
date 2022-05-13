@@ -93,13 +93,16 @@ int main(int argc, char **argv)
         return EXIT_BAD_INPUT_FILE;
     }
 
+	if (tile(pgmStruct, tilePgmStruct, argv[1], 256, extension) == 0)
+	{
 	/* If it works print 'TILED'*/
 	printf("TILED");
-
-	tile(pgmStruct, tilePgmStruct, argv[3], 256, extension);
-
 	/* at this point, we are done and can exit with a success code */
 	return EXIT_NO_ERRORS;
+	}
+
+
+
 	} /* main() */
 
 
@@ -108,7 +111,8 @@ int tile(pgm *pgmStruct, pgm *tilePgmStruct, char *inputFile, int tileFactor, co
 	/* calcualting the size of a new pgm struct which will temporarily store each tile */
 	tilePgmStruct->width = tileFactor;
 	tilePgmStruct->height = tileFactor;
-	printf("\n %i \n", tileFactor);
+	
+	/* assigns the tile magic number to the original magic number */
 	tilePgmStruct->magic_number[0] = pgmStruct->magic_number[0];
 	tilePgmStruct->magic_number[1] = pgmStruct->magic_number[1];
 
