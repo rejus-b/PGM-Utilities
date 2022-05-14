@@ -39,22 +39,25 @@ int magicNumCheck(unsigned short *magic_Number, FILE *inputFile, char *fileName)
 int imageMallocCheck(FILE *inputFile, pgm *pgmStruct)
 {	/* imageMallocCheck()	*/
 	/* sanity check for memory allocation    */
-	for (int i = 0; i < pgmStruct->width; i++)
+	for (int i = 0; i < pgmStruct->height; i++)
 	{
-		if (pgmStruct->imageData[i] == NULL)	
-		{ /* malloc failed */
-		/* free up memory                */
-		free(pgmStruct->commentLine);
+		for (int j = 0; j < pgmStruct->width; j++)
+		{
+			if (&pgmStruct->imageData[i][j] == NULL)	
+			{ /* malloc failed */
+			/* free up memory                */
+			free(pgmStruct->commentLine);
 
-		/* close file pointer            */
-		fclose(inputFile);
+			/* close file pointer            */
+			fclose(inputFile);
 
-		/* print an error message */
-		printf("ERROR: Image Malloc Failed");	
-		
-		/* return error code             */
-		exit(EXIT_IMAGE_MALLOC_FAILED);
-		} /* malloc failed */
+			/* print an error message */
+			printf("ERROR: Image Malloc Failed");	
+			
+			/* return error code             */
+			exit(EXIT_IMAGE_MALLOC_FAILED);
+			} /* malloc failed */
+		}
 	}
 	return 0;
 }
@@ -175,67 +178,67 @@ int readFile(char *fileName, pgm *pgmStruct)
 			for (int j = 0; j < pgmStruct->width; j++)
 			{				
 				// 	/* read next value               */
-					int grayValue = -1;
-					int scanCount = fscanf(inputFile, " %u", &grayValue);
+				int grayValue = -1;
+				int scanCount = fscanf(inputFile, " %u", &grayValue);
 
-					/* sanity check too little data		*/
-					if (scanCount > (pgmStruct->width*pgmStruct->height))
-					{
-						/* free memory			*/
-						free(pgmStruct->commentLine);
-						free(pgmStruct->imageData);
+				/* sanity check too little data		*/
+				if (scanCount > (pgmStruct->width*pgmStruct->height))
+				{
+					/* free memory			*/
+					free(pgmStruct->commentLine);
+					free(pgmStruct->imageData);
 
-						/* print error message */
-						printf("ERROR: Bad Data (%s)", fileName);
+					/* print error message */
+					printf("ERROR: Bad Data (%s)", fileName);
 
-						/* exit with error code */
-						exit(EXIT_BAD_DATA);
-					}
-
-
-					/* sanity check	                 */
-					if ((scanCount != 1) || (grayValue < 0) || (grayValue > 255))
-						{ /* fscanf failed */
-						/* free memory           */
-						free(pgmStruct->commentLine);
-						free(pgmStruct->imageData);	
-
-						/* close file            */
-						fclose(inputFile);
-
-						/* print error message   */
-						printf("ERROR: Bad Gray Value");	
-					
-						/* and return            */
-						return EXIT_MISCELLANEOUS;
-						} /* fscanf failed */
-
-					/* set the pixel value           */
-					pgmStruct->imageData[i][j] = (unsigned char) grayValue;
+					/* exit with error code */
+					exit(EXIT_BAD_DATA);
 				}
-			}
 
-			/* try read from the file again, if another file is read return that there is too much data */
-			int grayValue = -1;
-			scanCount = fscanf(inputFile, " %u", &grayValue);
-		
-			/* sanity check	                 */
-			if ((scanCount != -1))
-			{ /* fscanf failed */
-				/* free memory           */
-				free(pgmStruct->commentLine);
-				free(pgmStruct->imageData);	
-		
-				/* close file            */
-				fclose(inputFile);
-		
-				/* print error message */
-				printf("ERROR: Bad Data (%s)", fileName);
-			
-				/* exit with error code */
-				exit(EXIT_BAD_DATA);
-			} /* fscanf failed */
+
+				/* sanity check	                 */
+				if ((scanCount != 1) || (grayValue < 0) || (grayValue > 255))
+					{ /* fscanf failed */
+					/* free memory           */
+					free(pgmStruct->commentLine);
+					free(pgmStruct->imageData);	
+
+					/* close file            */
+					fclose(inputFile);
+
+					/* print error message   */
+					printf("ERROR: Bad Gray Value");	
+				
+					/* and return            */
+					return EXIT_MISCELLANEOUS;
+					} /* fscanf failed */
+
+				/* set the pixel value           */
+				pgmStruct->imageData[i][j] = (unsigned char) grayValue;
+			}
 		}
+
+		/* try read from the file again, if another character is read return that there is too much data */
+		int grayValue = -1;
+		scanCount = fscanf(inputFile, " %u", &grayValue);
+	
+		/* sanity check	                 */
+		if ((scanCount != -1))
+		{ /* fscanf failed */
+			/* free memory           */
+			free(pgmStruct->commentLine);
+			free(pgmStruct->imageData);	
+	
+			/* close file            */
+			fclose(inputFile);
+	
+			/* print error message */
+			printf("ERROR: Bad Data (%s)", fileName);
+		
+			/* exit with error code */
+			exit(EXIT_BAD_DATA);
+		} /* fscanf failed */
+	}
 
 		
 	/* if the magic number is binary read in binary data */
