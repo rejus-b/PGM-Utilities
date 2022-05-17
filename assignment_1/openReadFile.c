@@ -59,7 +59,7 @@ int imageMallocCheck(FILE *inputFile, pgm *pgmStruct)
 			} /* malloc failed */
 		}
 	}
-	return 0;
+	return EXIT_NO_ERRORS;
 }
 
 int readFile(char *fileName, pgm *pgmStruct)

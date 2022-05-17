@@ -63,15 +63,15 @@ int writeFile(char *fileName, pgm *pgmStruct)
 		
 		for (int i = 0; i < pgmStruct->height; i++)
 		{
-			int colCount = 0;
+			
 			for (int j = 0; j < pgmStruct->width; j++)
 			{
 				/* finds the next column location */
-				int nextCol = (colCount - pgmStruct->imageData[i][j] + 1) % pgmStruct->width;
+				// int nextCol = (colCount - pgmStruct->imageData[i][j] + 1) % pgmStruct->width;
 
 				/* write the entry & whitespace  */
-				nBytesWritten = fprintf(outputFile, "%d%c", pgmStruct->imageData[i][j], (nextCol ? ' ' : '\n') );
-				colCount++;
+				nBytesWritten = fprintf(outputFile, "%d%c", pgmStruct->imageData[i][j], ' ');
+				
 
 				/* sanity check on write         */
 				if (nBytesWritten < 0)
@@ -88,6 +88,8 @@ int writeFile(char *fileName, pgm *pgmStruct)
 					/* data write failed   */
 				} 
 			}
+			nBytesWritten = fprintf(outputFile, "\n");
+
 		}
 	}
 
