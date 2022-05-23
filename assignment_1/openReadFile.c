@@ -280,16 +280,6 @@ int readFile(char *fileName, pgm *pgmStruct)
 		}
 	}
 
-	/* we are done with the 2d array, free it */
-	for (int i = 0; i < pgmStruct->height; i++)
-		{
-			free(pgmStruct->imageData[i]);
-		}
-	free (pgmStruct->imageData);
-
-	/* we are done with the commment line, free it */
-	free(pgmStruct->commentLine);
-	
 	/* we're done with the file, so close it */
 	fclose(inputFile);
 
