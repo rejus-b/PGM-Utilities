@@ -30,7 +30,11 @@ int writeFile(char *fileName, pgm *pgmStruct)
 		{ /* NULL output file */
 		/* free memory                   */
 		free(pgmStruct->commentLine);
-		free(pgmStruct->imageData);
+		for (int i = 0; i < pgmStruct->width; i++)
+		{
+			free(pgmStruct->imageData[i]);
+		}
+		free (pgmStruct->imageData);
 
 		/* print an error message        */
 		printf("ERROR: Output Failed (%s)", fileName);	
@@ -48,7 +52,11 @@ int writeFile(char *fileName, pgm *pgmStruct)
 		{ /* dimensional write failed    */
 		/* free memory                   */
 		free(pgmStruct->commentLine);
-		free(pgmStruct->imageData);
+		for (int i = 0; i < pgmStruct->width; i++)
+		{
+			free(pgmStruct->imageData[i]);
+		}
+		free (pgmStruct->imageData);
 
 		/* print an error message        */
 		printf("ERROR: Bad Dimensions (%s)", fileName);	
@@ -78,7 +86,11 @@ int writeFile(char *fileName, pgm *pgmStruct)
 					{ /* data write failed   */
 					/* free memory           */
 					free(pgmStruct->commentLine);
-					free(pgmStruct->imageData);
+					for (int i = 0; i < pgmStruct->width; i++)
+					{
+						free(pgmStruct->imageData[i]);
+					}
+					free (pgmStruct->imageData);
 
 					/* print error message   */
 					printf("ERROR: Output Failed (%s)", fileName);	
@@ -88,9 +100,11 @@ int writeFile(char *fileName, pgm *pgmStruct)
 					/* data write failed   */
 				} 
 			}
+			/* print a newline after all the data has been written */
 			nBytesWritten = fprintf(outputFile, "\n");
 
 		}
+		fclose(outputFile);
 	}
 
 	/* if the magic number is binary then write the data in binary format	*/
@@ -100,6 +114,7 @@ int writeFile(char *fileName, pgm *pgmStruct)
 		{
 			fwrite(pgmStruct->imageData[i], sizeof(unsigned char), pgmStruct->width, outputFile);
 		}
+		fclose(outputFile);
 	}
 
      return EXIT_NO_ERRORS;

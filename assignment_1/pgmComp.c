@@ -75,11 +75,19 @@ int main(int argc, char **argv)
 			/* If no errors are thrown when reading the two data files, see if they are equivelant */
 			if (equivalence(pgmStructFileOne, pgmStructFileTwo) == 0)
 			{
+				/* free the structures initialised at the start */
+				free(pgmStructFileOne);
+				free(pgmStructFileTwo);
+				/* image compared succesfully identical, print 'IDENTICAL' */
 				printf("IDENTICAL");
 				return EXIT_NO_ERRORS;
 			}
 			else 
 			{
+				/* free the structures initialised at the start */
+				free(pgmStructFileOne);
+				free(pgmStructFileTwo);
+				/* image compared  succesfully different, print 'DIFFERENT' */
 				printf("DIFFERENT");
 				return EXIT_NO_ERRORS;
 			}
@@ -94,28 +102,22 @@ int equivalence(pgm *pgmStructFileOne, pgm *pgmStructFileTwo)
 	/* check that the maxGray of the two input files is equivalent */
 	if (pgmStructFileOne->magic_number[0] != pgmStructFileTwo->magic_number[0])
 	{
-		// printf("ERROR: Miscellaneous (Magic Number Not Equivalent)");
 		return EXIT_MISCELLANEOUS;
 	}
 
-	/* check that the width of the two input files is equivalent */
 	if (pgmStructFileOne->width != pgmStructFileTwo->width )
 	{
-		// printf("ERROR: Miscellaneous (Width Not Equivalent)");
 		return EXIT_MISCELLANEOUS;
 	}
 
-	/* check that the height of the two input files is equivalent */
 	else if (pgmStructFileOne->height != pgmStructFileTwo->height)
 	{
-		// printf("ERROR: Miscellaneous (Height Not Equivalent)");
 		return EXIT_MISCELLANEOUS;
 	}
 
 	/* check that the maxGray of the two input files is equivalent */
 	else if (pgmStructFileOne->maxGray != pgmStructFileTwo->maxGray)
 	{
-		// printf("ERROR: Miscellaneous (Max Gray Not Equivalent)");
 		return EXIT_MISCELLANEOUS;
 	}
 
@@ -127,7 +129,6 @@ int equivalence(pgm *pgmStructFileOne, pgm *pgmStructFileTwo)
 		{
 			if (pgmStructFileOne->imageData[i][j] != pgmStructFileTwo->imageData[i][j])
 			{
-				// printf("ERROR: Miscellaneous (Image Data Not Equivalent)");
 				return EXIT_MISCELLANEOUS;
 			}
 		}

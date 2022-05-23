@@ -62,9 +62,7 @@ int main(int argc, char **argv)
 		return EXIT_WRONG_ARG_COUNT;
 	} /* wrong arg count */
 	
-
-
-
+	
 	/* malloc for a structure then pass it into pgmStructInit() */ 
 	pgm *pgmStruct = NULL;
 	pgmStruct = ((pgm*) malloc (sizeof(pgm)));
@@ -74,7 +72,9 @@ int main(int argc, char **argv)
 	/* it will also check that it succesfully wrote to the target file */
 	if ((readFile(argv[1], pgmStruct) == 0 ) && (writeFile(argv[2], pgmStruct) == 0))
 	{
-		/* If it works print 'ECHOED'*/
+		/* free the structures initialised at the start */
+		free(pgmStruct);
+		/* if it works print 'ECHOED'*/
 		printf("ECHOED");
 	}
 

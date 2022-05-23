@@ -28,9 +28,6 @@
 /* header for openWriteFile			*/
 #include "openWriteFile.h"
 
-/* header for pgmEcho				*/
-#include "pgmEcho.h"
-
 /* header for pgmAssemble				*/
 #include "pgmAssemble.h"
 

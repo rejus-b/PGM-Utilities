@@ -7,9 +7,6 @@
 /* header for including string operations	*/
 #include <string.h>
 
-/* header for pgmEcho				*/
-#include "pgmEcho.h"
-
 /* header for pgm structures		*/
 #include "pgmStruct.h"
 
@@ -67,6 +64,8 @@ int main (int argc, char **argv)
     /* check that the file can be read successfully*/
     if (readFile(argv[1], pgmStruct) != 0)
     {
+        /* free the structures initialised at the start */
+		free(pgmStruct);
         /* return that the file could not be read from */
         printf("ERROR: Bad File Name (%s)", argv[1]);
         return EXIT_BAD_INPUT_FILE;
@@ -75,6 +74,8 @@ int main (int argc, char **argv)
     /* check that the magic number is not already P2, which is the magic number for raw pgm */
     if (pgmStruct->magic_number[1] != '2' && pgmStruct->magic_number[1] != '2')
     {
+        /* free the structures initialised at the start */
+		free(pgmStruct);
         /* return that the magic number was wrong */
         printf("ERROR: Bad Magic Number (%s)", argv[1]);
         return EXIT_BAD_MAGIC_NUMBER;
@@ -84,6 +85,8 @@ int main (int argc, char **argv)
     /* call a function to write the input ASCII pgm as a raw pgm to the output fille */
     if (a2b(pgmStruct, argv[2]) == 0)
     {
+        /* free the structures initialised at the start */
+		free(pgmStruct);
         /* return that it was sucessfully converted */
         printf("CONVERTED");
         return EXIT_NO_ERRORS;

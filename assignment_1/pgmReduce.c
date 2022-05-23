@@ -55,20 +55,17 @@ int main(int argc, char **argv)
 		printf("ERROR: Bad Argument Count");
 		/* and return an error code      */
 		return EXIT_WRONG_ARG_COUNT;
-		} /* wrong arg count */
+	} /* wrong arg count */
 
 	/* malloc for a structure then pass it into pgmStructInit() */ 
 	pgm *pgmStruct = NULL;
 	pgmStruct = ((pgm*) malloc (sizeof(pgm)));
 	pgmStructInit(pgmStruct);
 
-
-
 	/* initialising a new structure that will store the reduced pgm image */
 	pgm *reducedPgmStruct = NULL;
 	reducedPgmStruct = ((pgm*) malloc (sizeof(pgm)));
 	pgmStructInit(reducedPgmStruct);
-
 
 
 	/* this converts the string integer factor to an integer */
@@ -77,6 +74,9 @@ int main(int argc, char **argv)
     /* this is too check that the input file is a valid file name */
 	if (readFile(argv[1], pgmStruct) != 0)
     {
+        /* free the structures initialised at the start */
+		free(pgmStruct);
+		free(reducedPgmStruct);
         /* exit the code */
         printf("ERROR: Bad File Name (%s)", argv[1]);
         return EXIT_BAD_INPUT_FILE;
@@ -86,6 +86,9 @@ int main(int argc, char **argv)
     /* this checks that the integer factor is valid (less than 1, or greater than dimensions) */
 	if (reduc_factor < 1 || reduc_factor  > pgmStruct->width || reduc_factor  > pgmStruct->height)
     {
+        /* free the structures initialised at the start */
+		free(pgmStruct);
+		free(reducedPgmStruct);
         /* exit the code */
         printf("ERROR: Miscellaneous (Bad integer reduction factor)");
         return EXIT_MISCELLANEOUS;
@@ -95,10 +98,12 @@ int main(int argc, char **argv)
     /* this runs the code to actually reduce the code */
     if (reduce(pgmStruct, reducedPgmStruct, argv[1], reduc_factor, argv[3]) == 0)
     {
+        /* free the structures initialised at the start */
+		free(pgmStruct);
+		free(reducedPgmStruct);
         /* if no errors occur print 'REDUCED' */
         printf("REDUCED");
     }
-
 
 	/* at this point, we are done and can exit with a success code */
 	return EXIT_NO_ERRORS;
@@ -115,11 +120,11 @@ int reduce(pgm *pgmStruct, pgm *reducedPgmStruct, char *inputFile, int reduction
 	/* malloc data for a new structure to store the reduced image */
 	reducedPgmStruct->imageData = (unsigned char **) malloc(reducedPgmStruct->height * sizeof(unsigned char*));
 
+	/* malloc for a new array inside the first array to make a 2D array */
 	for (int i = 0; i < reducedPgmStruct->width; i++)
 	{
 		reducedPgmStruct->imageData[i] = (unsigned char *) malloc(reducedPgmStruct->width * sizeof(unsigned char));
 	}
-	
 
 	/* initialises the variables that count for the reduced image */
 	int count = 0;
@@ -132,6 +137,7 @@ int reduce(pgm *pgmStruct, pgm *reducedPgmStruct, char *inputFile, int reduction
 		subCount = 0;
 		for (int j = 0; j < pgmStruct->width; j++)
 		{
+			/* if the gray value MODULUS the reduction factor is 0 we are at the right gray value to copy */
 			if (i % reductionFactor == 0 && j % reductionFactor == 0)
 			{
 				reducedPgmStruct->imageData[count][subCount] = pgmStruct->imageData[i][j];
@@ -147,16 +153,14 @@ int reduce(pgm *pgmStruct, pgm *reducedPgmStruct, char *inputFile, int reduction
 		}
 	}
 
-	/* assigns the reduced image the same magic number as teh original */
+	/* assigns the reduced image the same magic number as the original */
 	reducedPgmStruct->magic_number[0] = pgmStruct->magic_number[0];
 	reducedPgmStruct->magic_number[1] = pgmStruct->magic_number[1];
 
 	/* write to an output file the reduced image */
 	writeFile(outputFile, reducedPgmStruct);
 
-	
 	/* return on success */
     return EXIT_NO_ERRORS;
-
 
 } /* reduce() */

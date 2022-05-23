@@ -4,9 +4,6 @@
 /* library for memory routines     */
 #include <stdlib.h>
 
-/* header for pgmEcho				*/
-#include "pgmEcho.h"
-
 /* header for pgm structures		*/
 #include "pgmStruct.h"
 
@@ -25,15 +22,10 @@ int a2b(pgm *pgmStruct, char *fileName)
     /* open the outputfile in a writeable format */
     FILE *outputFile = fopen (fileName, "w");
 
-    /* intialise the size of the image data */
-    // int imageSize = (pgmStruct->width * pgmStruct->height);
-
     /* print in ASCII the header data of the pgm file to the output pgmn */
     fprintf(outputFile, "P5\n%d %d\n%d\n", pgmStruct->width, pgmStruct->height, pgmStruct->maxGray);
 
     /* print in binary the image data to the output file */
-    // fwrite(pgmStruct->imageData, sizeof(unsigned char), imageSize, outputFile);
-
     for (int i = 0; i < pgmStruct->height; i++)
     {
         fwrite(pgmStruct->imageData[i], sizeof(unsigned char), pgmStruct->width, outputFile);

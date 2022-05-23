@@ -4,9 +4,6 @@
 /* library for memory routines     */
 #include <stdlib.h>
 
-/* header for pgmEcho				*/
-#include "pgmEcho.h"
-
 /* header for pgm structures		*/
 #include "pgmStruct.h"
 
@@ -25,12 +22,8 @@ int b2a(pgm *pgmStruct, char *fileName, char *inputFileName)
     /* open the outputfile in a writeable format */
     FILE *outputFile = fopen (fileName, "w");
 
-		/* write magic number, size & gray value */
-		// size_t nBytesWritten = fprintf(outputFile, "P2\n%d %d\n%d\n", pgmStruct->width, pgmStruct->height, pgmStruct->maxGray);
+		/* write to the file the header data */
 		fprintf(outputFile, "P2\n%d %d\n%d\n", pgmStruct->width, pgmStruct->height, pgmStruct->maxGray);
-
-    /* allocate the data pointer             */
-    // long nImageBytes = pgmStruct->width * pgmStruct->height * sizeof(unsigned char);
 
 		/* loops through all the image data */
 		for (int i = 0; i < pgmStruct->height; i++)
@@ -59,9 +52,9 @@ int b2a(pgm *pgmStruct, char *fileName, char *inputFileName)
 					return EXIT_OUTPUT_FAILED;
 					/* data write failed   */
 					}
-			} /* per gray value */
+			} /* per row*/
 		
-		} /* per gray value */
+		} /* per column */
 	
 
     /* be tidy, clean up and close the file */

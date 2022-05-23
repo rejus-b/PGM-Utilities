@@ -31,16 +31,12 @@
 /* header for openWriteFile			*/
 #include "openWriteFile.h"
 
-/* header for pgmEcho				*/
-#include "pgmEcho.h"
-
 /* header for pgmTile				*/
 #include "pgmTile.h"
 
 
 int main(int argc, char **argv)
-	{ 
-	/* main() */
+{ /* main() */
 
 	/* check for no input/output args */
 	if (argc == 1)
@@ -59,21 +55,8 @@ int main(int argc, char **argv)
 		return EXIT_WRONG_ARG_COUNT;
 		} /* wrong arg count */
 
-
-	const char *fileName = argv[3];
-	const char* extension = "_<row>_<column>.pgm";
-	int fileNameLength = strlen(fileName);
-	const char* fileType = &fileName[fileNameLength - strlen(extension)];
-	int checkExtension = strcmp(extension, fileType);
-
-	if (checkExtension != 0)
-	{
-        /* exit the code */
-        printf("ERROR: Miscellaneous (Bad tile layout)");
-		// printf("\n %s \n", fileType);
-        exit(EXIT_MISCELLANEOUS);		
-	}
-
+	/* check that the output file name is formatted correctly */
+	checkExtension(argv[3]);
 
 	/* malloc for a structure then pass it into pgmStructInit() */ 
 	pgm *pgmStruct = NULL;
@@ -88,25 +71,48 @@ int main(int argc, char **argv)
     /* this is too check that the input file is a valid file name */
 	if (readFile(argv[1], pgmStruct) != 0)
     {
+        /* free the structures initialised at the start */
+		free(pgmStruct);
+		free(tilePgmStruct);
         /* exit the code */
         printf("ERROR: Bad File Name (%s)", argv[1]);
         return EXIT_BAD_INPUT_FILE;
     }
 
-	if (tile(pgmStruct, tilePgmStruct, argv[3], atoi(argv[2]), extension) == 0)
+	/* run the tile function to tile the code */
+	if (tile(pgmStruct, tilePgmStruct, argv[3], atoi(argv[2])) == 0)
 	{
-	/* If it works print 'TILED'*/
-	printf("TILED");
-	/* at this point, we are done and can exit with a success code */
-	return EXIT_NO_ERRORS;
+		/* free the structures initialised at the start */
+		free(pgmStruct);
+		free(tilePgmStruct);
+		/* If it works print 'TILED' */
+		printf("TILED");
+		/* at this point, we are done and can exit with a success code */
+		return EXIT_NO_ERRORS;
 	}
 
+} /* main() */
+
+int checkExtension(char *fileName)
+{	/* checkExtension() */
+
+	const char* extension = "_<row>_<column>.pgm";
+	int fileNameLength = strlen(fileName);
+	const char* fileType = &fileName[fileNameLength - strlen(extension)];
+	int checkExtension = strcmp(extension, fileType);
+
+	if (checkExtension != 0)
+	{
+        /* exit the code */
+        printf("ERROR: Miscellaneous (Bad tile layout)");
+        exit(EXIT_MISCELLANEOUS);		
+	}
+
+	return EXIT_NO_ERRORS;
+} /* checkExtension() */
 
 
-	} /* main() */
-
-
-int tile(pgm *pgmStruct, pgm *tilePgmStruct, char *inputFile, int tileFactor, const char *extension)
+int tile(pgm *pgmStruct, pgm *tilePgmStruct, char *inputFile, int tileFactor)
 { /* tile() */
 	/* calcualting the size of a new pgm struct which will temporarily store each tile */
 	tilePgmStruct->width = pgmStruct->width / tileFactor;
@@ -125,9 +131,9 @@ int tile(pgm *pgmStruct, pgm *tilePgmStruct, char *inputFile, int tileFactor, co
 	}
 
 	/* finding the name of the file */
-	char name[strlen(inputFile)-strlen(extension)];
+	char name[strlen(inputFile) - 19];
 
-	for (int i = 0; i < (strlen(inputFile)-strlen(extension)); i++)
+	for (int i = 0; i < (strlen(inputFile) - 19); i++)
 	{
 		/* loop through the file name to copy it letter by letter, add a newline character to terminate the string */
 		name[i+1] = '\0';
@@ -135,14 +141,16 @@ int tile(pgm *pgmStruct, pgm *tilePgmStruct, char *inputFile, int tileFactor, co
 	}
 
 	/* initialise a new string for the name that will be formated with row and column */
-	char newName[strlen(name)+strlen(extension)];
+	char newName[strlen(name) + 19];
+
+	/* creating a count for the row location of the tiled image */
+	int xNameCount = 0;
 
 	/* segmenting the main image into tiles */
-	int yNameCount = 0;
-
 	for (int yOffSet = 0; yOffSet < tileFactor; yOffSet ++)
 	{
-		int xNameCount = 0;
+		/* creating a count for the column location of the tiled image */
+		int yNameCount = 0;
 		for (int xOffSet = 0; xOffSet < tileFactor; xOffSet ++)
 		{
 			for (int i = 0; i < tilePgmStruct->height; i++)
@@ -154,12 +162,11 @@ int tile(pgm *pgmStruct, pgm *tilePgmStruct, char *inputFile, int tileFactor, co
 				}
 			}
 			/* create a formated string with the row and columns then write it to a new file */
-			sprintf(newName, "%s_<%i>_<%i>.pgm", name, yNameCount, xNameCount);
+			sprintf(newName, "%s_<%i>_<%i>.pgm", name, xNameCount, yNameCount);
 			writeFile(newName, tilePgmStruct);
-			xNameCount ++;
-			// fclose(inputFile);
+			yNameCount ++;
 		}
-		yNameCount ++;
+		xNameCount ++;
 	}
 
 	/* at this point, we are done and can exit with a success code */
