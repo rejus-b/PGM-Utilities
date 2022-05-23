@@ -186,7 +186,11 @@ int readFile(char *fileName, pgm *pgmStruct)
 				{
 					/* free memory			*/
 					free(pgmStruct->commentLine);
-					free(pgmStruct->imageData);
+					for (int i = 0; i < pgmStruct->height; i++)
+						{
+							free(pgmStruct->imageData[i]);
+						}
+					free (pgmStruct->imageData);
 
 					/* print error message */
 					printf("ERROR: Bad Data (%s)", fileName);
@@ -201,7 +205,11 @@ int readFile(char *fileName, pgm *pgmStruct)
 					{ /* fscanf failed */
 					/* free memory           */
 					free(pgmStruct->commentLine);
-					free(pgmStruct->imageData);	
+					for (int i = 0; i < pgmStruct->height; i++)
+						{
+							free(pgmStruct->imageData[i]);
+						}
+					free (pgmStruct->imageData);
 
 					/* close file            */
 					fclose(inputFile);
@@ -227,7 +235,11 @@ int readFile(char *fileName, pgm *pgmStruct)
 		{ /* fscanf failed */
 			/* free memory           */
 			free(pgmStruct->commentLine);
-			free(pgmStruct->imageData);	
+			for (int i = 0; i < pgmStruct->height; i++)
+				{
+					free(pgmStruct->imageData[i]);
+				}
+			free (pgmStruct->imageData);
 	
 			/* close file            */
 			fclose(inputFile);
@@ -250,7 +262,11 @@ int readFile(char *fileName, pgm *pgmStruct)
 			if (fread(pgmStruct->imageData[i], sizeof(unsigned char), pgmStruct->width, inputFile) == 0)
 			{
 				free(pgmStruct->commentLine);
-				free(pgmStruct->imageData);	
+				for (int i = 0; i < pgmStruct->height; i++)
+					{
+						free(pgmStruct->imageData[i]);
+					}
+				free (pgmStruct->imageData);	
 		
 				/* close file            */
 				fclose(inputFile);
@@ -264,6 +280,16 @@ int readFile(char *fileName, pgm *pgmStruct)
 		}
 	}
 
+	/* we are done with the 2d array, free it */
+	for (int i = 0; i < pgmStruct->height; i++)
+		{
+			free(pgmStruct->imageData[i]);
+		}
+	free (pgmStruct->imageData);
+
+	/* we are done with the commment line, free it */
+	free(pgmStruct->commentLine);
+	
 	/* we're done with the file, so close it */
 	fclose(inputFile);
 

@@ -79,6 +79,17 @@ int main(int argc, char **argv)
         return EXIT_BAD_INPUT_FILE;
     }
 
+    /* this checks that the integer factor is valid (less than 1, or greater than dimensions) */
+	if (atoi(argv[2]) < 1 || atoi(argv[2])  > pgmStruct->width || atoi(argv[2])  > pgmStruct->height)
+    {
+        /* free the structures initialised at the start */
+		free(pgmStruct);
+		free(tilePgmStruct);
+        /* exit the code */
+        printf("ERROR: Miscellaneous (Bad integer reduction factor)");
+        return EXIT_MISCELLANEOUS;
+    }
+
 	/* run the tile function to tile the code */
 	if (tile(pgmStruct, tilePgmStruct, argv[3], atoi(argv[2])) == 0)
 	{
@@ -131,8 +142,9 @@ int tile(pgm *pgmStruct, pgm *tilePgmStruct, char *inputFile, int tileFactor)
 	}
 
 	/* finding the name of the file */
+	/* initialise a new array to store the input file name */
 	char name[strlen(inputFile) - 19];
-
+	/* loop through the input file name up until the non-variable extension" */
 	for (int i = 0; i < (strlen(inputFile) - 19); i++)
 	{
 		/* loop through the file name to copy it letter by letter, add a newline character to terminate the string */
@@ -168,6 +180,13 @@ int tile(pgm *pgmStruct, pgm *tilePgmStruct, char *inputFile, int tileFactor)
 		}
 		xNameCount ++;
 	}
+
+	/* we are done with the tiled pgm structure, free memory */
+	for (int i = 0; i < tilePgmStruct->height; i++)
+		{
+			free(tilePgmStruct->imageData[i]);
+		}
+	free (tilePgmStruct->imageData);
 
 	/* at this point, we are done and can exit with a success code */
 	return EXIT_NO_ERRORS;
