@@ -81,7 +81,7 @@ int writeFile(char *fileName, pgm *pgmStruct)
 				nBytesWritten = fprintf(outputFile, "%d%c", pgmStruct->imageData[i][j], ' ');
 				
 
-				/* sanity check on write         */
+				/* sanity check on write	*/
 				if (nBytesWritten < 0)
 					{ /* data write failed   */
 					/* free memory           */
