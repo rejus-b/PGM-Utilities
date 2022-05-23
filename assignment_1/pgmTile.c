@@ -93,7 +93,7 @@ int main(int argc, char **argv)
         return EXIT_BAD_INPUT_FILE;
     }
 
-	if (tile(pgmStruct, tilePgmStruct, argv[1], 256, extension) == 0)
+	if (tile(pgmStruct, tilePgmStruct, argv[3], atoi(argv[2]), extension) == 0)
 	{
 	/* If it works print 'TILED'*/
 	printf("TILED");
@@ -109,8 +109,8 @@ int main(int argc, char **argv)
 int tile(pgm *pgmStruct, pgm *tilePgmStruct, char *inputFile, int tileFactor, const char *extension)
 { /* tile() */
 	/* calcualting the size of a new pgm struct which will temporarily store each tile */
-	tilePgmStruct->width = tileFactor;
-	tilePgmStruct->height = tileFactor;
+	tilePgmStruct->width = pgmStruct->width / tileFactor;
+	tilePgmStruct->height = pgmStruct->height / tileFactor;
 	
 	/* assigns the tile magic number to the original magic number */
 	tilePgmStruct->magic_number[0] = pgmStruct->magic_number[0];
@@ -126,6 +126,7 @@ int tile(pgm *pgmStruct, pgm *tilePgmStruct, char *inputFile, int tileFactor, co
 
 	/* finding the name of the file */
 	char name[strlen(inputFile)-strlen(extension)];
+
 	for (int i = 0; i < (strlen(inputFile)-strlen(extension)); i++)
 	{
 		/* loop through the file name to copy it letter by letter, add a newline character to terminate the string */
@@ -139,23 +140,24 @@ int tile(pgm *pgmStruct, pgm *tilePgmStruct, char *inputFile, int tileFactor, co
 	/* segmenting the main image into tiles */
 	int yNameCount = 0;
 
-	for (int yOffSet = 0; yOffSet < pgmStruct->height; yOffSet += tileFactor)
+	for (int yOffSet = 0; yOffSet < tileFactor; yOffSet ++)
 	{
 		int xNameCount = 0;
-		for (int xOffSet = 0; xOffSet < pgmStruct->width; xOffSet += tileFactor)
+		for (int xOffSet = 0; xOffSet < tileFactor; xOffSet ++)
 		{
 			for (int i = 0; i < tilePgmStruct->height; i++)
 			{
 				for (int j = 0; j < tilePgmStruct->width; j++)
 				{
-					/* assin the pixel of the tile to the corresponding input image pixel */
-					tilePgmStruct->imageData[i][j] = pgmStruct->imageData[i+xOffSet][j+yOffSet];
+					/* assign the pixel of the tile to the corresponding input image pixel */
+					tilePgmStruct->imageData[i][j] = pgmStruct->imageData[(yOffSet * tilePgmStruct->height) + i][(xOffSet * tilePgmStruct->height) + j];
 				}
 			}
 			/* create a formated string with the row and columns then write it to a new file */
-			sprintf(newName, "%s_<%i>_<%i>", name, xNameCount, yNameCount);
+			sprintf(newName, "%s_<%i>_<%i>.pgm", name, yNameCount, xNameCount);
 			writeFile(newName, tilePgmStruct);
 			xNameCount ++;
+			// fclose(inputFile);
 		}
 		yNameCount ++;
 	}
