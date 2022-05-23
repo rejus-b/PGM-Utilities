@@ -70,7 +70,7 @@ int main(int argc, char **argv)
 	{
         /* exit the code */
         printf("ERROR: Miscellaneous (Bad tile layout)");
-		printf("\n %s \n", fileType);
+		// printf("\n %s \n", fileType);
         exit(EXIT_MISCELLANEOUS);		
 	}
 
