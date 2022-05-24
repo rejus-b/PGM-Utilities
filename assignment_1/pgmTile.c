@@ -86,7 +86,7 @@ int main(int argc, char **argv)
 		free(pgmStruct);
 		free(tilePgmStruct);
         /* exit the code */
-        printf("ERROR: Miscellaneous (Bad integer reduction factor)");
+        printf("ERROR: Miscellaneous (Bad integer tile factor)");
         return EXIT_MISCELLANEOUS;
     }
 
@@ -96,7 +96,7 @@ int main(int argc, char **argv)
 		/* free the structures initialised at the start */
 		free(pgmStruct);
 		free(tilePgmStruct);
-		/* If it works print 'TILED' */
+		/* if it sucesfully tiles print 'TILED' */
 		printf("TILED");
 		/* at this point, we are done and can exit with a success code */
 		return EXIT_NO_ERRORS;
@@ -107,11 +107,13 @@ int main(int argc, char **argv)
 int checkExtension(char *fileName)
 {	/* checkExtension() */
 
+	/* this checks that ending of the output file is in the correct format */
 	const char* extension = "_<row>_<column>.pgm";
 	int fileNameLength = strlen(fileName);
 	const char* fileType = &fileName[fileNameLength - strlen(extension)];
 	int checkExtension = strcmp(extension, fileType);
 
+	/* if the user input format and the actual format do not match throw an error */
 	if (checkExtension != 0)
 	{
         /* exit the code */
@@ -133,7 +135,7 @@ int tile(pgm *pgmStruct, pgm *tilePgmStruct, char *inputFile, int tileFactor)
 	tilePgmStruct->magic_number[0] = pgmStruct->magic_number[0];
 	tilePgmStruct->magic_number[1] = pgmStruct->magic_number[1];
 
-	/* malloc data for a new structure to store the tiled image temporarily */
+	/* malloc for a new 2D array to store the tiled image temporarily */
 	tilePgmStruct->imageData = (unsigned char **) malloc(tilePgmStruct->height * sizeof(unsigned char*));
 
 	for (int i = 0; i < tilePgmStruct->width; i++)

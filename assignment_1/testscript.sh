@@ -50,11 +50,13 @@ echo
 echo "8: Testing pgmReduce for reduction factor 4"
 ./pgmReduce baboon.ascii.pgm 4 reducedBaboon.ascii.pgm
 echo -e "\n8 Result: Returned $?"
+rm reducedBaboon.ascii.pgm
 echo
 
 echo "9: Testing pgmTile for tile factor 4"
 ./pgmTile baboon.ascii.pgm 4 "tiledBaboon.ascii.pgm_<row>_<column>.pgm"
 echo -e "\n9 Result: Returned $?"
+rm tiledBaboon.*
 echo
 
 echo "Running 'make clean'"
