@@ -118,39 +118,8 @@ int main(int argc, char **argv)
 int assemble(pgm *canvasPgmStruct, pgm *inputPgmStruct, int row, int col)
 { /* assemble()	*/
 
-	int colOutOfBounds = 0;
-	int rowOutOfBounds = 0;
-	while (rowOutOfBounds == 0 || colOutOfBounds == 0)
-	{
-		if (row > canvasPgmStruct->width)
-		{
-			printf("NERD");
-			colOutOfBounds = 1;
-			continue;
-		} 
-		else if (col > canvasPgmStruct->height)
-		{
-			printf("NERD");
-			rowOutOfBounds = 1;
-			continue;
-		}
-		
-		canvasPgmStruct->imageData[row][col] = inputPgmStruct->imageData[row][col];
-		row++;
-		// printf("HEEEY");
-		if (row == inputPgmStruct->width)
-		{
-			// printf("HEEEEEEEEEEEEEYeeeeeeeeeeeeeeeeeee");
-			row = row - inputPgmStruct->width;
-			col++;
-			if (col == inputPgmStruct->height)
-			{
-				// printf("HEEEEEEEEEEEEEY");
-				return EXIT_NO_ERRORS;
-			}
-		}
 
-	}
+
 	return EXIT_NO_ERRORS;
 } /* assemble()	*/
 
