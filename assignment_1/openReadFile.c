@@ -1,76 +1,30 @@
-/* library for I/O routines        */
+/* library for I/O routines					*/
 #include <stdio.h>
 
-/* library for memory routines     */
+/* library for memory routines 				*/
 #include <stdlib.h>
 
-/* header for including string operations	*/
+/* header for including string operations	 */
 #include <string.h>
 
-/* header for pgm structures		*/
+/* header for pgm structures 				*/
 #include "pgmStruct.h"
 
-/* header for reading the error code */
+/* header for reading the error code		 */
 #include "errors.h"
 
-/* header for openReadFile macros */
+/* header for openReadFile macros			 */
 #include "openReadFile.h"
-
-int magicNumCheck(unsigned short *magic_Number, FILE *inputFile, char *fileName)
-{ /* magicNumCheck()	*/
-	/* sanity check on the magic number      */
-	/* sanity checks on size & grays         */
-	/* must read exactly three values        */
-	if (*magic_Number != MAGIC_NUMBER_ASCII_PGM && *magic_Number != MAGIC_NUMBER_RAW_PGM)
-		{ /* failed magic number check   */
-		/* be tidy: close the file       */
-		fclose(inputFile);
-
-		/* print an error message */
-		printf("ERROR: Bad Magic Number (%s)", fileName);	
-		
-		/* and return */
-		exit(EXIT_BAD_MAGIC_NUMBER);
-	} /* failed magic number check   */
-
-	return EXIT_NO_ERRORS;
-} /* magicNumCheck()	*/
-
-int imageMallocCheck(FILE *inputFile, pgm *pgmStruct)
-{	/* imageMallocCheck()	*/
-	/* sanity check for memory allocation    */
-	for (int i = 0; i < pgmStruct->height; i++)
-	{
-		for (int j = 0; j < pgmStruct->width; j++)
-		{
-			if (&pgmStruct->imageData[i][j] == NULL)	
-			{ /* malloc failed */
-			/* free up memory	*/
-			free(pgmStruct->commentLine);
-
-			/* close file pointer	*/
-			fclose(inputFile);
-
-			/* print an error message */
-			printf("ERROR: Image Malloc Failed");	
-			
-			/* return error code             */
-			exit(EXIT_IMAGE_MALLOC_FAILED);
-			} /* malloc failed */
-		}
-	}
-	return EXIT_NO_ERRORS;
-}
 
 int readFile(char *fileName, pgm *pgmStruct)
 { /* openReadFile()		*/
 
-	/* now start reading in the data         */
-	/* try to open the file for text I/O     */
-	/* in ASCII mode b/c the header is text  */
+	/* now start reading in the data */
+	/* try to open the file for text I/O */
+	/* in ASCII mode b/c the header is text */
 	FILE *inputFile = fopen(fileName, "r");
 
-	/* if it fails, return error code	*/
+	/* if it fails, return error code */
 	if (inputFile == NULL)
 	{
 		printf("ERROR: Bad File Name (%s)", fileName);
@@ -85,80 +39,80 @@ int readFile(char *fileName, pgm *pgmStruct)
 	/* checks that the magic number is valid */
 	magicNumCheck(pgmStruct->magic_Number, inputFile, fileName);
 	
-	/* scan whitespace if present	*/
+	/* scan whitespace if present */
 	int scanCount = fscanf(inputFile, " ");
 
 	/* check for a comment line	*/
 	char nextChar = fgetc(inputFile);
 	if (nextChar == '#')
-		{ /* comment line	*/
-		/* allocate buffer	*/
-		pgmStruct->commentLine = (char *) malloc(MAX_COMMENT_LINE_LENGTH +2 );
+		{ /* comment line */
+		/* allocate buffer */
+		pgmStruct->commentLine = (char *) malloc(MAX_COMMENT_LINE_LENGTH + 2);
 		/* fgets() reads a line	*/
 		/* capture return value	*/
 		char *commentString = fgets(pgmStruct->commentLine, MAX_COMMENT_LINE_LENGTH + 2, inputFile);
-		/* NULL means failure            */
+		/* NULL means failure */
 		if (commentString == NULL || strlen(commentString) > 128)
-			{ /* NULL comment read   */
+			{ /* NULL comment read */
 			/* free memory	*/
 			free(pgmStruct->commentLine);
-			/* close file	*/
+			/* close file */
 			fclose(inputFile);
 
 			/* print an error message */
 			printf("ERROR: Bad Comment Line (%s)", fileName);	
 		
-			/* and return	*/
+			/* and return */
 			exit(EXIT_BAD_COMMENT_LINE);
-			} /* NULL comment read   */
+			} /* NULL comment read */
 		} /* comment line */
 	else
 	{ 	
-		/* not a comment line	*/
-		/* put character back	*/
+		/* not a comment line */
+		/* put character back */
 		ungetc(nextChar, inputFile);
 	} /* not a comment line */
 
 
-	/* read in width, height, grays	*/
-	/* whitespace to skip blanks	*/
+	/* read in width, height, maxGray */
+	/* whitespace to skip blanks */
 	scanCount = fscanf(inputFile, " %u %u %u ", &(pgmStruct->width), &(pgmStruct->height), &(pgmStruct->maxGray));
 
 	if 	(
-		(scanCount != 3				)	||
+		(scanCount != 3		)	||
 		(pgmStruct->width 	< MIN_IMAGE_DIMENSION	) 	||
 		(pgmStruct->width 	> MAX_IMAGE_DIMENSION	) 	||
 		(pgmStruct->height < MIN_IMAGE_DIMENSION	) 	||
 		(pgmStruct->height > MAX_IMAGE_DIMENSION	)		
 		)
-		{ /* failed size sanity check    */
-		/* free up the memory	*/
+		{ /* failed size sanity check */
+		/* free up the memory */
 		free(pgmStruct->commentLine);
 
-		/* be tidy: close file pointer   */
+		/* be tidy: close file pointer */
 		fclose(inputFile);
 
 		/* print an error message */
 		printf("ERROR: Bad Dimensions (%s)", fileName);	
 		
-		/* and return	*/
+		/* and return */
 		exit(EXIT_BAD_DIMENSIONS);
-		} /* failed size sanity check    */
+		} /* failed size sanity check */
 
 	if (pgmStruct->maxGray != 255)
-	{ /* failed maxGray sanity check	*/
-		/* free up the memory	*/
+	{ /* failed maxGray sanity check */
+		/* free up the memory */
 		free(pgmStruct->commentLine);
 
-		/* be tidy: close file pointer   */
+		/* be tidy: close file pointer */
 		fclose(inputFile);
 
 		/* print an error message */
 		printf("ERROR: Bad Max Gray Value (%s)", fileName);	
 		
-		/* and return	*/
+		/* and return */
 		exit(EXIT_BAD_MAX_GRAY_VALUE);
-		} /* failed maxGray sanity check	*/
+		} /* failed maxGray sanity check */
 	
 
 	/* mallocing for a 2D array, malloc a 1D array first, then malloc arrays into this array */
@@ -168,7 +122,7 @@ int readFile(char *fileName, pgm *pgmStruct)
 		pgmStruct->imageData[i] = (unsigned char *) malloc (pgmStruct->width * sizeof(unsigned char));
 	}
 
-	/* sanity check for memory allocation	*/
+	/* sanity check for memory allocation */
 	imageMallocCheck(inputFile, pgmStruct);
 
 	if (pgmStruct->magic_number[1] == '2')
@@ -177,14 +131,14 @@ int readFile(char *fileName, pgm *pgmStruct)
 		{
 			for (int j = 0; j < pgmStruct->width; j++)
 			{				
-				// 	/* read next value	*/
+				/* read next value */
 				int grayValue = -1;
 				int scanCount = fscanf(inputFile, " %u", &grayValue);
 
 				/* sanity check too little data	*/
 				if (scanCount > (pgmStruct->width*pgmStruct->height))
 				{
-					/* free memory			*/
+					/* free memory	*/
 					free(pgmStruct->commentLine);
 					for (int i = 0; i < pgmStruct->height; i++)
 						{
@@ -211,17 +165,17 @@ int readFile(char *fileName, pgm *pgmStruct)
 						}
 					free (pgmStruct->imageData);
 
-					/* close file	*/
+					/* close file */
 					fclose(inputFile);
 
-					/* print error message	*/
+					/* print error message */
 					printf("ERROR: Bad Gray Value");	
 				
-					/* and return	*/
+					/* and return */
 					return EXIT_MISCELLANEOUS;
 					} /* fscanf failed */
 
-				/* set the pixel value	*/
+				/* set the pixel value */
 				pgmStruct->imageData[i][j] = (unsigned char) grayValue;
 			}
 		}
@@ -230,10 +184,10 @@ int readFile(char *fileName, pgm *pgmStruct)
 		int grayValue = -1;
 		scanCount = fscanf(inputFile, " %u", &grayValue);
 	
-		/* sanity check	                 */
+		/* sanity check	*/
 		if ((scanCount != -1))
 		{ /* fscanf failed */
-			/* free memory           */
+			/* free memory */
 			free(pgmStruct->commentLine);
 			for (int i = 0; i < pgmStruct->height; i++)
 				{
@@ -241,7 +195,7 @@ int readFile(char *fileName, pgm *pgmStruct)
 				}
 			free (pgmStruct->imageData);
 	
-			/* close file            */
+			/* close file */
 			fclose(inputFile);
 	
 			/* print error message */
@@ -280,9 +234,53 @@ int readFile(char *fileName, pgm *pgmStruct)
 		}
 	}
 
-	/* we're done with the file, so close it */
+	/* we're done with the file, so close it  and return*/
 	fclose(inputFile);
-
 	return EXIT_NO_ERRORS;
 
 } /* openReadFile()		*/
+
+int magicNumCheck(unsigned short *magic_Number, FILE *inputFile, char *fileName)
+{ /* magicNumCheck()	*/
+	/* sanity check on the magic number */
+	if (*magic_Number != MAGIC_NUMBER_ASCII_PGM && *magic_Number != MAGIC_NUMBER_RAW_PGM)
+		{ /* failed magic number check */
+		/* be tidy: close the file */
+		fclose(inputFile);
+
+		/* print an error message */
+		printf("ERROR: Bad Magic Number (%s)", fileName);	
+		
+		/* and return */
+		exit(EXIT_BAD_MAGIC_NUMBER);
+	} /* failed magic number check */
+
+	return EXIT_NO_ERRORS;
+} /* magicNumCheck()	 */
+
+int imageMallocCheck(FILE *inputFile, pgm *pgmStruct)
+{	/* imageMallocCheck()	 */
+	/* sanity check for memory allocation */
+	for (int i = 0; i < pgmStruct->height; i++)
+	{
+		for (int j = 0; j < pgmStruct->width; j++)
+		{
+			if (&pgmStruct->imageData[i][j] == NULL)	
+			{ /* malloc failed */
+			/* free up memory */
+			free(pgmStruct->commentLine);
+
+			/* close file pointer */
+			fclose(inputFile);
+
+			/* print an error message */
+			printf("ERROR: Image Malloc Failed");	
+			
+			/* return error code */
+			exit(EXIT_IMAGE_MALLOC_FAILED);
+			} /* malloc failed */
+		}
+	}
+	return EXIT_NO_ERRORS;
+} /* imageMallocCheck()		*/
+

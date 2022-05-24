@@ -1,5 +1,5 @@
 
-//* library for I/O routines        */
+/* library for I/O routines        */
 #include <stdio.h>
 
 /* library for memory routines     */
@@ -66,7 +66,7 @@ int main(int argc, char **argv)
 	pgmStructFileTwo = ((pgm*) malloc (sizeof(pgm)));
 	pgmStructInit(pgmStructFileTwo);
 
-    // /* pass the first pgm to be read from */
+    /* pass the first pgm to be read from */
     if (readFile(argv[1], pgmStructFileOne) == 0)
 	{
 		/* pass the second pgm to be read from */

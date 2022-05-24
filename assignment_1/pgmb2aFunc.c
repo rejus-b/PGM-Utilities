@@ -1,19 +1,19 @@
-/* library for I/O routines        */
+/* library for I/O routines       					 */
 #include <stdio.h>
 
-/* library for memory routines     */
+/* library for memory routines   					  */
 #include <stdlib.h>
 
-/* header for pgm structures		*/
+/* header for pgm structures								*/
 #include "pgmStruct.h"
 
-/* header for reading the error code */
+/* header for reading the error code			 */
 #include "errors.h"
 
-/* header for openWriteFile			*/
-#include "openWriteFile.h"
+/* header for openWriteFile									*/
+#include "openWriteFile.h"	
 
-/* header for pgma2bFunc            */
+/* header for pgma2bFunc           				 */
 #include "pgma2bFunc.h"
 
 

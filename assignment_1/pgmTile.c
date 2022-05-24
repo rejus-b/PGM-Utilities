@@ -1,15 +1,3 @@
-/*************************************/
-/* main routine                      */
-/*                                   */
-/* CLI parameters:                   */
-/* argv[0]: executable name          */
-/* argv[1]: input file name          */
-/* argv[2]: integer tile factor		 */
-/* argv[3]: output file name         */
-/* returns 0 on success              */
-/* non-zero error code on fail       */
-/*************************************/
-
 /* library for I/O routines        */
 #include <stdio.h>
 
@@ -33,6 +21,19 @@
 
 /* header for pgmTile				*/
 #include "pgmTile.h"
+
+
+/*************************************/
+/* main routine                      */
+/*                                   */
+/* CLI parameters:                   */
+/* argv[0]: executable name          */
+/* argv[1]: input file name          */
+/* argv[2]: integer tile factor		 */
+/* argv[3]: output file name         */
+/* returns 0 on success              */
+/* non-zero error code on fail       */
+/*************************************/
 
 
 int main(int argc, char **argv)

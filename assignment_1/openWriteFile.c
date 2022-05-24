@@ -1,34 +1,30 @@
-/* library for I/O routines        */
+/* library for I/O routines       			 */
 #include <stdio.h>
 
-/* library for memory routines     */
+/* library for memory routines    			 */
 #include <stdlib.h>
 
 /* header for including string operations	*/
 #include <string.h>
 
-/* header for pgm structures		*/
+/* header for pgm structures				*/
 #include "pgmStruct.h"
 
-/* header for reading the error code */
+/* header for reading the error code 		*/
 #include "errors.h"
 
-/* header for openWriteFile */
+/* header for openWriteFile 				*/
 #include "openWriteFile.h"
-
-
 
 int writeFile(char *fileName, pgm *pgmStruct)
 { /* writeFile() */
-
-
-	/* open a file for writing               */
+	/* open a file for writing */
 	FILE *outputFile = fopen(fileName, "w");
 
-	/* check whether file opening worked     */
+	/* check whether file opening worked */
 	if (outputFile == NULL)
 		{ /* NULL output file */
-		/* free memory                   */
+		/* free memory */
 		free(pgmStruct->commentLine);
 		for (int i = 0; i < pgmStruct->height; i++)
 			{
@@ -36,10 +32,10 @@ int writeFile(char *fileName, pgm *pgmStruct)
 			}
 		free (pgmStruct->imageData);
 
-		/* print an error message        */
+		/* print an error message */
 		printf("ERROR: Output Failed (%s)", fileName);	
 
-		/* return an error code          */
+		/* return an error code */
 		exit(EXIT_OUTPUT_FAILED);
 		} /* NULL output file */
 
@@ -49,8 +45,8 @@ int writeFile(char *fileName, pgm *pgmStruct)
 
 	/* check that dimensions wrote correctly */
 	if (nBytesWritten < 0)
-		{ /* dimensional write failed    */
-		/* free memory                   */
+		{ /* dimensional write failed */
+		/* free memory */
 		free(pgmStruct->commentLine);
 		for (int i = 0; i < pgmStruct->height; i++)
 			{
@@ -58,14 +54,14 @@ int writeFile(char *fileName, pgm *pgmStruct)
 			}
 		free (pgmStruct->imageData);
 
-		/* print an error message        */
+		/* print an error message */
 		printf("ERROR: Bad Dimensions (%s)", fileName);	
 
-		/* return an error code          */
+		/* return an error code */
 		return EXIT_BAD_DIMENSIONS;
-		} /* dimensional write failed    */
+		} /* dimensional write failed */
 
-	/* run the code that prints in ASCII if the magic number is 2	*/
+	/* run the code that prints in ASCII if the magic number is 2 */
 	if (pgmStruct->magic_number[1] == '2')
 	{
 		
@@ -74,17 +70,13 @@ int writeFile(char *fileName, pgm *pgmStruct)
 			
 			for (int j = 0; j < pgmStruct->width; j++)
 			{
-				/* finds the next column location */
-				// int nextCol = (colCount - pgmStruct->imageData[i][j] + 1) % pgmStruct->width;
-
-				/* write the entry & whitespace  */
+				/* write the entry & whitespace */
 				nBytesWritten = fprintf(outputFile, "%d%c", pgmStruct->imageData[i][j], ' ');
 				
-
-				/* sanity check on write	*/
+				/* sanity check on write */
 				if (nBytesWritten < 0)
-					{ /* data write failed   */
-					/* free memory           */
+					{ /* data write failed */
+					/* free memory */
 					free(pgmStruct->commentLine);
 					for (int i = 0; i < pgmStruct->height; i++)
 						{
@@ -92,12 +84,12 @@ int writeFile(char *fileName, pgm *pgmStruct)
 						}
 					free (pgmStruct->imageData);
 
-					/* print error message   */
+					/* print error message */
 					printf("ERROR: Output Failed (%s)", fileName);	
 
-					/* return an error code  */
+					/* return an error code */
 					return EXIT_OUTPUT_FAILED;
-					/* data write failed   */
+					/* data write failed */
 				} 
 			}
 			/* print a newline after all the data has been written */
@@ -107,7 +99,7 @@ int writeFile(char *fileName, pgm *pgmStruct)
 		fclose(outputFile);
 	}
 
-	/* if the magic number is binary then write the data in binary format	*/
+	/* if the magic number is binary then write the data in binary format */
 	else if (pgmStruct->magic_number[1] == '5')
 	{
 		for (int i = 0; i < pgmStruct->height; i++)
