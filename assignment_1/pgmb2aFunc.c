@@ -38,10 +38,10 @@ int b2a(pgm *pgmStruct, char *fileName, char *inputFileName)
 				int nBytesWritten = fprintf(outputFile, "%d%c", pgmStruct->imageData[i][j], (nextCol ? ' ' : '\n') );
 				colCount++;
 
-				/* sanity check on write         */
+				/* sanity check on write */
 				if (nBytesWritten < 0)
-					{ /* data write failed   */
-					/* free memory           */
+					{ /* data write failed */
+					/* free memory */
 					free(pgmStruct->commentLine);
 					free(pgmStruct->imageData);
 
@@ -50,7 +50,7 @@ int b2a(pgm *pgmStruct, char *fileName, char *inputFileName)
 
 					/* return an error code  */
 					return EXIT_OUTPUT_FAILED;
-					/* data write failed   */
+					/* data write failed */
 					}
 			} /* per row*/
 		

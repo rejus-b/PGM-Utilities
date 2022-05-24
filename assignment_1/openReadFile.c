@@ -183,7 +183,6 @@ int readFile(char *fileName, pgm *pgmStruct)
 		}
 	}
 
-		
 	/* if the magic number is binary read in binary data */
 	else if (pgmStruct->magic_number[1] == '5'){
 		/* loop through the image data to be fread, reading in a row at a time */
