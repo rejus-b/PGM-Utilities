@@ -126,24 +126,26 @@ int readFile(char *fileName, pgm *pgmStruct)
 	imageMallocCheck(inputFile, pgmStruct);
 
 	if (pgmStruct->magic_number[1] == '2')
-	{
+	{	
+		int EOFCount = 0;
 		for (int i = 0; i < pgmStruct->height; i++)
-		{
+		{		
 			for (int j = 0; j < pgmStruct->width; j++)
-			{				
+			{	
+				EOFCount ++;		
 				/* read next value */
 				int grayValue = -1;
 				int scanCount = fscanf(inputFile, " %u", &grayValue);
 
-				/* sanity check too little data	*/
-				if (scanCount > (pgmStruct->width*pgmStruct->height))
+				/* sanity check too little data	or too much data. The first comparison is for too little the second compare is for too much */
+				if ((scanCount > (pgmStruct->width*pgmStruct->height)) || ((EOFCount == (pgmStruct->height * pgmStruct->width)) && (((fscanf(inputFile, " %u", &grayValue)) != -1))))
 				{
 					/* free memory	*/
 					free(pgmStruct->commentLine);
 					for (int i = 0; i < pgmStruct->height; i++)
-						{
-							free(pgmStruct->imageData[i]);
-						}
+					{
+						free(pgmStruct->imageData[i]);
+					}
 					free (pgmStruct->imageData);
 
 					/* print error message */
@@ -160,9 +162,9 @@ int readFile(char *fileName, pgm *pgmStruct)
 					/* free memory	*/
 					free(pgmStruct->commentLine);
 					for (int i = 0; i < pgmStruct->height; i++)
-						{
-							free(pgmStruct->imageData[i]);
-						}
+					{
+						free(pgmStruct->imageData[i]);
+					}
 					free (pgmStruct->imageData);
 
 					/* close file */
@@ -179,31 +181,6 @@ int readFile(char *fileName, pgm *pgmStruct)
 				pgmStruct->imageData[i][j] = (unsigned char) grayValue;
 			}
 		}
-
-		/* try read from the file again, if another character is read return that there is too much data */
-		int grayValue = -1;
-		scanCount = fscanf(inputFile, " %u", &grayValue);
-	
-		/* sanity check	*/
-		if ((scanCount != -1))
-		{ /* fscanf failed */
-			/* free memory */
-			free(pgmStruct->commentLine);
-			for (int i = 0; i < pgmStruct->height; i++)
-				{
-					free(pgmStruct->imageData[i]);
-				}
-			free (pgmStruct->imageData);
-	
-			/* close file */
-			fclose(inputFile);
-	
-			/* print error message */
-			printf("ERROR: Bad Data (%s)", fileName);
-		
-			/* exit with error code */
-			exit(EXIT_BAD_DATA);
-		} /* fscanf failed */
 	}
 
 		
@@ -217,9 +194,9 @@ int readFile(char *fileName, pgm *pgmStruct)
 			{
 				free(pgmStruct->commentLine);
 				for (int i = 0; i < pgmStruct->height; i++)
-					{
-						free(pgmStruct->imageData[i]);
-					}
+				{
+					free(pgmStruct->imageData[i]);
+				}
 				free (pgmStruct->imageData);	
 		
 				/* close file */

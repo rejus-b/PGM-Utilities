@@ -68,23 +68,22 @@ int main(int argc, char **argv)
 	pgmStructInit(reducedPgmStruct);
 
 
-	/* this converts the string integer factor to an integer */
-	int reduc_factor = atoi(argv[2]);
-
     /* this is too check that the input file is a valid file name */
 	if (readFile(argv[1], pgmStruct) != 0)
-    {
+    { /* invalid file name */
         /* free the structures initialised at the start */
 		free(pgmStruct);
 		free(reducedPgmStruct);
         /* exit the code */
         printf("ERROR: Bad File Name (%s)", argv[1]);
         return EXIT_BAD_INPUT_FILE;
-    }
+    } /* invalid file name */
 
+	/* this converts the string integer factor to an integer */
+	int integerFactor = atoi(argv[2]);
 
     /* this checks that the integer factor is valid (less than 1, or greater than dimensions) */
-	if (reduc_factor < 1 || reduc_factor  > pgmStruct->width || reduc_factor  > pgmStruct->height)
+	if (integerFactor < 1 || integerFactor  > pgmStruct->width || integerFactor  > pgmStruct->height)
     {
         /* free the structures initialised at the start */
 		free(pgmStruct);
@@ -96,7 +95,7 @@ int main(int argc, char **argv)
 
 
     /* this runs the code to actually reduce the code */
-    if (reduce(pgmStruct, reducedPgmStruct, argv[1], reduc_factor, argv[3]) == 0)
+    if (reduce(pgmStruct, reducedPgmStruct, argv[1], integerFactor, argv[3]) == 0)
     {
         /* free the structures initialised at the start */
 		free(pgmStruct);
@@ -127,28 +126,28 @@ int reduce(pgm *pgmStruct, pgm *reducedPgmStruct, char *inputFile, int reduction
 	}
 
 	/* initialises the variables that count for the reduced image */
-	int count = 0;
+	int colCount = 0;
 	int nextCol = 0;
-	int subCount = 0;
+	int rowCount = 0;
 
 	/* loops through the reduced image */
 	for (int i = 0; i < pgmStruct->height; i++)
 	{
-		subCount = 0;
+		rowCount = 0;
 		for (int j = 0; j < pgmStruct->width; j++)
 		{
 			/* if the gray value MODULUS the reduction factor is 0 we are at the right gray value to copy */
 			if (i % reductionFactor == 0 && j % reductionFactor == 0)
 			{
-				reducedPgmStruct->imageData[count][subCount] = pgmStruct->imageData[i][j];
-				subCount ++;
+				reducedPgmStruct->imageData[colCount][rowCount] = pgmStruct->imageData[i][j];
+				rowCount ++;
 				nextCol = 1;
 			}
 		}
-		/* if any data has been read in this row then move onto the next column of image data */
+		/* if any data has been read in this row then move onto the next row of image data */
 		if (nextCol == 1)
 		{
-			count++;
+			colCount++;
 			nextCol = 0;
 		}
 	}

@@ -71,17 +71,20 @@ int main(int argc, char **argv)
 	
     /* this is too check that the input file is a valid file name */
 	if (readFile(argv[1], pgmStruct) != 0)
-    {
+    { /* invalid file name */
         /* free the structures initialised at the start */
 		free(pgmStruct);
 		free(tilePgmStruct);
         /* exit the code */
         printf("ERROR: Bad File Name (%s)", argv[1]);
         return EXIT_BAD_INPUT_FILE;
-    }
+    } /* invalid file name */
+
+	/* this converts the string integer factor to an integer */
+	int integerFactor = atoi(argv[2]);
 
     /* this checks that the integer factor is valid (less than 1, or greater than dimensions) */
-	if (atoi(argv[2]) < 1 || atoi(argv[2])  > pgmStruct->width || atoi(argv[2])  > pgmStruct->height)
+	if (integerFactor < 1 || integerFactor  > pgmStruct->width || integerFactor  > pgmStruct->height)
     {
         /* free the structures initialised at the start */
 		free(pgmStruct);
@@ -186,9 +189,9 @@ int tile(pgm *pgmStruct, pgm *tilePgmStruct, char *inputFile, int tileFactor)
 
 	/* we are done with the tiled pgm structure, free memory */
 	for (int i = 0; i < tilePgmStruct->height; i++)
-		{
-			free(tilePgmStruct->imageData[i]);
-		}
+	{
+		free(tilePgmStruct->imageData[i]);
+	}
 	free (tilePgmStruct->imageData);
 
 	/* at this point, we are done and can exit with a success code */

@@ -27,9 +27,9 @@ int writeFile(char *fileName, pgm *pgmStruct)
 		/* free memory */
 		free(pgmStruct->commentLine);
 		for (int i = 0; i < pgmStruct->height; i++)
-			{
-				free(pgmStruct->imageData[i]);
-			}
+		{
+			free(pgmStruct->imageData[i]);
+		}
 		free (pgmStruct->imageData);
 
 		/* print an error message */
@@ -40,7 +40,7 @@ int writeFile(char *fileName, pgm *pgmStruct)
 		} /* NULL output file */
 
 
-	/* write magic number, size & gray value */
+	/* write magic number, size & maxGray value */
 	size_t nBytesWritten = fprintf(outputFile, "P%c\n%d %d\n%d\n",pgmStruct->magic_number[1], pgmStruct->width, pgmStruct->height, pgmStruct->maxGray);
 
 	/* check that dimensions wrote correctly */
@@ -49,9 +49,9 @@ int writeFile(char *fileName, pgm *pgmStruct)
 		/* free memory */
 		free(pgmStruct->commentLine);
 		for (int i = 0; i < pgmStruct->height; i++)
-			{
-				free(pgmStruct->imageData[i]);
-			}
+		{
+			free(pgmStruct->imageData[i]);
+		}
 		free (pgmStruct->imageData);
 
 		/* print an error message */
@@ -79,9 +79,9 @@ int writeFile(char *fileName, pgm *pgmStruct)
 					/* free memory */
 					free(pgmStruct->commentLine);
 					for (int i = 0; i < pgmStruct->height; i++)
-						{
-							free(pgmStruct->imageData[i]);
-						}
+					{
+						free(pgmStruct->imageData[i]);
+					}
 					free (pgmStruct->imageData);
 
 					/* print error message */

@@ -68,31 +68,31 @@ int main(int argc, char **argv)
 
     /* pass the first pgm to be read from */
     if (readFile(argv[1], pgmStructFileOne) == 0)
-	{
+	{ /* valid file name */
 		/* pass the second pgm to be read from */
 		if (readFile(argv[2], pgmStructFileTwo) == 0)
-		{
+		{ /* valid file name */
 			/* If no errors are thrown when reading the two data files, see if they are equivelant */
 			if (equivalence(pgmStructFileOne, pgmStructFileTwo) == 0)
-			{
+			{ /* equivalent files */
 				/* free the structures initialised at the start */
 				free(pgmStructFileOne);
 				free(pgmStructFileTwo);
 				/* image compared succesfully identical, print 'IDENTICAL' */
 				printf("IDENTICAL");
 				return EXIT_NO_ERRORS;
-			}
+			} /* equivalent files */
 			else 
-			{
+			{ /* non-equivalent files */
 				/* free the structures initialised at the start */
 				free(pgmStructFileOne);
 				free(pgmStructFileTwo);
 				/* image compared  succesfully different, print 'DIFFERENT' */
 				printf("DIFFERENT");
 				return EXIT_NO_ERRORS;
-			}
-		}
-	}
+			} /* non-equivalent files */
+		} /* valid file name */
+	} /* valid file name */
 
 } /* main() */
 

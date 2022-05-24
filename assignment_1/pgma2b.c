@@ -63,13 +63,13 @@ int main (int argc, char **argv)
 
     /* check that the file can be read successfully*/
     if (readFile(argv[1], pgmStruct) != 0)
-    {
+    { /* invalid file name */
         /* free the structures initialised at the start */
 		free(pgmStruct);
         /* return that the file could not be read from */
         printf("ERROR: Bad File Name (%s)", argv[1]);
         return EXIT_BAD_INPUT_FILE;
-    }
+    } /* invalid file name */
 
     /* check that the magic number is not already P2, which is the magic number for raw pgm */
     if (pgmStruct->magic_number[1] != '2' && pgmStruct->magic_number[1] != '2')

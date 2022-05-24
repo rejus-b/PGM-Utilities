@@ -23,6 +23,18 @@
 #include "pgmb2aFunc.h"
 
 
+/***********************************/
+/* main routine                    */
+/*                                 */
+/* CLI parameters:                 */
+/* argv[0]: executable name        */
+/* argv[1]: input file name        */
+/* argv[2]: output file name       */
+/* returns 0 on success            */
+/* non-zero error code on fail     */
+/***********************************/
+
+
 int main (int argc, char **argv)
 { /* main() */
 
@@ -50,13 +62,13 @@ int main (int argc, char **argv)
 
 	/* check that the file can be read successfully */
     if (readFile(argv[1], pgmStruct) != 0)
-    {
+    { /* invalid file name */
         /* free the structures initialised at the start */
 		free(pgmStruct);
         /* return that the file could not be read from */
         printf("ERROR: Bad File Name (%s)", argv[1]);
         return EXIT_BAD_INPUT_FILE;
-    }
+    } /* invalid file name */
 
     /* check that the magic number is not already P5, which is the magic number for raw pgm */
     if (pgmStruct->magic_number[0] != '5' && pgmStruct->magic_number[1] != '5')

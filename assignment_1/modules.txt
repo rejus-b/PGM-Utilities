@@ -56,7 +56,7 @@ MODULE 4 -- pgmReduce.c / pgmReduce.h
 
 
 
-MODULE 5 -- pgmTitle.c / pgmTitle.h
+MODULE 5 -- pgmTile.c / pgmTile.h
 
 	Main - This module takes an input file, an integer factor n and an output file template.
 

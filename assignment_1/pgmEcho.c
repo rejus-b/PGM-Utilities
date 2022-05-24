@@ -67,12 +67,12 @@ int main(int argc, char **argv)
 	/* invoke the function to open the file and read from it */
 	/* it will also check that it succesfully wrote to the target file */
 	if ((readFile(argv[1], pgmStruct) == 0 ) && (writeFile(argv[2], pgmStruct) == 0))
-	{
+	{ /* valid file name */
 		/* free the structures initialised at the start */
 		free(pgmStruct);
 		/* if it works print 'ECHOED'*/
 		printf("ECHOED");
-	}
+	} /* valid file name */
 
 	/* at this point, we are done and can exit with a success code */
 	return EXIT_NO_ERRORS;
