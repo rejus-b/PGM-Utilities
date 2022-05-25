@@ -178,7 +178,7 @@ int tile(pgm *pgmStruct, pgm *tilePgmStruct, char *inputFile, int tileFactor)
 			sprintf(newName, "%s_%i_%i.pgm", name, yOffSet, xOffSet);
 			writeFile(newName, tilePgmStruct);
 			/* below comment line is for testing pgmAssemble */
-			/* printf(" %i %i %s_%i_%i.pgm", yOffSet*tilePgmStruct->height, xOffSet*tilePgmStruct->width, name, xNameCount, yNameCount); */
+			/* printf(" %i %i %s_%i_%i.pgm", xOffSet*tilePgmStruct->height, yOffSet*tilePgmStruct->width, name, xOffSet, yOffSet); */
 		}
 	}
 	/* at this point, we are done and can exit with a success code */
