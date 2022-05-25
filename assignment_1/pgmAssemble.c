@@ -47,7 +47,7 @@ int main(int argc, char **argv)
 	}
 
 	/* check for correct number of arguments */
-	if (argc < 6 && argc % 3 != 0)	
+	if (argc < 6 || argc % 3 != 1)	
 		{ /* wrong arg count */
 		/* print an error message */
 		printf("ERROR: Bad Argument Count");
@@ -66,12 +66,12 @@ int main(int argc, char **argv)
 	pgmStructInit(canvasPgmStruct);
 
     /* this is to check that the input file is a valid file name */
-	for (int i = 6; i < argc; i += 3)
+	for (int fileArg = 6; fileArg < argc; fileArg += 3)
 	{	
-		if (readFile(argv[i], inputPgmStruct) != 0)
+		if (readFile(argv[fileArg], inputPgmStruct) != 0)
 		{
 			/* exit the code */
-			printf("ERROR: Bad File Name (%s)", argv[i]);
+			printf("ERROR: Bad File Name (%s)", argv[fileArg]);
 			return EXIT_BAD_INPUT_FILE;
 		}
 	}
@@ -82,22 +82,22 @@ int main(int argc, char **argv)
 
 	/* malloc a 2D array to store the image data of the pgm that will be writen to */
 	canvasPgmStruct->imageData = (unsigned char **) malloc(canvasPgmStruct->height * sizeof(unsigned char*));
-	for (int i = 0; i < canvasPgmStruct->width; i++)
+	for (int row = 0; row < canvasPgmStruct->width; row++)
 	{
-		canvasPgmStruct->imageData[i] = (unsigned char *) malloc (canvasPgmStruct->width * sizeof(unsigned char));
+		canvasPgmStruct->imageData[row] = (unsigned char *) malloc (canvasPgmStruct->width * sizeof(unsigned char));
 	}
 
 	/* make the start row and column -1 as if these do not change, you know the assembley did not work */
 	int rowStart = -1;
 	int columnStart = -1;
 	char *inputFile = "";
-	for (int i = 4; i < argc; i++)
+	for (int fileArg = 4; fileArg < argc; fileArg++)
 	{
 		/* this detects for every input file */
-		if(i % 3 == 0)
+		if(fileArg % 3 == 0)
 		{
 			/* set the canvas pgm's magic number to the same as the last input image so that there is no conflict when assembling either ASCII or binary */
-			inputFile = argv[i];
+			inputFile = argv[fileArg];
 
 			/* read in the image data from the input image then have it assemble onto the canvas */
 			readFile(inputFile, inputPgmStruct);
@@ -106,14 +106,14 @@ int main(int argc, char **argv)
 			assemble(canvasPgmStruct, inputPgmStruct, rowStart, columnStart, inputFile);
 		}
 		/* reads in every row starting position to assemble an image */
-		if (i % 3 == 1)
+		if (fileArg % 3 == 1)
 		{
-			rowStart = atoi(argv[i]);
+			rowStart = atoi(argv[fileArg]);
 		}
 		/* reads in every column starting position to assemble an image */
-		if (i % 3 == 2)
+		if (fileArg % 3 == 2)
 		{
-			columnStart = atoi(argv[i]);
+			columnStart = atoi(argv[fileArg]);
 		}
 	}
 
@@ -130,11 +130,11 @@ int main(int argc, char **argv)
 
 int assemble(pgm *canvasPgmStruct, pgm *inputPgmStruct, int rowOrigin, int colOrigin, char *fileName)
 { /* assemble()	*/
-	for (int i = 0; i < inputPgmStruct->height; i++)
+	for (int row = 0; row < inputPgmStruct->height; row++)
 	{
-		for (int j = 0; j < inputPgmStruct->width; j++)
+		for (int col = 0; col < inputPgmStruct->width; col++)
 		{
-			canvasPgmStruct->imageData[rowOrigin + i][colOrigin + j] = inputPgmStruct->imageData[i][j];			
+			canvasPgmStruct->imageData[rowOrigin + row][colOrigin + col] = inputPgmStruct->imageData[row][col];			
 		}
 	}
 	return EXIT_NO_ERRORS;

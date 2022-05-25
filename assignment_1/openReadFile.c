@@ -116,9 +116,9 @@ int readFile(char *fileName, pgm *pgmStruct)
 
 	/* mallocing for a 2D array, malloc a 1D array first, then malloc arrays into this array */
 	pgmStruct->imageData = (unsigned char **) malloc(pgmStruct->height * sizeof(unsigned char*));
-	for (int i = 0; i < pgmStruct->width; i++)
+	for (int row = 0; row < pgmStruct->width; row++)
 	{
-		pgmStruct->imageData[i] = (unsigned char *) malloc (pgmStruct->width * sizeof(unsigned char));
+		pgmStruct->imageData[row] = (unsigned char *) malloc (pgmStruct->width * sizeof(unsigned char));
 	}
 
 	/* sanity check for memory allocation */
@@ -126,10 +126,11 @@ int readFile(char *fileName, pgm *pgmStruct)
 
 	if (pgmStruct->magic_number[1] == '2')
 	{	
+		/* this is used to check what piece of data we are on, and more specifically when we reach the end */
 		int EOFCount = 0;
-		for (int i = 0; i < pgmStruct->height; i++)
+		for (int row = 0; row < pgmStruct->height; row++)
 		{		
-			for (int j = 0; j < pgmStruct->width; j++)
+			for (int col = 0; col < pgmStruct->width; col++)
 			{	
 				EOFCount ++;		
 				/* read next value */
@@ -167,7 +168,7 @@ int readFile(char *fileName, pgm *pgmStruct)
 					} /* fscanf failed */
 
 				/* set the pixel value */
-				pgmStruct->imageData[i][j] = (unsigned char) grayValue;
+				pgmStruct->imageData[row][col] = (unsigned char) grayValue;
 			}
 		}
 	}
@@ -175,10 +176,10 @@ int readFile(char *fileName, pgm *pgmStruct)
 	/* if the magic number is binary read in binary data */
 	else if (pgmStruct->magic_number[1] == '5'){
 		/* loop through the image data to be fread, reading in a row at a time */
-		for (int i = 0; i < pgmStruct->height; i++)
+		for (int row = 0; row < pgmStruct->height; row++)
 		{
 			/* this tests for too little data */
-			if (fread(pgmStruct->imageData[i], sizeof(unsigned char), pgmStruct->width, inputFile) == 0)
+			if (fread(pgmStruct->imageData[row], sizeof(unsigned char), pgmStruct->width, inputFile) == 0)
 			{
 				free(pgmStruct->commentLine);
 		
@@ -221,11 +222,11 @@ int magicNumCheck(unsigned short *magic_Number, FILE *inputFile, char *fileName)
 int imageMallocCheck(FILE *inputFile, pgm *pgmStruct)
 {	/* imageMallocCheck()	 */
 	/* sanity check for memory allocation */
-	for (int i = 0; i < pgmStruct->height; i++)
+	for (int row = 0; row < pgmStruct->height; row++)
 	{
-		for (int j = 0; j < pgmStruct->width; j++)
+		for (int col = 0; col < pgmStruct->width; col++)
 		{
-			if (&pgmStruct->imageData[i][j] == NULL)	
+			if (&pgmStruct->imageData[row][col] == NULL)	
 			{ /* malloc failed */
 			/* free up memory */
 			free(pgmStruct->commentLine);

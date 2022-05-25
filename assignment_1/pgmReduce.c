@@ -93,7 +93,6 @@ int main(int argc, char **argv)
         return EXIT_MISCELLANEOUS;
     }
 
-
     /* this runs the code to actually reduce the code */
     if (reduce(pgmStruct, reducedPgmStruct, argv[1], integerFactor, argv[3]) == 0)
     {
@@ -120,26 +119,27 @@ int reduce(pgm *pgmStruct, pgm *reducedPgmStruct, char *inputFile, int reduction
 	reducedPgmStruct->imageData = (unsigned char **) malloc(reducedPgmStruct->height * sizeof(unsigned char*));
 
 	/* malloc for a new array inside the first array to make a 2D array */
-	for (int i = 0; i < reducedPgmStruct->width; i++)
+	for (int row = 0; row < reducedPgmStruct->width; row++)
 	{
-		reducedPgmStruct->imageData[i] = (unsigned char *) malloc(reducedPgmStruct->width * sizeof(unsigned char));
+		reducedPgmStruct->imageData[row] = (unsigned char *) malloc(reducedPgmStruct->width * sizeof(unsigned char));
 	}
 
-	/* initialises the variables that count for the reduced image */
+	/* initialises the variables that count for the reduced image, they are initialised seperatley as they should only be incremented in cases
+		where the pixel was read succesfully */
 	int colCount = 0;
 	int nextCol = 0;
 	int rowCount = 0;
 
 	/* loops through the reduced image */
-	for (int i = 0; i < pgmStruct->height; i++)
+	for (int row = 0; row < pgmStruct->height; row++)
 	{
 		rowCount = 0;
-		for (int j = 0; j < pgmStruct->width; j++)
+		for (int col = 0; col < pgmStruct->width; col++)
 		{
 			/* if the gray value MODULUS the reduction factor is 0 we are at the right gray value to copy */
-			if (i % reductionFactor == 0 && j % reductionFactor == 0)
+			if (row % reductionFactor == 0 && col % reductionFactor == 0)
 			{
-				reducedPgmStruct->imageData[colCount][rowCount] = pgmStruct->imageData[i][j];
+				reducedPgmStruct->imageData[colCount][rowCount] = pgmStruct->imageData[row][col];
 				rowCount ++;
 				nextCol = 1;
 			}

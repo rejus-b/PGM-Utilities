@@ -1,19 +1,19 @@
-/* library for I/O routines       					 */
+/* library for I/O routines       					*/
 #include <stdio.h>
 
-/* library for memory routines   					  */
+/* library for memory routines   					*/
 #include <stdlib.h>
 
-/* header for pgm structures								*/
+/* header for pgm structures						*/
 #include "pgmStruct.h"
 
-/* header for reading the error code			 */
+/* header for reading the error code			 	*/
 #include "errors.h"
 
-/* header for openWriteFile									*/
+/* header for openWriteFile							*/
 #include "openWriteFile.h"	
 
-/* header for pgma2bFunc           				 */
+/* header for pgma2bFunc           				 	*/
 #include "pgma2bFunc.h"
 
 
@@ -26,16 +26,17 @@ int b2a(pgm *pgmStruct, char *fileName, char *inputFileName)
 		fprintf(outputFile, "P2\n%d %d\n%d\n", pgmStruct->width, pgmStruct->height, pgmStruct->maxGray);
 
 		/* loops through all the image data */
-		for (int i = 0; i < pgmStruct->height; i++)
+		for (int row = 0; row < pgmStruct->height; row++)
 		{
+			/* variable used to measure how to print columns in the output file */
 			int colCount = 0;
-			for (int j = 0; j < pgmStruct->width; j++)
+			for (int col = 0; col < pgmStruct->width; col++)
 			{
 				/* finds the next column location */
-				int nextCol = (colCount - pgmStruct->imageData[i][j] + 1) % pgmStruct->width;
+				int nextCol = (colCount - pgmStruct->imageData[row][col] + 1) % pgmStruct->width;
 
 				/* write the entry & whitespace  */
-				int nBytesWritten = fprintf(outputFile, "%d%c", pgmStruct->imageData[i][j], (nextCol ? ' ' : '\n') );
+				int nBytesWritten = fprintf(outputFile, "%d%c", pgmStruct->imageData[row][col], (nextCol ? ' ' : '\n') );
 				colCount++;
 
 				/* sanity check on write */
@@ -52,10 +53,8 @@ int b2a(pgm *pgmStruct, char *fileName, char *inputFileName)
 					return EXIT_OUTPUT_FAILED;
 					/* data write failed */
 					}
-			} /* per row*/
-		
-		} /* per column */
-	
+			} /* per column*/
+		} /* per row */
 
     /* be tidy, clean up and close the file */
     fclose(outputFile);

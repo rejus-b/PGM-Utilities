@@ -142,20 +142,20 @@ int tile(pgm *pgmStruct, pgm *tilePgmStruct, char *inputFile, int tileFactor)
 	/* malloc for a new 2D array to store the tiled image temporarily */
 	tilePgmStruct->imageData = (unsigned char **) malloc(tilePgmStruct->height * sizeof(unsigned char*));
 
-	for (int i = 0; i < tilePgmStruct->width; i++)
+	for (int row = 0; row < tilePgmStruct->width; row++)
 	{
-		tilePgmStruct->imageData[i] = (unsigned char *) malloc(tilePgmStruct->width * sizeof(unsigned char));
+		tilePgmStruct->imageData[row] = (unsigned char *) malloc(tilePgmStruct->width * sizeof(unsigned char));
 	}
 
 	/* finding the name of the file */
 	/* initialise a new array to store the input file name */
 	char name[strlen(inputFile) - 19];
 	/* loop through the input file name up until the non-variable extension" */
-	for (int i = 0; i < (strlen(inputFile) - 19); i++)
+	for (int inputNameChars = 0; inputNameChars < (strlen(inputFile) - 19); inputNameChars++)
 	{
 		/* loop through the file name to copy it letter by letter, add a newline character to terminate the string */
-		name[i+1] = '\0';
-		name[i] = inputFile[i];
+		name[inputNameChars+1] = '\0';
+		name[inputNameChars] = inputFile[inputNameChars];
 	}
 
 	/* initialise a new string for the name that will be formated with row and column */
@@ -166,12 +166,12 @@ int tile(pgm *pgmStruct, pgm *tilePgmStruct, char *inputFile, int tileFactor)
 	{
 		for (int xOffSet = 0; xOffSet < tileFactor; xOffSet ++)
 		{
-			for (int i = 0; i < tilePgmStruct->height; i++)
+			for (int row = 0; row < tilePgmStruct->height; row++)
 			{
-				for (int j = 0; j < tilePgmStruct->width; j++)
+				for (int col = 0; col < tilePgmStruct->width; col++)
 				{
 					/* assign the pixel of the tile to the corresponding input image pixel */
-					tilePgmStruct->imageData[i][j] = pgmStruct->imageData[(yOffSet * tilePgmStruct->height) + i][(xOffSet * tilePgmStruct->height) + j];
+					tilePgmStruct->imageData[row][col] = pgmStruct->imageData[(yOffSet * tilePgmStruct->height) + row][(xOffSet * tilePgmStruct->height) + col];
 				}
 			}
 			/* create a formated string with the row and columns then write it to a new file */

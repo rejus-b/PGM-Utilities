@@ -26,9 +26,9 @@ int a2b(pgm *pgmStruct, char *fileName)
     fprintf(outputFile, "P5\n%d %d\n%d\n", pgmStruct->width, pgmStruct->height, pgmStruct->maxGray);
 
     /* print in binary the image data to the output file */
-    for (int i = 0; i < pgmStruct->height; i++)
+    for (int col = 0; col < pgmStruct->height; col++)
     {
-        fwrite(pgmStruct->imageData[i], sizeof(unsigned char), pgmStruct->width, outputFile);
+        fwrite(pgmStruct->imageData[col], sizeof(unsigned char), pgmStruct->width, outputFile);
     }
 
     /* be tidy, clean up and close the file */

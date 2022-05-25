@@ -105,29 +105,27 @@ int equivalence(pgm *pgmStructFileOne, pgm *pgmStructFileTwo)
 		return EXIT_MISCELLANEOUS;
 	}
 
+	/* check that the size of the files is the same*/
 	if (pgmStructFileOne->width != pgmStructFileTwo->width )
 	{
 		return EXIT_MISCELLANEOUS;
 	}
-
 	else if (pgmStructFileOne->height != pgmStructFileTwo->height)
 	{
 		return EXIT_MISCELLANEOUS;
 	}
-
 	/* check that the maxGray of the two input files is equivalent */
 	else if (pgmStructFileOne->maxGray != pgmStructFileTwo->maxGray)
 	{
 		return EXIT_MISCELLANEOUS;
 	}
 
-
 	/* compares each pixel's image data against one another */
-	for (int i = 0; i < pgmStructFileOne->height; i++)
+	for (int row = 0; row < pgmStructFileOne->height; row++)
 	{
-		for (int j = 0; j < pgmStructFileOne->width; j++)
+		for (int col = 0; col < pgmStructFileOne->width; col++)
 		{
-			if (pgmStructFileOne->imageData[i][j] != pgmStructFileTwo->imageData[i][j])
+			if (pgmStructFileOne->imageData[row][col] != pgmStructFileTwo->imageData[row][col])
 			{
 				return EXIT_MISCELLANEOUS;
 			}
