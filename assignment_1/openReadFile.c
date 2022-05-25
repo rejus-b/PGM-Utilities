@@ -23,7 +23,6 @@ int readFile(char *fileName, pgm *pgmStruct)
 	/* try to open the file for text I/O */
 	/* in ASCII mode b/c the header is text */
 	FILE *inputFile = fopen(fileName, "r");
-
 	/* if it fails, return error code */
 	if (inputFile == NULL)
 	{

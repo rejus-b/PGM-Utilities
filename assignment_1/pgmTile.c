@@ -180,8 +180,10 @@ int tile(pgm *pgmStruct, pgm *tilePgmStruct, char *inputFile, int tileFactor)
 				}
 			}
 			/* create a formated string with the row and columns then write it to a new file */
-			sprintf(newName, "%s_<%i>_<%i>.pgm", name, xNameCount, yNameCount);
+			sprintf(newName, "%s_%i_%i.pgm", name, xNameCount, yNameCount);
 			writeFile(newName, tilePgmStruct);
+			/* below comment line is for testing pgmAssemble */
+			/* printf(" %i %i %s_%i_%i.pgm", yOffSet*tilePgmStruct->height, xOffSet*tilePgmStruct->width, name, xNameCount, yNameCount); */
 			yNameCount ++;
 		}
 		xNameCount ++;

@@ -29,8 +29,8 @@
 /* argv[3]: output file height       */
 /* argv[4]: rowStart			     */
 /* argv[5]: columnStart			     */
-/* argv[6]: inputFile			     */
-/* argv[3] - argv[6] can repeat		 */
+/* argv[6]: input file			     */
+/* argv[4] - argv[6] can repeat		 */
 /* returns 0 on success              */
 /* non-zero error code on fail       */
 /*************************************/
@@ -65,25 +65,19 @@ int main(int argc, char **argv)
 	canvasPgmStruct = ((pgm*) malloc (sizeof(pgm)));
 	pgmStructInit(canvasPgmStruct);
 
-	/* malloc for a tile pgm structure, which corresponds to argv[1] then pass it into pgmStructInit() */ 
-	// pgm *tilePgmStruct = NULL;
-	// tilePgmStruct = ((pgm*) malloc (sizeof(pgm)));
-	// pgmStructInit(tilePgmStruct);
-	
     /* this is too check that the input file is a valid file name */
-	// for (int i = 4; i < argc; i += 3)
-	// {	
-		if (readFile(argv[6], inputPgmStruct) != 0)
+	for (int i = 6; i < argc; i += 3)
+	{	
+		if (readFile(argv[i], inputPgmStruct) != 0)
 		{
 			/* exit the code */
-			printf("ERROR: Bad File Name (%s)", argv[6]);
+			printf("ERROR: Bad File Name (%s)", argv[i]);
 			return EXIT_BAD_INPUT_FILE;
 		}
-	// }
+	}
+	
 
-	/* set the canvas pgm's magic number to the same as the last input image so that there is no conflict when assembling either ASCII or binary */
-	canvasPgmStruct->magic_number[0] = inputPgmStruct->magic_number[0];
-	canvasPgmStruct->magic_number[1] = inputPgmStruct->magic_number[1];
+
 	/* set dimensions of the canvas as the user input output file dimension values */
 	canvasPgmStruct->width = atoi(argv[2]);
 	canvasPgmStruct->height = atoi(argv[3]);
@@ -94,19 +88,39 @@ int main(int argc, char **argv)
 		canvasPgmStruct->imageData[i] = (unsigned char *) malloc (canvasPgmStruct->width * sizeof(unsigned char));
 	}
 
-	
-	for (int i = 0; i < argc; i += 3)
-	{	
-		readFile(argv[6+i], inputPgmStruct);
-		assemble(canvasPgmStruct, inputPgmStruct, atoi(argv[4]), atoi(argv[5]));
+	int rowStart = -1;
+	int columnStart = -1;
+	for (int i = 4; i < argc; i++)
+	{
+
+		char *inputFile = "";
+		if(i % 3 == 0)
+		{
+
+			inputFile = argv[i];
+			/* set the canvas pgm's magic number to the same as the last input image so that there is no conflict when assembling either ASCII or binary */
+
+			readFile(inputFile, inputPgmStruct);
+			canvasPgmStruct->magic_number[0] = inputPgmStruct->magic_number[0];
+			canvasPgmStruct->magic_number[1] = inputPgmStruct->magic_number[1];
+			assemble(canvasPgmStruct, inputPgmStruct, rowStart, columnStart, inputFile);
+			
+			
+		}
+		if (i % 3 == 1)
+		{
+
+			rowStart = atoi(argv[i]);
+
+		}
+		if (i % 3 == 2)
+		{
+
+			columnStart = atoi(argv[i]);
+		}
 	}
 
-
-	/*  
-		plan for assemble is too make a pgm file that reads the input image 
-		make a second pgm file that will be a canvas for the tiles to be appended too
-		a third pgm that gets constantly rewritten to contain the tiles that are being appended
-	*/
+	writeFile(argv[1], canvasPgmStruct);
 
 	/* If it works print 'ASSEMBLED' */
 	printf("ASSEMBLED");
@@ -115,10 +129,18 @@ int main(int argc, char **argv)
 	return EXIT_NO_ERRORS;
 } /* main() */
 
-int assemble(pgm *canvasPgmStruct, pgm *inputPgmStruct, int row, int col)
+int assemble(pgm *canvasPgmStruct, pgm *inputPgmStruct, int rowOrigin, int colOrigin, char *fileName)
 { /* assemble()	*/
 
-
+	// printf("\n %i %i \n", rowOrigin, colOrigin);
+	for (int i = 0; i < inputPgmStruct->height; i++)
+	{
+		for (int j = 0; j < inputPgmStruct->width; j++)
+		{
+			canvasPgmStruct->imageData[rowOrigin + i][colOrigin + j] = inputPgmStruct->imageData[i][j];			
+		}
+	}
+	
 
 	return EXIT_NO_ERRORS;
 } /* assemble()	*/
