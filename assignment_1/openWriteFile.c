@@ -26,11 +26,6 @@ int writeFile(char *fileName, pgm *pgmStruct)
 		{ /* NULL output file */
 		/* free memory */
 		free(pgmStruct->commentLine);
-		for (int i = 0; i < pgmStruct->height; i++)
-		{
-			free(pgmStruct->imageData[i]);
-		}
-		free (pgmStruct->imageData);
 
 		/* print an error message */
 		printf("ERROR: Output Failed (%s)", fileName);	
@@ -48,11 +43,6 @@ int writeFile(char *fileName, pgm *pgmStruct)
 		{ /* dimensional write failed */
 		/* free memory */
 		free(pgmStruct->commentLine);
-		for (int i = 0; i < pgmStruct->height; i++)
-		{
-			free(pgmStruct->imageData[i]);
-		}
-		free (pgmStruct->imageData);
 
 		/* print an error message */
 		printf("ERROR: Bad Dimensions (%s)", fileName);	
@@ -78,11 +68,6 @@ int writeFile(char *fileName, pgm *pgmStruct)
 					{ /* data write failed */
 					/* free memory */
 					free(pgmStruct->commentLine);
-					for (int i = 0; i < pgmStruct->height; i++)
-					{
-						free(pgmStruct->imageData[i]);
-					}
-					free (pgmStruct->imageData);
 
 					/* print error message */
 					printf("ERROR: Output Failed (%s)", fileName);	
@@ -105,7 +90,6 @@ int writeFile(char *fileName, pgm *pgmStruct)
 		for (int i = 0; i < pgmStruct->height; i++)
 		{
 			fwrite(pgmStruct->imageData[i], sizeof(unsigned char), pgmStruct->width, outputFile);
-			free(pgmStruct->imageData[i]);
 		}
 		fclose(outputFile);
 	}

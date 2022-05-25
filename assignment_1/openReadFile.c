@@ -141,11 +141,6 @@ int readFile(char *fileName, pgm *pgmStruct)
 				{
 					/* free memory	*/
 					free(pgmStruct->commentLine);
-					for (int i = 0; i < pgmStruct->height; i++)
-					{
-						free(pgmStruct->imageData[i]);
-					}
-					free (pgmStruct->imageData);
 
 					/* print error message */
 					printf("ERROR: Bad Data (%s)", fileName);
@@ -160,11 +155,6 @@ int readFile(char *fileName, pgm *pgmStruct)
 					{ /* fscanf failed */
 					/* free memory	*/
 					free(pgmStruct->commentLine);
-					for (int i = 0; i < pgmStruct->height; i++)
-					{
-						free(pgmStruct->imageData[i]);
-					}
-					free (pgmStruct->imageData);
 
 					/* close file */
 					fclose(inputFile);
@@ -191,11 +181,6 @@ int readFile(char *fileName, pgm *pgmStruct)
 			if (fread(pgmStruct->imageData[i], sizeof(unsigned char), pgmStruct->width, inputFile) == 0)
 			{
 				free(pgmStruct->commentLine);
-				for (int i = 0; i < pgmStruct->height; i++)
-				{
-					free(pgmStruct->imageData[i]);
-				}
-				free (pgmStruct->imageData);	
 		
 				/* close file */
 				fclose(inputFile);

@@ -65,7 +65,7 @@ int main(int argc, char **argv)
 	canvasPgmStruct = ((pgm*) malloc (sizeof(pgm)));
 	pgmStructInit(canvasPgmStruct);
 
-    /* this is too check that the input file is a valid file name */
+    /* this is to check that the input file is a valid file name */
 	for (int i = 6; i < argc; i += 3)
 	{	
 		if (readFile(argv[i], inputPgmStruct) != 0)
@@ -76,63 +76,60 @@ int main(int argc, char **argv)
 		}
 	}
 	
-
-
 	/* set dimensions of the canvas as the user input output file dimension values */
 	canvasPgmStruct->width = atoi(argv[2]);
 	canvasPgmStruct->height = atoi(argv[3]);
 
+	/* malloc a 2D array to store the image data of the pgm that will be writen to */
 	canvasPgmStruct->imageData = (unsigned char **) malloc(canvasPgmStruct->height * sizeof(unsigned char*));
 	for (int i = 0; i < canvasPgmStruct->width; i++)
 	{
 		canvasPgmStruct->imageData[i] = (unsigned char *) malloc (canvasPgmStruct->width * sizeof(unsigned char));
 	}
 
+	/* make the start row and column -1 as if these do not change, you know the assembley did not work */
 	int rowStart = -1;
 	int columnStart = -1;
+	char *inputFile = "";
 	for (int i = 4; i < argc; i++)
 	{
-
-		char *inputFile = "";
+		/* this detects for every input file */
 		if(i % 3 == 0)
 		{
-
-			inputFile = argv[i];
 			/* set the canvas pgm's magic number to the same as the last input image so that there is no conflict when assembling either ASCII or binary */
+			inputFile = argv[i];
 
+			/* read in the image data from the input image then have it assemble onto the canvas */
 			readFile(inputFile, inputPgmStruct);
 			canvasPgmStruct->magic_number[0] = inputPgmStruct->magic_number[0];
 			canvasPgmStruct->magic_number[1] = inputPgmStruct->magic_number[1];
 			assemble(canvasPgmStruct, inputPgmStruct, rowStart, columnStart, inputFile);
-			
-			
 		}
+		/* reads in every row starting position to assemble an image */
 		if (i % 3 == 1)
 		{
-
 			rowStart = atoi(argv[i]);
-
 		}
+		/* reads in every column starting position to assemble an image */
 		if (i % 3 == 2)
 		{
-
 			columnStart = atoi(argv[i]);
 		}
 	}
 
-	writeFile(argv[1], canvasPgmStruct);
+	/* create a pgm of the canvas with all the sub-image data after all the files have been scanned */
+	if (writeFile(argv[1], canvasPgmStruct) == 0)
+	{
+		/* If it works print 'ASSEMBLED' */
+		printf("ASSEMBLED");
 
-	/* If it works print 'ASSEMBLED' */
-	printf("ASSEMBLED");
-
-	/* at this point, we are done and can exit with a success code */
-	return EXIT_NO_ERRORS;
+		/* at this point, we are done and can exit with a success code */
+		return EXIT_NO_ERRORS;
+	}
 } /* main() */
 
 int assemble(pgm *canvasPgmStruct, pgm *inputPgmStruct, int rowOrigin, int colOrigin, char *fileName)
 { /* assemble()	*/
-
-	// printf("\n %i %i \n", rowOrigin, colOrigin);
 	for (int i = 0; i < inputPgmStruct->height; i++)
 	{
 		for (int j = 0; j < inputPgmStruct->width; j++)
@@ -140,8 +137,6 @@ int assemble(pgm *canvasPgmStruct, pgm *inputPgmStruct, int rowOrigin, int colOr
 			canvasPgmStruct->imageData[rowOrigin + i][colOrigin + j] = inputPgmStruct->imageData[i][j];			
 		}
 	}
-	
-
 	return EXIT_NO_ERRORS;
 } /* assemble()	*/
 

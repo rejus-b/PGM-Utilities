@@ -161,14 +161,9 @@ int tile(pgm *pgmStruct, pgm *tilePgmStruct, char *inputFile, int tileFactor)
 	/* initialise a new string for the name that will be formated with row and column */
 	char newName[strlen(name) + 19];
 
-	/* creating a count for the row location of the tiled image */
-	int xNameCount = 0;
-
 	/* segmenting the main image into tiles */
 	for (int yOffSet = 0; yOffSet < tileFactor; yOffSet ++)
 	{
-		/* creating a count for the column location of the tiled image */
-		int yNameCount = 0;
 		for (int xOffSet = 0; xOffSet < tileFactor; xOffSet ++)
 		{
 			for (int i = 0; i < tilePgmStruct->height; i++)
@@ -180,22 +175,12 @@ int tile(pgm *pgmStruct, pgm *tilePgmStruct, char *inputFile, int tileFactor)
 				}
 			}
 			/* create a formated string with the row and columns then write it to a new file */
-			sprintf(newName, "%s_%i_%i.pgm", name, xNameCount, yNameCount);
+			sprintf(newName, "%s_%i_%i.pgm", name, yOffSet, xOffSet);
 			writeFile(newName, tilePgmStruct);
 			/* below comment line is for testing pgmAssemble */
 			/* printf(" %i %i %s_%i_%i.pgm", yOffSet*tilePgmStruct->height, xOffSet*tilePgmStruct->width, name, xNameCount, yNameCount); */
-			yNameCount ++;
 		}
-		xNameCount ++;
 	}
-
-	/* we are done with the tiled pgm structure, free memory */
-	for (int i = 0; i < tilePgmStruct->height; i++)
-	{
-		free(tilePgmStruct->imageData[i]);
-	}
-	free (tilePgmStruct->imageData);
-
 	/* at this point, we are done and can exit with a success code */
 	return EXIT_NO_ERRORS;
 
